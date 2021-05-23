@@ -1,0 +1,213 @@
+﻿@model List<PhamTrongTruong_5951071113.Models.Bai_Hoc>
+@{
+    ViewBag.Title = "baihoc";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var Bode
+            $(document).on('click', 'button[name=btnSua]', function () {
+
+                @*Bode = $(this).closest('tr');
+                let ma = $(this).closest('tr').find("td:eq(0)").text().trim();
+                let ten = $(this).closest('tr').find("td:eq(1)").text();
+
+                let tg = $(this).closest('tr').find("td:eq(4)").text();
+                $('#MaDe').val(ma.trim());
+                $('#NoiDung').val(ten.trim());
+                $('#txtTG').val(tg.trim());*@
+                $('#modalSinhVien').modal();
+
+
+            })
+
+            $(document).on('click', 'button[name=Delete]', function () {
+
+                @*Bode = $(this).closest('tr');
+                let ma = $(this).closest('tr').find("td:eq(0)").text().trim();
+                let ten = $(this).closest('tr').find("td:eq(1)").text();
+
+                let tg = $(this).closest('tr').find("td:eq(4)").text();
+                $('#MaDe').val(ma.trim());
+                $('#NoiDung').val(ten.trim());
+                $('#txtTG').val(tg.trim());*@
+
+                $('#modalConfirm').modal();
+
+            });
+            $('#btnYes').click(function () {
+
+                let made = $('#MaDe').val();;
+                let nd = $('#NoiDung').val();
+                let tg = $('#txtTG').val();
+
+                $('#modalSinhVien').modal('hide');
+                $.ajax({
+                    url: '/Home/UpdateDethi', type: 'post',
+                    data: {
+                        made: made,
+                        nd: nd,
+                        tg: tg,
+                        xoa: false,
+                    },
+                    success: function (data) {
+                        Loaddata(data);
+                    }
+                });
+
+            });
+
+            function Loaddata(data) {
+
+                $('#bodeid').empty();
+                $('#modalSinhVien').hide();
+                $('#modalConfirm').modal('hide');
+                $.each(data.Bode, function (k, v) {
+                    let = '<tr>'
+
+                    let += '<td>' + v.MaDe + '</td>';
+                    let += '<td>' + v.Ten + '</td>';
+                    let += '<td>' + v.TenMon + '</td>';
+                    let += '<td>' + v.SoCau + '</td>';
+                    let += '<td>' + v.ThoiGian + '</td>';
+
+                    let += '<td>' + v.Giaovien + '</td>';
+
+
+
+                    let += '<td><a href="Admin/Admin/Dscauhoi/' + v.MaDe + '?tenmon=' + v.TenMon + '" class="btn btn-xs btn-primary"><span><i class="far fa-eye"></i></span></a>';
+                    let += '<button name="btnSua" class="btn btn-xs btn-success"><i class="far fa-edit" aria-hidden="true" style="color:white"></i></button>';
+
+                    let += '<button name="Delete" class="btn btn-xs btn-danger"><i class="far fa-trash-alt" aria-hidden="true"></i></button></td>';
+
+
+
+                    let += '</tr>'
+                    $('#bodeid').append(let);
+
+                });
+
+
+
+            }
+
+        })
+
+
+    </script>
+}
+
+
+<div class="modal" tabindex="-1" role="dialog" id="modalConfirm">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title">CẢNH BÁO</h5>
+
+            </div>
+            <div class="modal-body">
+                <input type="text" hidden id="ma" value="" />
+                Bạn có chắc chắn muốn xóa?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnYes">Xác nhận</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnDong">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="modalSinhVien">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark" style="color:white">
+                <h5 class="modal-title">THÔNG TIN ĐỀ THI</h5>
+            </div>
+            <div class="modal-body">
+                <p>
+                    <div class="form-group">
+                        <label>Tên Bài </label>
+                        <input type="text" class="form-control" id="NoiDung">
+               
+                    </div>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSubmit">Xác nhận</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnDong">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid ">
+
+    <div class="card mb-4">
+        <div class="row" style="padding:10px; ">
+            <div class="col-sm-12 col-md-6">
+                <svg class="svg-inline--fa fa-table fa-w-16 mr-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="table" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zM224 416H64v-96h160v96zm0-160H64v-96h160v96zm224 160H288v-96h160v96zm0-160H288v-96h160v96z"></path></svg><!-- <i class="fas fa-table mr-1"></i> Font Awesome fontawesome.com -->
+                Danh sách đề thi
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <button id="addbai" class="btn btn-primary" style="float:right">
+                    <span>Thêm bài học</span>
+                </button>
+            </div>
+        </div>
+        <div style="width:auto; height:3px; background-color:rgb(248,249,250);"></div>
+        <div class="card-body">
+            <div class="">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+
+                                <thead>
+                                    <tr>
+                                        <th>Mã Bài </th>
+                                        <th>Tên Bài </th>
+                                        <th>Chương Học </th>
+                                        <th>Số Câu Hỏi</th>
+
+
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="bodeid">
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td> @item.Ma_Bai </td>
+                                            <td>  @item.Tên_Bai </td>
+                                            <td> @item.Chuong_Hoc.Ten_Chuong</td>
+                                            <td> @item.KhoCauHois.Count</td>
+
+                                            <td>
+
+                                                <a href="/Admin/Admin/Dscauhoi/@item.Ma_Bai" class="btn btn-xs btn-primary">
+                                                    <span><i class="far fa-eye"></i></span>
+                                                </a>
+
+                                                <button name="btnSua" class="btn btn-xs btn-success"><i class="far fa-edit" aria-hidden="true" style="color:white"></i></button>
+
+                                                <button name="Delete" class="btn btn-xs btn-danger"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

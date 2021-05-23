@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "KetQuathi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container" style="margin-top:-5%">
+    <div class=" row card">
+
+        <div class=" right card-header card-header-primary text-center" style=" left:40%; width:200px;">
+            <h4 class="card-title"> Kết quả bài Thi</h4>
+        </div>
+        <div class="card-header">
+            <div class="stats">
+                <h4 class="card-title"> sss</h4>
+            </div>
+            <div class="stats">
+                <h4 class="card-title">Số Bài </h4>
+            </div>
+
+        </div>
+        <div class="row container" style="margin-left:1%">
+            <button class="btn btn-twitter"> Xem kết quả </button>
+            <button class="btn btn-twitter"> Xem đánh giá </button>
+            <button class="btn btn-twitter"> Xem thống kê </button>
+        </div>
+        <div class="row container" style="margin-left:1%">
+            <div class="col-12" id="XemDanhgia">
+                <div class="card-body ">
+                    <table border="1" class="table-light" style="text-align:center ;width:100% ;border-color:#d1d1d1">
+                        <tr class="badge-primary">
+                            <th rowspan="1">Phần kiến thức</th>
+                            <th rowspan="1"> Đánh giá</th>
+                            <th>Nhận xét</th>
+                        </tr>
+                        <tr>
+                            <td> ssssss</td>
+                            <td> ssssss</td>
+                            <td> ssssss</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-12" id="myNavbar">
+                <div class="card-body ">
+                        <div class="navbar-header nav-item">
+                            <span class=" navbar-toggle" id="bntmucdo" data-toggle="collapse" data-target="#myNavbar1">
+                                Theo mức độ
+                            </span>
+                        </div>
+                        <div class="container-fluid">
+                       
+                                <div class="card-body ">
+                                      <table border="1"  class="table-light" style="text-align:center ;width:100%">
+                                            <tr class="badge-primary">
+                                                <th rowspan="2">Tên Chương</th>
+                                                <th colspan="4">Sô Câu Đúng</th>
+                                                <th rowspan="2">Tổng Sô Câu</th>
+                                            </tr>
+                                            <tr class="badge-primary">
+                                                <th>Nhận Biết</th>
+                                                <th>Thông Hiệu</th>
+                                                <th>Vận Dụng</th>
+                                                <th>Vận Dụng Cao</th>
+                                            </tr>
+                                      
+
+
+                                        </table>
+                                   
+                                </div>
+                     
+                        </div>
+                        <div class="navbar-header">
+                            <span class=" navbar-toggle" id="bntnoidung">
+                                Theo nôi dung
+                            </span>
+                        </div>
+                        <div class="container-fluid">
+                         
+                        </div>
+
+                
+                </div>
+            </div>
+
+
+        </div>
+
+        <div style="margin-left:2%" id="frmketqua" class=" col-12 container">
+            @{
+                int dem = 0;
+                for (int i = 0; i < 10; i++)
+                {
+
+
+                    dem++;
+                    <h4 class=" card-title chon" id="i.Ma_CH">Câu @dem )</h4>
+
+
+                    for (int j = 0; j < 4; j++)
+                    {
+
+                        <div class="row card-header" style="margin-top:0px;margin-left:3%" ;>
+                            <label class="form-check-label" for="">
+                                <input class="form-check-input txtch" onclick="chonan(this)" type="radio">
+                                ssssssssss
+                            </label>
+                        </div>
+
+
+
+                    }
+
+
+                }
+            }
+        </div>
+
+
+    </div>
+
+</div>

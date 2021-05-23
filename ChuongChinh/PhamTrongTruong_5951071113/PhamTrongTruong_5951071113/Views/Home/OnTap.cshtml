@@ -1,0 +1,197 @@
+﻿@model IEnumerable<PhamTrongTruong_5951071113.Models.Chuong_Hoc>
+@{
+    ViewBag.Title = "Tạo Đề Ôn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section scripts{
+    <script>
+
+
+        var item = $('#onbai');
+        item.addClass("active");
+        $(document).ready(function () {
+           
+            $('#btntao').click(function () {
+                var mucdo = $('#txtmudo').val();
+                var thoigian = $('#txttg').val().trim();
+                var sl = $('#txtsl').val();
+                var input = $('.txtchon');
+                var arr="";
+                var dem = 0;
+                for (var i = 0; i < input.length; i++) {
+                    if (input[i].checked == true) {
+                        dem++;
+                        arr += input[i].id+"/";
+                    }
+                }
+                if (mucdo.length == 0) {
+                    alert("Bạn vui lòng chọn mức độ câu hỏi")
+                }
+                else if (thoigian.length == 0) {
+                    alert("Bạn vui lòng nhập thời gian câu hỏi");
+                }
+                else if (sl.length == 0) { alert("Bạn vui lòng nhập số lượng câu hỏi") }
+                else if (dem == 0) {
+                    alert("Bạn vui lòng chọn bài cần thi")
+                }
+                else if (sl < 15) {
+                    alert("Vui lòng chọn thêm số lượng câu hỏi")
+                }
+                else if (dem > 7) {
+                    alert("Qúa sô lượng bài số bài thi <8")
+                }
+                else {
+                  
+                    var ngay = new Date();
+                    var now = TaoNgay(ngay, thoigian);
+                    var tgbd = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getHours() + '/' + now.getMinutes() + '/' + now.getSeconds() + ""
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Home/TaoDe',
+                        data: { nd: arr, tg: thoigian, tgbd:tgbd,sl:sl.trim(), mucdo: mucdo.trim()},
+                        success: function (data) {
+                            window.location = "/Home/Thi";
+                        }
+                    });
+                }
+            
+            })
+
+        })
+        function TaoNgay(dateObj, numDays) {
+            let result;
+            result = Number(numDays);
+            var tg = dateObj.getMinutes() + result;
+            alert(tg);
+            dateObj.setMinutes(tg);
+            return dateObj;
+        }
+   
+    </script>
+}
+<div class="col-md-7 container">
+    <div class="card">
+        <div class="card-header card-header-info">
+            <h4 class="card-title">Tạo Đề</h4>
+        </div>
+        <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="bmd-label-floating">Mức Độ</label>
+                            <input type="text" class="form-control"  hidden>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <select class="form-control " id="txtmudo">
+                                <option value=""> Chọn Mức Độ </option>
+                                <option value="1">Dễ </option>
+                                <option value="2">Trung Bình </option>
+                                <option value="3">Khó</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="bmd-label-floating">Số Lượng Câu Hỏi</label>
+                            <input type="text" class="form-control" hidden>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <input type="text" id="txtsl" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="bmd-label-floating">Thời Gian</label>
+                            <input type="text" class="form-control" hidden>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class=" form-group">
+                            <select class=" bmd-label-floating form-control" id="txttg">
+                                <option value=""> Chọn Thời Gian Thi </option>
+                                @for (int i = 1; i < 18; i++)
+                                {
+
+                                    <option class="bmd-label-floating" value="@(i * 10)"> @(i * 10) Phút  </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="bmd-label-floating">Nội dung</label>
+                            <input type="text" class="form-control" hidden>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="sb-sidenav-menu">
+                            @foreach (var item in Model.ToList())
+                            {
+                                string id1 = "collapseLayouts"+item.Ma_Chuong;
+                                string id2 = "#collapseLayouts"+ item.Ma_Chuong;
+                                <div class="nav">
+                                    <a class="collapsed" style="margin-top:15px; color:black" href="#" data-toggle="collapse" data-target="@id2" aria-expanded="false" aria-controls="collapseLayouts">
+                                        <i class="bi bi-chevron-down">
+                                            @item.Ten_Chuong
+                                        </i>
+
+                                    </a>
+                                </div>
+                                <div class="collapse" id="@id1" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+                                    <nav style="margin-top:-1px" class=" card-body sb-sidenav-menu-nested nav-item card  container">
+                                        @foreach (var item1 in item.Bai_Hoc)
+                                        {
+                                            <div class="row">
+                                                <div class="col-md-1">
+                                                    <div class="form-check" style="margin-top:-1px">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input txtchon" id="@item1.Ma_Bai" type="checkbox" value="">
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                        <input type="text" class="form-control" hidden>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <div class=" form-group" style="margin-top:10%">
+                                                        <div class="form-group">
+                                                            <label>@item1.Tên_Bai</label>
+                                                            <input type="text" class="form-control "  hidden>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+
+
+                                    </nav>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <button id="btntao" class="btn btn-primary pull-right">Tạo</button>
+                <div class="clearfix"></div>
+         
+        </div>
+    </div>
+</div>

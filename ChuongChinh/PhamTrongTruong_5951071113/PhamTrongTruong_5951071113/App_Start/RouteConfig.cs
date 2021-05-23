@@ -14,9 +14,20 @@ namespace PhamTrongTruong_5951071113
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+             name: "BaiHoc",
+             url: "BaiHoc/{id}",
+             defaults: new { controller = "Home", action = "BaiHoc", id = UrlParameter.Optional }
+         );
+          routes.MapRoute(
+         name: "HocBai",
+         url: "HocBai/{id}",
+         defaults: new { controller = "Home", action = "HocBai", id = UrlParameter.Optional }
+     );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Login", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
