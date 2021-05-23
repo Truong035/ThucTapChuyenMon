@@ -1,6 +1,6 @@
 # THỰC TẬP CHUYÊN MÔN NĂM HỌC 2020-2021
 Họ và tên:Phạm Trọng Trường
-     
+MSV:5951071113     
 * Lớp: Công nghệ thông tin-K59
 
 ## Đề tài: Web đánh giá kiến thức vật lý trung học phổ thông
