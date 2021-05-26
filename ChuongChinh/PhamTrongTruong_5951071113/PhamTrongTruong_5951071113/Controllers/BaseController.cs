@@ -9,18 +9,22 @@ namespace TracNghiemOnline.Controllers
 {
     public class BaseController : Controller
     {
-        // GET: Base
+        //GET: Base
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var session = (TaiKhoan)Session["user"];
             if (session == null)
-            {
-                     filterContext.Result = new RedirectToRouteResult(
-                    new System.Web.Routing.RouteValueDictionary( new { controller = "Login", action = "Index" } ));
-            }
-    
+             {
+                   filterContext.Result = new RedirectToRouteResult(
+                  new System.Web.Routing.RouteValueDictionary( new { controller = "Account", action = "Login" } ));
+           }
+
+
+              Session["user"] = session;
+
+
             base.OnActionExecuting(filterContext);
         }
-      
+
     }
 }

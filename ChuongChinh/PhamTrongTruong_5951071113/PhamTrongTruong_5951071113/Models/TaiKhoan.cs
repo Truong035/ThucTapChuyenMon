@@ -13,12 +13,11 @@ namespace PhamTrongTruong_5951071113.Models
         public TaiKhoan()
         {
             Da_LuaChon = new HashSet<Da_LuaChon>();
-            DeThis = new HashSet<DeThi>();
             DS_BaiHoc = new HashSet<DS_BaiHoc>();
         }
 
         [Key]
-        [StringLength(20)]
+        [StringLength(50)]
         public string MaTK { get; set; }
 
         [StringLength(20)]
@@ -36,9 +35,6 @@ namespace PhamTrongTruong_5951071113.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Da_LuaChon> Da_LuaChon { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DeThi> DeThis { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DS_BaiHoc> DS_BaiHoc { get; set; }

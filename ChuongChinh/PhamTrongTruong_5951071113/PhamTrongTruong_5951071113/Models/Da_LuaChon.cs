@@ -8,11 +8,10 @@ namespace PhamTrongTruong_5951071113.Models
 
     public partial class Da_LuaChon
     {
-        [StringLength(20)]
+        [StringLength(50)]
         public string MaTk { get; set; }
 
-        [StringLength(10)]
-        public string Ma_De { get; set; }
+        public long? Ma_De { get; set; }
 
         public long? Ma_Dan { get; set; }
 

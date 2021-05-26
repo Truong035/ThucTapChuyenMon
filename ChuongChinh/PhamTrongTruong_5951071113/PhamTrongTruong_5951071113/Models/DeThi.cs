@@ -17,10 +17,9 @@ namespace PhamTrongTruong_5951071113.Models
         }
 
         [Key]
-        [StringLength(10)]
-        public string Ma_De { get; set; }
+        public long Ma_De { get; set; }
 
-        [StringLength(20)]
+        [StringLength(50)]
         public string MaTK { get; set; }
 
         public int? ThoiGianThi { get; set; }
@@ -36,7 +35,5 @@ namespace PhamTrongTruong_5951071113.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Da_LuaChon> Da_LuaChon { get; set; }
-
-        public virtual TaiKhoan TaiKhoan { get; set; }
     }
 }

@@ -10,8 +10,7 @@ namespace PhamTrongTruong_5951071113.Models
     {
         public long ID { get; set; }
 
-        [StringLength(10)]
-        public string MaDe { get; set; }
+        public long? MaDe { get; set; }
 
         public long? Ma_CH { get; set; }
 

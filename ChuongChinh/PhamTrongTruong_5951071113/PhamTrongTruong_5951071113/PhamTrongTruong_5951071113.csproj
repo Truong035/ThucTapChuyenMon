@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props" Condition="Exists('..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -8,7 +9,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{893F63B9-D0EB-4095-B071-55B2783BC2A9}</ProjectGuid>
+    <ProjectGuid>{F5DD930B-7D2B-4F6F-9EDB-F6D58C5C2E14}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -18,13 +19,15 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <Use64BitIISExpress />
-    <IISExpressSSLPort>44371</IISExpressSSLPort>
+    <IISExpressSSLPort>44343</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerLaunchUrl>http://{ServiceIPAddress}</DockerLaunchUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,13 +48,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="Microsoft.Configuration.ConfigurationBuilders.Base, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Configuration.ConfigurationBuilders.Base.2.0.0\lib\Net471\Microsoft.Configuration.ConfigurationBuilders.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Configuration.ConfigurationBuilders.UserSecrets, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Configuration.ConfigurationBuilders.UserSecrets.2.0.0\lib\Net471\Microsoft.Configuration.ConfigurationBuilders.UserSecrets.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin, Version=4.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.2.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Spire.Doc, Version=9.4.18.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <HintPath>..\packages\Spire.Doc.9.4.18\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
@@ -129,6 +139,48 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.4.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.4.0.1\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.4.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.4.0.1\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.4.0.1\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.4.0.1\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -136,29 +188,37 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Bai_Hoc.cs" />
     <Compile Include="Models\Cau_Hoi.cs" />
     <Compile Include="Models\Chuong_Hoc.cs" />
-    <Compile Include="Models\Dao\BaiHoc.cs" />
+    <Compile Include="Models\Dao\DanhGia.cs" />
+    <Compile Include="Models\Dao\Danh_Gia.cs" />
     <Compile Include="Models\Dao\NoiDungThi.cs" />
     <Compile Include="Models\Dao\TaoDeDao.cs" />
     <Compile Include="Models\Da_LuaChon.cs" />
     <Compile Include="Models\DeThi.cs" />
     <Compile Include="Models\DS_BaiHoc.cs" />
     <Compile Include="Models\D_An.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\KhoCauHoi.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\TaiKhoan.cs" />
     <Compile Include="Models\TracNghiemDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="assets\css\material-dashboard-rtl.css" />
@@ -213,8 +273,6 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\css\styles.css" />
-    <Content Include="Content\js\scripts.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\material-icon\css\material-design-iconic-font.css" />
@@ -240,7 +298,22 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\bai1nhanbiet.docx" />
+    <Content Include="Content\bai1Vandungcao.docx" />
+    <Content Include="Content\bai2.2.docx" />
+    <Content Include="Content\bai2.docx" />
+    <Content Include="Content\Bai3.docx" />
+    <Content Include="Content\Bai4.docx" />
+    <Content Include="Areas\Admin\Views\Admin\baihoc.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Dscauhoi.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\LoadCauHoi.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\QuanLyTaiKhoan.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\Taocauhoi.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="assets\css\material-dashboard.css.map" />
+    <Content Include="assets\css\style.css.map" />
     <Content Include="assets\js\material-dashboard.js.map" />
     <Content Include="assets\scss\material-dashboard.scss" />
     <Content Include="assets\scss\material-dashboard\bootstrap\scss\bootstrap-grid.scss" />
@@ -406,23 +479,10 @@
     <Content Include="assets\scss\material-dashboard\_tooltip.scss" />
     <Content Include="assets\scss\material-dashboard\_type.scss" />
     <Content Include="assets\scss\material-dashboard\_variables.scss" />
-    <Content Include="assets\css\style.css.map" />
-    <Content Include=".sass-cache\21880c0ffe15753a53f8402e9f64e1077e071510\style.scssc" />
-    <Content Include=".sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\extend.scssc" />
-    <Content Include=".sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\fonts.scssc" />
-    <Content Include=".sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\global.scssc" />
-    <Content Include=".sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\minxi.scssc" />
-    <Content Include=".sass-cache\2866be86c578bb583fbf023501bb9fd24cc3bf22\variables.scssc" />
-    <Content Include=".sass-cache\3948936f84e1a30385e73a9be140b58b48c82e15\style.scssc" />
-    <Content Include=".sass-cache\643489b018602f15119d8f44aeb7fc79468873a9\main.scssc" />
-    <Content Include=".sass-cache\643489b018602f15119d8f44aeb7fc79468873a9\responsive.scssc" />
-    <Content Include=".sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\extend.scssc" />
-    <Content Include=".sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\fonts.scssc" />
-    <Content Include=".sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\global.scssc" />
-    <Content Include=".sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\minxi.scssc" />
-    <Content Include=".sass-cache\7643c8aa2e335ff5e104bc47d8dd7f1a0693bb39\variables.scssc" />
-    <Content Include=".sass-cache\9dc767a56f3dc2f8a933300255cd2265f13191d4\main.scssc" />
-    <Content Include=".sass-cache\9dc767a56f3dc2f8a933300255cd2265f13191d4\responsive.scssc" />
+    <None Include="Dockerfile" />
+    <None Include=".dockerignore">
+      <DependentUpon>Dockerfile</DependentUpon>
+    </None>
     <Content Include="fonts\material-icon\fonts\Material-Design-Iconic-Font.eot" />
     <Content Include="fonts\material-icon\fonts\Material-Design-Iconic-Font.ttf" />
     <Content Include="fonts\material-icon\fonts\Material-Design-Iconic-Font.woff" />
@@ -491,14 +551,6 @@
     <Content Include="fonts\poppins\roboto-condensed-v16-latin-regular.ttf" />
     <Content Include="fonts\poppins\roboto-condensed-v16-latin-regular.woff" />
     <Content Include="fonts\poppins\roboto-condensed-v16-latin-regular.woff2" />
-    <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\baihoc.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\QuanLyTaiKhoan.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\Dscauhoi.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\Taocauhoi.cshtml" />
-    <Content Include="Areas\Admin\Views\Admin\LoadCauHoi.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -522,14 +574,27 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\OnTap.cshtml" />
-    <Content Include="Views\Home\QuanLy.cshtml" />
-    <Content Include="Views\Home\DanhGia.cshtml" />
-    <Content Include="Views\Home\LienHe.cshtml" />
-    <Content Include="Views\Home\BaiHoc.cshtml" />
-    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\SendCode.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Views\Manage\SetPassword.cshtml" />
+    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="scss\common\extend.scss" />
     <Content Include="scss\common\fonts.scss" />
     <Content Include="scss\common\global.scss" />
@@ -538,14 +603,19 @@
     <Content Include="scss\layouts\main.scss" />
     <Content Include="scss\layouts\responsive.scss" />
     <Content Include="scss\style.scss" />
+    <Content Include="Views\Home\BaiHoc.cshtml" />
+    <Content Include="Views\Home\DanhGia.cshtml" />
     <Content Include="Views\Home\HocBai.cshtml" />
-    <Content Include="Views\Home\Thi.cshtml" />
     <Content Include="Views\Home\KetQuathi.cshtml" />
+    <Content Include="Views\Home\LienHe.cshtml" />
+    <Content Include="Views\Home\OnTap.cshtml" />
+    <Content Include="Views\Home\QuanLy.cshtml" />
+    <Content Include="Views\Home\Thi.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Content\Img\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -605,9 +675,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>61348</DevelopmentServerPort>
+          <DevelopmentServerPort>55550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44371/</IISUrl>
+          <IISUrl>https://localhost:44343/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -622,7 +692,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.1.10.13\build\Microsoft.VisualStudio.Azure.Containers.Tools.Targets.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

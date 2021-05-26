@@ -1,4 +1,4 @@
-﻿
+﻿@model List<PhamTrongTruong_5951071113.Models.DeThi>
 @{
     ViewBag.Title = "Quản Lý Học Tập";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -12,64 +12,78 @@
     </script>
 
 }
-   <div class="col-lg-12 col-md-12">
-                            <div class="card">
-                                <div class="card-header card-header-info">
-                                    <h4 class="card-title">Danh Sách Đề Thi</h4>
-                                    
-                                </div>
-                                <div class="card-body table-responsive">
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th  style="font-weight:600">Mã đề</th >
-                                                <th style="font-weight:600">Kiến Thức</th>
-                                                <th style="font-weight:600">Điểm Số</th>
-                                                <th style="font-weight:600">Thời Gian </th>
-                                                <th style="font-weight:600">Ngày Thi </th>
-                                            </tr>
+<div class="col-lg-12 col-md-12">
+    <div class="card">
+        <div class="card-header card-header-info">
+            <h4 class="card-title">Danh Sách Đề Thi</h4>
 
-                                        </thead>
-                                        <thead class="text-dark">
-                                      
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Dakota Rice</td>
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="font-weight:500">Mã đề</th>
+                        <th style="font-weight:900">Kiến Thức</th>
+                        <th style="font-weight:600">Điểm Số</th>
+                        <th style="font-weight:600">Thời Gian </th>
+                        <th style="font-weight:600">Ngày Thi </th>
+                        <th style="font-weight:200"></th>
+                    </tr>
 
-                                                <td><div class=""> ssssss</div>
-                                                    <div class=""> ssssss</div>
-                                                    <div class=""> ssssss</div>
-                                             
-                                                <td>Niger</td>
-                                                <td>Niger</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Minerva Hooper</td>
-                                                <td>$23,789</td>
-                                                <td>Curaçao</td>
-                                                <td>Curaçao</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Sage Rodriguez</td>
-                                                <td>$56,142</td>
-                                                <td>Netherlands</td>
-                                                <td>Curaçao</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Philip Chaney</td>
-                                                <td>$38,735</td>
-                                                <td>Korea, South</td>
-                                                <td>Curaçao</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td> @item.Ma_De</td>
+
+                        @{
+                            var listnd = new List<PhamTrongTruong_5951071113.Models.Bai_Hoc>();
+
+                            foreach (var item1 in item.Cau_Hoi)
+                            {
+                                if (!listnd.Exists(x => x.Ma_Bai == item1.KhoCauHoi.Ma_Bai))
+                                {
+                                    listnd.Add(new PhamTrongTruong_5951071113.Models.TracNghiemDB().Bai_Hoc.Find(item1.KhoCauHoi.Ma_Bai));
+
+                                }
+
+                            }
+                            <td>
+                                @foreach (var item2 in listnd)
+                                {
+                                    <div class="stats">
+                                        @item2.Tên_Bai.ToString()
+                                    </div>
+                                }
+
+                            </td>
+                        }
+
+                        <td>
+                            @item.DiêmSo
+                        </td>
+                        <td>
+                            @item.ThoiGianThi phút
+                        </td>
+                        <td>
+                            @item.NgayThi
+                        </td>
+                        <td>
+                            <a href="/SeachDethi/@item.Ma_De">
+
+                                <i class="bi bi-eye" style="font-size: 1.7rem;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 

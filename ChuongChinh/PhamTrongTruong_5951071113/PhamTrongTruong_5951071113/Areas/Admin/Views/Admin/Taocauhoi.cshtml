@@ -8,8 +8,8 @@
 
 @section scripts{
     <script>
-        var cout = 2000;
-        var dem = 200;
+        var cout = 20000;
+        var dem = 2000;
         var check = false;
         $(document).ready(function () {
 
@@ -188,9 +188,10 @@
                         })
                         CH[k].D_An.push({
                             Ma_Dan: 1,
-                            NoiDung: $(da[dem]).val(),
+                            NoiDung: $(da[dem]).val().trim(),
                             HinhAnh: anhdapan,
                         });
+                       
                     }
                     var img = $('.txtlinkHinh');
                     $.each(img, function (a, b) {
@@ -202,15 +203,15 @@
                     })
 
                 }
-         
-             
-
+              
             })
+            console.log(CH)
             if (CH.length > 0) {
                 $.ajax({
                     type: 'POST',
+                    data:'json',
                     url: '/Admin/Admin/LuuCauHoi',
-                    data: { listCH: JSON.stringify(CH) },
+                    data: { listCH: JSON.stringify(CH)},
                     success: function (data) {
                         window.location = "/Admin/Admin/LoadCauHoi";
                     }

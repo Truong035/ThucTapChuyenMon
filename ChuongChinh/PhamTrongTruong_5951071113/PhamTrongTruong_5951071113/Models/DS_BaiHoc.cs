@@ -8,7 +8,7 @@ namespace PhamTrongTruong_5951071113.Models
 
     public partial class DS_BaiHoc
     {
-        [StringLength(20)]
+        [StringLength(50)]
         public string Ma_TK { get; set; }
 
         public int? Ma_Bai { get; set; }
