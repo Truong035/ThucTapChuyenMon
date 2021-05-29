@@ -25,10 +25,12 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 6.Quản lý học tập
 
+7.Dánh giá quá trình học tập (đánh giá bằng biểu đồ)
+
 ## Phần 3: Các chức năng chưa hoàn thành:
 1.Chỉnh Sửa câu hỏi
+2 Thông kê admin
 
-2.Dánh giá quá trình học tập (đánh giá bằng biểu đồ)
 
 ## Hướng dẫn sử dụng:
 b1 cài csdl : trong muc CSDL
