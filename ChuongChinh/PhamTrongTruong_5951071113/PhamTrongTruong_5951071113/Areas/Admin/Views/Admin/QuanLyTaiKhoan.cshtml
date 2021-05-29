@@ -46,20 +46,22 @@
                                         <td>  @item.MatKhau </td>
                                         <td> @item.Ten</td>
                                         <td> @item.NgayTao</td>
-                                        <td> @item.DeThis.Count</td>
-
                                         <td>
-
-                                            <a href="" class="btn btn-xs btn-primary">
-                                                <span><i class="far fa-eye"></i></span>
-                                            </a>
-
-                                            <button name="btnSua" class="btn btn-xs btn-success"><i class="far fa-edit" aria-hidden="true" style="color:white"></i></button>
-
-                                            <button name="Delete" class="btn btn-xs btn-danger"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
+                                            @{ try
+                                                {
+                                                    @item.DeThis.Count
+                                                    }
+                                                    catch { }
+                                                }
                                         </td>
 
-                                    </tr>
+                                            <td>
+
+                                               
+                                                <button name="Delete" class="btn btn-xs btn-danger">Đóng</button>
+                                            </td>
+
+                                        </tr>
 
                                     }
 

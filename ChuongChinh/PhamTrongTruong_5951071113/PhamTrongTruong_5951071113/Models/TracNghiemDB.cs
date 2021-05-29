@@ -17,6 +17,7 @@ namespace PhamTrongTruong_5951071113.Models
         public virtual DbSet<Chuong_Hoc> Chuong_Hoc { get; set; }
         public virtual DbSet<D_An> D_An { get; set; }
         public virtual DbSet<Da_LuaChon> Da_LuaChon { get; set; }
+        public virtual DbSet<DanhGia> DanhGias { get; set; }
         public virtual DbSet<DeThi> DeThis { get; set; }
         public virtual DbSet<DS_BaiHoc> DS_BaiHoc { get; set; }
         public virtual DbSet<KhoCauHoi> KhoCauHois { get; set; }
@@ -26,6 +27,10 @@ namespace PhamTrongTruong_5951071113.Models
         {
             modelBuilder.Entity<D_An>()
                 .Property(e => e.HinhAnh)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<DanhGia>()
+                .Property(e => e.DanhDia)
                 .IsUnicode(false);
 
             modelBuilder.Entity<DeThi>()

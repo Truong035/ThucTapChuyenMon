@@ -6,6 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 using PhamTrongTruong_5951071113.Models.Dao;
 using System.Web.Script.Serialization;
+using DanhGia = PhamTrongTruong_5951071113.Models.Dao.DanhGia;
+using PagedList;
 
 namespace PhamTrongTruong_5951071113.Controllers
 {
@@ -29,13 +31,28 @@ namespace PhamTrongTruong_5951071113.Controllers
             return View(new TracNghiemDB().Chuong_Hoc.Where(x=>x.Xóa==true).ToList());
         }
 
-        public ActionResult QuanLy()
+        public ActionResult QuanLy(int? page)
         {
-
-          
             TaiKhoan tk = (TaiKhoan)Session["user"];
-            ViewBag.Name = tk.Ten;
-            return View(new TracNghiemDB().DeThis.Where(x=>x.MaTK.Equals(tk.MaTK)).ToList());
+            // 2. Nếu page = null thì đặt lại là 1.
+            if (page == null) page = 1;
+
+            // 3. Tạo truy vấn, lưu ý phải sắp xếp theo trường nào đó, ví dụ OrderBy
+            // theo LinkID mới có thể phân trang.
+            var links = (from l in new TracNghiemDB().DeThis.Where(x => x.MaTK.Equals(tk.MaTK)).ToList()
+                         select l).OrderBy(x => x.NgayThi);
+
+            // 4. Tạo kích thước trang (pageSize) hay là số Link hiển thị trên 1 trang
+            int pageSize = 4;
+
+            // 4.1 Toán tử ?? trong C# mô tả nếu page khác null thì lấy giá trị page, còn
+            // nếu page = null thì lấy giá trị 1 cho biến pageNumber.
+            int pageNumber = (page ?? 1);
+
+            // 5. Trả về các Link được phân trang theo kích thước và số trang.
+            return View(links.ToPagedList(pageNumber, pageSize));
+
+       
         }
         public ActionResult SeachDethi(long id)
         {
@@ -49,12 +66,144 @@ namespace PhamTrongTruong_5951071113.Controllers
             return  RedirectToAction("KetQuathi", "Home");
 
         }
-       
+       public JsonResult ThongKe(int mabai)
+        {
+            string startut = "";
+            TaiKhoan tk = (TaiKhoan)Session["user"];
+            List<DeThi> deThis = new List<DeThi>();
+            foreach (var item in new TracNghiemDB().DeThis.Where(x => x.MaTK.Equals(tk.MaTK)).ToList())
+            {
+                if(new TracNghiemDB().DanhGias.Where(x => x.Ma_Bai == mabai).ToList().Exists(x => x.Ma_De == item.Ma_De))
+                {
+                    deThis.Add(item);
+                }
+
+            }
+           
+            if (deThis.Count == 0)
+            {
+                return Json(new
+                {
+                    arr=new int[0],
+                    startut
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+
+            List<PhamTrongTruong_5951071113.Models.DanhGia> danhGias = new List<Models.DanhGia>();
+          
+            DateTime dateTime=DateTime.Now ;
+            try
+            {
+                dateTime = deThis.Where(x => x.MaTK.Equals(tk.MaTK)).ToList().Last().NgayThi;
+            }
+            catch {}
+            double[] DTB = new double[4];
+         
+            for (int i = 0; i < 3; i++)
+            {
+                List<PhamTrongTruong_5951071113.Models.DanhGia> danhGias1 = new List<Models.DanhGia>(); 
+                DateTime dateTime1 = dateTime.AddDays(-1);
+                var dethi = deThis.Where(x => x.NgayThi <= dateTime && x.NgayThi > dateTime1);
+                var decuoi = dethi.ToList().First();
+              
+                foreach (var item in dethi)
+                {
+                    var danhgia = new TracNghiemDB().DanhGias.SingleOrDefault(x => x.Ma_De == item.Ma_De && x.Ma_Bai == mabai);
+                    if (danhgia != null)
+                    {
+                       
+                        if (!danhGias.Exists(x => x.Ma_De == item.Ma_De))
+                        {
+                            danhGias.Add(danhgia);
+                        }
+                        danhGias1.Add(danhgia);
+                    }
+               }
+                double dtb = 0; ;
+                foreach (var item in danhGias1)
+                {
+                    dtb +=item.Diem;
+                }
+                try
+                {
+               
+
+                        dtb = dtb / (double)danhGias1.Count;
+                        DTB[i] = dtb;
+                  
+                }
+                catch { dtb = 0; }
+                try {
+                    dateTime = deThis.Where(x => x.NgayThi < decuoi.NgayThi).ToList().Last().NgayThi;
+                } catch {
+                    break;
+                }
+                
+            }
+            double NX1 = (DTB[0] + DTB[1] + DTB[2])/(double)3;
+            
+
+
+            if (DTB[0] > DTB[1] && DTB[1] >= DTB[2])
+            {
+                startut = "Có sự tiến bộ ổn định trong thời gian qua.";
+            }
+         
+            else if (DTB[0] < DTB[1] && DTB[1] <= DTB[2])
+            {
+                startut = "Bạn không có sự tiến bộ trong thời gian qua. Kết quả"+    
+  "các bài kiếm tra có chứa nội dung này đang giảm .";
+            }
+            else if (DTB[0] <= DTB[1] && DTB[1] >= DTB[2])
+            {
+                startut = " Trong thời gian gần đây bạn không có tiến bộ. Kết quả các bài kiểm tra có chứa nội dung này giảm xuống.";
+            }
+            else if (DTB[0] > DTB[1] && DTB[1] <= DTB[2])
+            {
+                startut = " Bạn có sự tiến bộ hơn trong thời gian trước.";
+            }
+
+
+            if (NX1 < 5)
+            {
+                startut += "Kiến thức phần này của bạn còn rất hạn chế điểm phần này bài test còn chưa cao.Bạn cần cố gắng cải thiện hơn nữa";
+            }
+            else if (NX1 >= 5 && NX1 < 7)
+            {
+
+                startut += "Kiến thức của bạn ở phần này chỉ ở mức trung bình. Bạn cần cố gắng hơn để cải thiện thành tích của mình";
+            }
+
+            else if (NX1 >= 7 && NX1 < 8.5)
+            {
+                startut += "Kiến thức của bạn ở phần này khá tốt. Bạn cố gắng thêm để đặt được số điểm cao hơn nữa";
+            }
+            else if (NX1 >= 8.5)
+            {
+                startut += "Kiến thức của bạn ở phần bạn rất làm rất tốt. Bạn cố gắng duy trì phong độ nhé";
+            }
+          
+             
+
+           var  arr = from c in danhGias.ToList().OrderBy(x=>x.Ma_De)
+                      select new
+                      {
+                          c.Ma_De,
+                         c.Diem,
+                       
+                      };
+      
+            return Json(new
+            {
+                arr ,startut
+            },JsonRequestBehavior.AllowGet) ;
+        }
         public ActionResult DanhGia()
         {
             TaiKhoan tk = (TaiKhoan)Session["user"];
             ViewBag.Name = tk.Ten;
-            return View();
+            return View(new TracNghiemDB().Bai_Hoc.Where(x=>x.Xoa==true).ToList());
         }
         public ActionResult BaiHoc(long id)
         {

@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mail;
 using System.Web.Mvc;
+using System.Windows.Forms;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -21,8 +26,43 @@ namespace PhamTrongTruong_5951071113.Controllers
         public AccountController()
         {
 
-        }
 
+        }
+        [AllowAnonymous]
+        public ActionResult DoiMatKhau()
+        {
+            var tk=(TaiKhoan)Session["user"];
+            RegisterViewModel RegisterViewMode = new RegisterViewModel();
+            RegisterViewMode.Email = tk.MaTK;
+            RegisterViewMode.Name = tk.Ten;
+            return View(RegisterViewMode);
+        }
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> DoiMatKhau(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                      TracNghiemDB tracNghiemDB = new TracNghiemDB();
+                     TaiKhoan taiKhoan1 =  tracNghiemDB.TaiKhoans.Find(model.Email);
+                    taiKhoan1.MaTK = model.Email;
+                    string mk = GetMD5(model.ConfirmPassword);
+                    taiKhoan1.MatKhau = mk;
+                    taiKhoan1.Quyen = false;
+                    taiKhoan1.NgayTao = DateTime.UtcNow;
+                    taiKhoan1.Ten = model.Name;
+                    taiKhoan1.TrangThai = true;
+                   tracNghiemDB.SaveChanges();
+                    Session["user"]= taiKhoan1;
+                    return RedirectToAction("Index", "Home");
+                
+               // ModelState.AddModelError("", "Email Đã Tồn Tại");
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
@@ -58,11 +98,15 @@ namespace PhamTrongTruong_5951071113.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+
             //uthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             // AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+
+
 
         //
         // POST: /Account/Login
@@ -74,7 +118,8 @@ namespace PhamTrongTruong_5951071113.Controllers
 
             if (ModelState.IsValid)
             {
-                var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Equals(taiKhoan.MaTK) && x.MatKhau.Equals(taiKhoan.MatKhau));
+                string mk = GetMD5(taiKhoan.MatKhau);
+                var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Equals(taiKhoan.MaTK) && x.Quyen==true && x.MatKhau.Equals(mk));
                 if (TK != null)
                 {
 
@@ -91,52 +136,38 @@ namespace PhamTrongTruong_5951071113.Controllers
             }
 
             return View(taiKhoan);
-            
+
         }
 
         //
         // GET: /Account/VerifyCode
-        [AllowAnonymous]
-        public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
-        {
-            // Require that the user has already logged in via username/password or external login
-            if (!await SignInManager.HasBeenVerifiedAsync())
-            {
-                return View("Error");
-            }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
-        }
-
-        //
-        // POST: /Account/VerifyCode
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
+        public async Task<ActionResult> DoiMatKhau1(RegisterViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
+                TracNghiemDB tracNghiemDB = new TracNghiemDB();
+                TaiKhoan taiKhoan1 = tracNghiemDB.TaiKhoans.Find(model.Email);
+                taiKhoan1.MaTK = model.Email;
+                string mk = GetMD5(model.ConfirmPassword);
+                taiKhoan1.MatKhau = mk;
+                taiKhoan1.Quyen = false;
+                taiKhoan1.NgayTao = DateTime.UtcNow;
+                taiKhoan1.Ten = model.Name;
+                taiKhoan1.TrangThai = true;
+                tracNghiemDB.SaveChanges();
+                Session["user"] = taiKhoan1;
+                return RedirectToAction("Index", "Home");
 
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
-            // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(model.ReturnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid code.");
-                    return View(model);
+                // ModelState.AddModelError("", "Email Đã Tồn Tại");
             }
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
+        //
         //
         // GET: /Account/Register
         [AllowAnonymous]
@@ -155,30 +186,44 @@ namespace PhamTrongTruong_5951071113.Controllers
             if (ModelState.IsValid)
             {
                 var Tk = new TracNghiemDB().TaiKhoans.Find(model.Email);
-             
+
                 if (Tk == null)
                 {
                     TaiKhoan taiKhoan1 = new TaiKhoan();
                     taiKhoan1.MaTK = model.Email;
-                    taiKhoan1.MatKhau = model.ConfirmPassword;
+                    string mk = GetMD5(model.ConfirmPassword);
+                    taiKhoan1.MatKhau = mk;
                     taiKhoan1.Quyen = false;
                     taiKhoan1.NgayTao = DateTime.UtcNow;
                     taiKhoan1.Ten = model.Name;
+                    taiKhoan1.TrangThai = true;
                     TracNghiemDB tracNghiemDB = new TracNghiemDB();
                     tracNghiemDB.TaiKhoans.Add(taiKhoan1);
                     tracNghiemDB.SaveChanges();
                     Session.Add("user", taiKhoan1);
                     return RedirectToAction("Index", "Home");
                 }
-
                 ModelState.AddModelError("", "Email Đã Tồn Tại");
-
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        
+        public string GetMD5(string chuoi)
+        {
+            string str_md5 = "";
+            byte[] mang = System.Text.Encoding.UTF8.GetBytes(chuoi);
 
+            MD5CryptoServiceProvider my_md5 = new MD5CryptoServiceProvider();
+            mang = my_md5.ComputeHash(mang);
+
+            foreach (byte b in mang)
+            {
+                str_md5 += b.ToString("X2");
+            }
+
+            return str_md5;
+        }
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
@@ -200,80 +245,51 @@ namespace PhamTrongTruong_5951071113.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult DoiMatKhau1()
+        {
+           var tk = (TaiKhoan)Session["user"];
+            RegisterViewModel RegisterViewMode = new RegisterViewModel();
+            RegisterViewMode.Email = tk.MaTK;
+            RegisterViewMode.Name = tk.Ten;
+            return View(RegisterViewMode);
+        }
+
         //
         // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel loginInfo)
         {
             if (ModelState.IsValid)
             {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+                var Tk = new TracNghiemDB().TaiKhoans.Find(loginInfo.Email);
+                
+                if (Tk != null)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
+                   
+                    Session["user"] = Tk;
+             
+                    SendEmail(loginInfo.Email, "Xác nhận mật khẩu", "Please reset your password by clicking <a class='btn btn-success' href =https://localhost:44343/Account/DoiMatKhau1 >Xác Nhận</a> ");
                     return View("ForgotPasswordConfirmation");
+                    
                 }
-
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                else
+                {
+                    ModelState.AddModelError("", "Email bạn nhập không tồn tại");
+                }
+                
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View(loginInfo);
         }
 
         //
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
-        {
-            return View();
-        }
-
-        //
-        // GET: /Account/ResetPassword
-        [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
-        {
-            return code == null ? View("Error") : View();
-        }
-
-        //
-        // POST: /Account/ResetPassword
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            AddErrors(result);
-            return View();
-        }
-
-        //
-        // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
-        public ActionResult ResetPasswordConfirmation()
         {
             return View();
         }
@@ -308,12 +324,13 @@ namespace PhamTrongTruong_5951071113.Controllers
             {
                 TaiKhoan taiKhoan1 = new TaiKhoan();
                 taiKhoan1.MaTK = loginInfo.Email;
-                
+                taiKhoan1.TrangThai = true;
                 taiKhoan1.Quyen = false;
                 taiKhoan1.NgayTao = DateTime.UtcNow;
                 taiKhoan1.Ten = loginInfo.DefaultUserName;
                 TracNghiemDB tracNghiemDB = new TracNghiemDB();
                 Tk = taiKhoan1;
+
                 tracNghiemDB.TaiKhoans.Add(taiKhoan1);
                 tracNghiemDB.SaveChanges();
             }
@@ -322,7 +339,26 @@ namespace PhamTrongTruong_5951071113.Controllers
             return RedirectToAction("Index", "Home");
             
         }
+        public void SendEmail(string address, string subject, string message)
+        {
+            string email = "tmooquiz40@gmail.com";
+            string password = "0353573467";
 
+            var loginInfo = new NetworkCredential(email, password);
+            var msg = new System.Net.Mail.MailMessage();
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587);
+
+            msg.From = new MailAddress(email);
+            msg.To.Add(new MailAddress(address));
+            msg.Subject = subject;
+            msg.Body = message;
+            msg.IsBodyHtml = true;
+
+            smtpClient.EnableSsl = true;
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials = loginInfo;
+            smtpClient.Send(msg);
+        }
 
         protected override void Dispose(bool disposing)
         {

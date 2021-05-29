@@ -11,6 +11,7 @@ namespace PhamTrongTruong_5951071113.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Bai_Hoc()
         {
+            DanhGias = new HashSet<DanhGia>();
             DS_BaiHoc = new HashSet<DS_BaiHoc>();
             KhoCauHois = new HashSet<KhoCauHoi>();
         }
@@ -26,6 +27,9 @@ namespace PhamTrongTruong_5951071113.Models
         public bool? Xoa { get; set; }
 
         public virtual Chuong_Hoc Chuong_Hoc { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DanhGia> DanhGias { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DS_BaiHoc> DS_BaiHoc { get; set; }

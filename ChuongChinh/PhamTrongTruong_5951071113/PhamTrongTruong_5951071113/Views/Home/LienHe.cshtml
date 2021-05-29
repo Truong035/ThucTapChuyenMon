@@ -8,6 +8,36 @@
     <script>
         var item = $('#lienhe');
         item.addClass("active");
+        $('#btnnhan').click(function () {
+            var name = $('#txtname').val();
+            var tieude = $('#txttieude').val();
+            var noidung = $('#txtnoidung').val();
+
+            if (name.length == 0) {
+                alert("Vui lòng nhập tên")
+            }
+            else if (tieude.length == 0) {
+                alert("Vui lòng nhập tiêu đề")
+            }
+            else if (noidung.length == 0) {
+                alert("Vui lòng nhập tiêu đề")
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/Guimail',
+                    data: { nd: noidung, tieude: tieude, name: name},
+                    success: function (data) {
+                        $('#txtname').val("");
+                        $('#txttieude').val("");
+                        $('#txtnoidung').val("");
+                    }
+                });
+            }
+
+
+
+        });
 
     </script>
 
@@ -25,26 +55,18 @@
                                 <div class="col-md-9">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">Họ Và Tên</label>
-                                        <input type="text" class="form-control col-md-12">
+                                        <input type="text" id="txtname" class="form-control col-md-12">
                                     </div>
                                 </div>
 
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <div class="form-group">
-                                        <label class="bmd-label-floating">Email</label>
-                                        <input type="email" class="form-control col-md-12">
-                                    </div>
-                                </div>
-
-                            </div>
+   
                             <div class="row">
                                 <div class="col-md-9">
                                     <div class="form-group">
                                         <label class="bmd-label-floating">Tiêu Đề</label>
-                                        <input type="text" class="form-control col-md-12">
+                                        <input type="text" id="txttieude" class="form-control col-md-12">
                                     </div>
                                 </div>
 
@@ -55,12 +77,12 @@
                                         <label>Nội Dung</label>
                                         <div class="form-group">
                                    
-                                            <textarea class="form-control form-control col-md-12" rows="5"></textarea>
+                                            <textarea class="form-control form-control col-md-12" id="txtnoidung" rows="5"></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-secondary">Gửi</button>
+                            <button type="submit" class="btn btn-secondary" id="btnnhan">Gửi</button>
                             <div class="clearfix"></div>
                         </form>
                     </div>

@@ -62,6 +62,12 @@
       <HintPath>..\packages\Microsoft.Owin.4.2.0\lib\net45\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Spire.Doc, Version=9.4.18.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <HintPath>..\packages\Spire.Doc.9.4.18\lib\net40\Spire.Doc.dll</HintPath>
     </Reference>
@@ -82,6 +88,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -193,10 +200,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LoginController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -204,8 +212,10 @@
     <Compile Include="Models\Bai_Hoc.cs" />
     <Compile Include="Models\Cau_Hoi.cs" />
     <Compile Include="Models\Chuong_Hoc.cs" />
+    <Compile Include="Models\DanhGia.cs" />
     <Compile Include="Models\Dao\DanhGia.cs" />
     <Compile Include="Models\Dao\Danh_Gia.cs" />
+    <Compile Include="Models\Dao\Gmail.cs" />
     <Compile Include="Models\Dao\NoiDungThi.cs" />
     <Compile Include="Models\Dao\TaoDeDao.cs" />
     <Compile Include="Models\Da_LuaChon.cs" />
@@ -224,7 +234,13 @@
     <Content Include="assets\css\material-dashboard-rtl.css" />
     <Content Include="assets\css\material-dashboard.css" />
     <Content Include="assets\css\material-dashboard.min.css" />
+    <Content Include="assets\css\sb-admin-2.css" />
+    <Content Include="assets\css\sb-admin-2.min.css" />
     <Content Include="assets\css\style.css" />
+    <Content Include="assets\css\StyleSheet1.css" />
+    <Content Include="assets\demo\chart-area-demo.js" />
+    <Content Include="assets\demo\chart-bar-demo.js" />
+    <Content Include="assets\demo\chart-pie-demo.js" />
     <Content Include="assets\demo\datatables-demo.js" />
     <Content Include="assets\demo\demo.css" />
     <Content Include="assets\demo\demo.js" />
@@ -249,6 +265,7 @@
     <Content Include="assets\js\core\bootstrap-material-design.min.js" />
     <Content Include="assets\js\core\jquery.min.js" />
     <Content Include="assets\js\core\popper.min.js" />
+    <Content Include="assets\js\JavaScript.js" />
     <Content Include="assets\js\main.js" />
     <Content Include="assets\js\material-dashboard.js" />
     <Content Include="assets\js\material-dashboard.min.js" />
@@ -257,7 +274,8 @@
     <Content Include="assets\js\plugins\bootstrap-notify.js" />
     <Content Include="assets\js\plugins\bootstrap-selectpicker.js" />
     <Content Include="assets\js\plugins\bootstrap-tagsinput.js" />
-    <Content Include="assets\js\plugins\chartis1.min.js" />
+    <Content Include="assets\js\plugins\chartist2.min.js" />
+    <Content Include="assets\js\plugins\chartist1.min.js" />
     <Content Include="assets\js\plugins\fullcalendar.min.js" />
     <Content Include="assets\js\plugins\jasny-bootstrap.min.js" />
     <Content Include="assets\js\plugins\jquery-jvectormap.js" />
@@ -269,10 +287,61 @@
     <Content Include="assets\js\plugins\nouislider.min.js" />
     <Content Include="assets\js\plugins\perfect-scrollbar.jquery.min.js" />
     <Content Include="assets\js\plugins\sweetalert2.js" />
+    <Content Include="assets\js\scripts.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\styles.css" />
+    <Content Include="Content\Img\Anh143623.png" />
+    <Content Include="Content\Img\Anh164143.png" />
+    <Content Include="Content\Img\Anh179496.png" />
+    <Content Include="Content\Img\Anh189058.png" />
+    <Content Include="Content\Img\Anh189738.png" />
+    <Content Include="Content\Img\Anh193867.png" />
+    <Content Include="Content\Img\Anh208415.png" />
+    <Content Include="Content\Img\Anh223259.png" />
+    <Content Include="Content\Img\Anh261424.png" />
+    <Content Include="Content\Img\Anh278081.png" />
+    <Content Include="Content\Img\Anh331239.png" />
+    <Content Include="Content\Img\Anh352679.png" />
+    <Content Include="Content\Img\Anh353358.png" />
+    <Content Include="Content\Img\Anh408718.png" />
+    <Content Include="Content\Img\Anh417377.png" />
+    <Content Include="Content\Img\Anh494859.png" />
+    <Content Include="Content\Img\Anh502428.png" />
+    <Content Include="Content\Img\Anh566914.png" />
+    <Content Include="Content\Img\Anh579661.png" />
+    <Content Include="Content\Img\Anh587626.png" />
+    <Content Include="Content\Img\Anh607893.png" />
+    <Content Include="Content\Img\Anh620229.png" />
+    <Content Include="Content\Img\Anh628229.png" />
+    <Content Include="Content\Img\Anh636886.png" />
+    <Content Include="Content\Img\Anh64215.png" />
+    <Content Include="Content\Img\Anh64837.png" />
+    <Content Include="Content\Img\Anh664368.png" />
+    <Content Include="Content\Img\Anh680564.png" />
+    <Content Include="Content\Img\Anh716060.png" />
+    <Content Include="Content\Img\Anh718062.png" />
+    <Content Include="Content\Img\Anh746574.png" />
+    <Content Include="Content\Img\Anh751246.png" />
+    <Content Include="Content\Img\Anh757823.png" />
+    <Content Include="Content\Img\Anh75787.png" />
+    <Content Include="Content\Img\Anh764111.png" />
+    <Content Include="Content\Img\Anh769778.png" />
+    <Content Include="Content\Img\Anh7721.png" />
+    <Content Include="Content\Img\Anh772565.png" />
+    <Content Include="Content\Img\Anh805338.png" />
+    <Content Include="Content\Img\Anh833921.png" />
+    <Content Include="Content\Img\Anh918751.png" />
+    <Content Include="Content\Img\Anh925719.png" />
+    <Content Include="Content\Img\Anh936410.png" />
+    <Content Include="Content\Img\Anh938466.png" />
+    <Content Include="Content\Img\Anh967749.png" />
+    <Content Include="Content\Img\Anh993600.png" />
+    <Content Include="Content\Img\Anh997541.png" />
+    <Content Include="Content\js\scripts.js" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\material-icon\css\material-design-iconic-font.css" />
@@ -479,6 +548,7 @@
     <Content Include="assets\scss\material-dashboard\_tooltip.scss" />
     <Content Include="assets\scss\material-dashboard\_type.scss" />
     <Content Include="assets\scss\material-dashboard\_variables.scss" />
+    <Content Include="Areas\Admin\Views\Login\Index.cshtml" />
     <None Include="Dockerfile" />
     <None Include=".dockerignore">
       <DependentUpon>Dockerfile</DependentUpon>
@@ -562,6 +632,10 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="vendor\chart.js\Chart.bundle.js" />
+    <Content Include="vendor\chart.js\Chart.bundle.min.js" />
+    <Content Include="vendor\chart.js\Chart.js" />
+    <Content Include="vendor\chart.js\Chart.min.js" />
     <Content Include="vendor\jquery\jquery-ui.min.js" />
     <Content Include="vendor\jquery\jquery.min.js" />
     <Content Include="Web.config" />
@@ -578,23 +652,9 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\SendCode.cshtml" />
-    <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="scss\common\extend.scss" />
     <Content Include="scss\common\fonts.scss" />
     <Content Include="scss\common\global.scss" />
@@ -612,6 +672,9 @@
     <Content Include="Views\Home\QuanLy.cshtml" />
     <Content Include="Views\Home\Thi.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Account\DoiMatKhau.cshtml" />
+    <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Views\Account\DoiMatKhau1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

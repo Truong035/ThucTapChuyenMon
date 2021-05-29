@@ -42,13 +42,14 @@ namespace PhamTrongTruong_5951071113.Models.Dao
             DanhGia danhGia = new DanhGia();
             //danhGia.DanhGiaMucDo = new List<SoLuongChuong>();
             //danhGia.ketQuaThi = new KetQuaThi();
+            exam.ketQuaThi.DanhGias = new List<Models.DanhGia > ();
             for (int i = 0; i < exam.DanhGiaMucDo.Count; i++)
             {
                     db = new TracNghiemDB();
-                double a1 = (double)(kho_CauHoi1.Where(X => X.MucDọ==1 && X.Ma_Bai==exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count);
-                double a2 = (double)(kho_CauHoi1.Where(X => X.MucDọ==2 && X.Ma_Bai==exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count);
-                double a3 = (double)(kho_CauHoi1.Where(X => X.MucDọ==3 && X.Ma_Bai==exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count);
-                double a4 = (double)(kho_CauHoi1.Where(X => X.MucDọ==4 && X.Ma_Bai==exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count);
+                double a1 = (double)(kho_CauHoi1.Where(X => X.MucDọ==1 && X.Ma_Bai==exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count)*(double)1;
+                double a2 = (double)(kho_CauHoi1.Where(X => X.MucDọ==2 && X.Ma_Bai==exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count) * (double)2 ;
+                double a3 = (double)(kho_CauHoi1.Where(X => X.MucDọ==3 && X.Ma_Bai==exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count) * (double)3;
+                double a4 = (double)(kho_CauHoi1.Where(X => X.MucDọ==4 && X.Ma_Bai==exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count) * (double)4;
            
 
                 
@@ -58,10 +59,10 @@ namespace PhamTrongTruong_5951071113.Models.Dao
                 exam.DanhGiaMucDo[i].vandungcao = (kho_CauHoi1.Where(X => X.MucDọ == 4 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count) + "/" + (kho_CauHoi2.Where(X => X.MucDọ == 4 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count);
 
 
-                double b1 = (double)(kho_CauHoi2.Where(X => X.MucDọ == 1 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count);
-                double b2 = (double)(kho_CauHoi2.Where(X => X.MucDọ == 2 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count);
-                double b3 = (double)(kho_CauHoi2.Where(X => X.MucDọ == 3 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count);
-                double b4 = (double)(kho_CauHoi2.Where(X => X.MucDọ == 4 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count);
+                double b1 = (double)(kho_CauHoi2.Where(X => X.MucDọ == 1 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count) * (double)1 ;
+                double b2 = (double)(kho_CauHoi2.Where(X => X.MucDọ == 2 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count) * (double)2;
+                double b3 = (double)(kho_CauHoi2.Where(X => X.MucDọ == 3 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count) * (double)3;
+                double b4 = (double)(kho_CauHoi2.Where(X => X.MucDọ == 4 && X.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count) * (double)4 ;
 
 
                 double DG = 0;
@@ -71,7 +72,11 @@ namespace PhamTrongTruong_5951071113.Models.Dao
                 double tile = 0;
                
                     tile = (double)((double)(kho_CauHoi1.Where(x=>x.Ma_Bai== exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count)/(double)(kho_CauHoi2.Where(x => x.Ma_Bai == exam.DanhGiaMucDo[i].noidung.Ma_Bai).ToList().Count)* (double)100);
-
+               
+                Models.DanhGia danhGia1 = new  Models.DanhGia();
+                danhGia1.Diem = DG;
+                danhGia1.Ma_Bai = exam.DanhGiaMucDo[i].noidung.Ma_Bai;
+                exam.ketQuaThi.DanhGias.Add(danhGia1);
                tile = Math.Round(tile, 3);
                 exam.DanhGiaMucDo[i].danh_Gia = new Danh_Gia();
                 exam.DanhGiaMucDo[i].danh_Gia.NhanXet = new string[100];
@@ -101,11 +106,14 @@ namespace PhamTrongTruong_5951071113.Models.Dao
                    exam.DanhGiaMucDo[i].danh_Gia.DanhGia= 4;
                     exam.DanhGiaMucDo[i].danh_Gia.NhanXet[1] = "Kiến thức của bạn ở phần bạn rất làm rất tốt. Bạn cố gắng duy trì phong độ nhé";
                 }
+                
 
             }
 
-            double Hediem = (double)((double)10 / (double)(exam.ketQuaThi.Cau_Hoi.Count));
             db = new TracNghiemDB();
+        
+            double Hediem = (double)((double)10 / (double)(exam.ketQuaThi.Cau_Hoi.Count));
+           
             exam.ketQuaThi.DiêmSo = Math.Round((double)((double)(socauDung) * (double)(Hediem)), 3);
             if (a == 1)
             {
@@ -117,6 +125,18 @@ namespace PhamTrongTruong_5951071113.Models.Dao
                 db.DeThis.Add(deThi);
                 db.SaveChanges();
                 deThi.Ma_De = db.DeThis.Where(x => x.MaTK.Equals(deThi.MaTK)).ToList().Last().Ma_De;
+
+                foreach (var item in exam.ketQuaThi.DanhGias)
+                {
+                    Models.DanhGia danhGia1 = new Models.DanhGia();
+                    danhGia1.Diem = item.Diem;
+                    danhGia1.Ma_De = deThi.Ma_De;
+                    danhGia1.Ma_Bai = item.Ma_Bai;
+                    db.DanhGias.Add(danhGia1);
+                    db.SaveChanges();
+
+                }
+
                 foreach (var item in exam.ketQuaThi.Cau_Hoi)
                 {
                     Cau_Hoi cau_Hoi = new Cau_Hoi();

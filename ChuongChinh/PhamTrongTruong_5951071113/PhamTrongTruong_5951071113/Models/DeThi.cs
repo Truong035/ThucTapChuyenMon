@@ -14,6 +14,7 @@ namespace PhamTrongTruong_5951071113.Models
         {
             Cau_Hoi = new HashSet<Cau_Hoi>();
             Da_LuaChon = new HashSet<Da_LuaChon>();
+            DanhGias = new HashSet<DanhGia>();
         }
 
         [Key]
@@ -24,7 +25,7 @@ namespace PhamTrongTruong_5951071113.Models
 
         public int? ThoiGianThi { get; set; }
 
-        public DateTime? NgayThi { get; set; }
+        public DateTime NgayThi { get; set; }
 
         public double? DiêmSo { get; set; }
 
@@ -35,5 +36,10 @@ namespace PhamTrongTruong_5951071113.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Da_LuaChon> Da_LuaChon { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DanhGia> DanhGias { get; set; }
+
+        public virtual TaiKhoan TaiKhoan { get; set; }
     }
 }

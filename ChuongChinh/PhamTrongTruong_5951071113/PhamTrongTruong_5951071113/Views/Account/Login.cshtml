@@ -1,7 +1,6 @@
 ﻿@{
     Layout = null;
 }
-
 @model PhamTrongTruong_5951071113.Models.TaiKhoan
 @using PhamTrongTruong_5951071113.Models
 <!DOCTYPE html>
@@ -26,7 +25,12 @@
                     <figure>
                         <img src="~/assets/img/signin-image.jpg" />
                     </figure>
-                    <a href="/Account/Register" class="signup-image-link">Tạo Tài Khoản</a>
+                  
+                        <ul class="socials">
+                            <li style="margin-right:-10px" ><a href="/Account/Register" class="signup-image-link">Tạo Tài Khoản|</a></li> 
+                            <li> <a href="/Account/ForgotPassword" class="signup-image-link">|Quên mật khẩu</a></li>
+                        </ul>
+                    
                 </div>
 
                 <div class="signin-form">
