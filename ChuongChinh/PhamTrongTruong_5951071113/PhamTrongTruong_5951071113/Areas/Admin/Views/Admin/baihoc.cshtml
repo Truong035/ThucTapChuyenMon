@@ -1,4 +1,5 @@
-﻿@model List<PhamTrongTruong_5951071113.Models.Bai_Hoc>
+﻿@model PagedList.IPagedList<PhamTrongTruong_5951071113.Models.Bai_Hoc>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "baihoc";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -11,87 +12,130 @@
             $(document).on('click', 'button[name=btnSua]', function () {
 
                 @*Bode = $(this).closest('tr');
-                let ma = $(this).closest('tr').find("td:eq(0)").text().trim();
-                let ten = $(this).closest('tr').find("td:eq(1)").text();
-
-                let tg = $(this).closest('tr').find("td:eq(4)").text();
+                
+              
                 $('#MaDe').val(ma.trim());
                 $('#NoiDung').val(ten.trim());
                 $('#txtTG').val(tg.trim());*@
-                $('#modalSinhVien').modal();
+                  let ten = $(this).closest('tr').find("td:eq(1)").text();
+
+                let machuong = $(this).closest('tr').find("td:eq(2)").text();
+                let ma = $(this).closest('tr').find("td:eq(0)").text().trim();
+                $('#tenbai').val(ten.trim());
+                $('#Ma_Chuong').val(ma.trim())
+                $('#Mabai').val(ma)
+                $('#modalBaihoc').slideDown();
 
 
             })
 
             $(document).on('click', 'button[name=Delete]', function () {
-
-                @*Bode = $(this).closest('tr');
                 let ma = $(this).closest('tr').find("td:eq(0)").text().trim();
-                let ten = $(this).closest('tr').find("td:eq(1)").text();
-
-                let tg = $(this).closest('tr').find("td:eq(4)").text();
-                $('#MaDe').val(ma.trim());
-                $('#NoiDung').val(ten.trim());
-                $('#txtTG').val(tg.trim());*@
-
-                $('#modalConfirm').modal();
+                
+                $('#Mabai').val(ma)
+              
+                $('#modalConfirm').slideDown();
 
             });
             $('#btnYes').click(function () {
 
-                let made = $('#MaDe').val();;
-                let nd = $('#NoiDung').val();
-                let tg = $('#txtTG').val();
+                let mabai = $('#Mabai').val();;
+                
 
-                $('#modalSinhVien').modal('hide');
+                $('#modalConfirm').modal('hide');
                 $.ajax({
-                    url: '/Home/UpdateDethi', type: 'post',
+                    url: '/Admin/Admin/Deletebai', type: 'post',
                     data: {
-                        made: made,
-                        nd: nd,
-                        tg: tg,
-                        xoa: false,
+                        Mabai: mabai,
+                      
                     },
                     success: function (data) {
-                        Loaddata(data);
+                        if (data.code == 200) {
+                            alert(data.msg);
+                            window.location = "/Admin/Admin/baihoc";
+                        } else {
+                            alert(data.msg);
+
+                        }
                     }
                 });
 
             });
 
-            function Loaddata(data) {
-
-                $('#bodeid').empty();
-                $('#modalSinhVien').hide();
-                $('#modalConfirm').modal('hide');
-                $.each(data.Bode, function (k, v) {
-                    let = '<tr>'
-
-                    let += '<td>' + v.MaDe + '</td>';
-                    let += '<td>' + v.Ten + '</td>';
-                    let += '<td>' + v.TenMon + '</td>';
-                    let += '<td>' + v.SoCau + '</td>';
-                    let += '<td>' + v.ThoiGian + '</td>';
-
-                    let += '<td>' + v.Giaovien + '</td>';
+            $('#addbai').click(function () {
 
 
-
-                    let += '<td><a href="Admin/Admin/Dscauhoi/' + v.MaDe + '?tenmon=' + v.TenMon + '" class="btn btn-xs btn-primary"><span><i class="far fa-eye"></i></span></a>';
-                    let += '<button name="btnSua" class="btn btn-xs btn-success"><i class="far fa-edit" aria-hidden="true" style="color:white"></i></button>';
-
-                    let += '<button name="Delete" class="btn btn-xs btn-danger"><i class="far fa-trash-alt" aria-hidden="true"></i></button></td>';
+                $('#modalBaihoc').slideDown();
 
 
+            });
+            $('.btnDong').click(function () {
+                $('#Mabai').val("");
+                $('#tenbai').val("");
+                $('#Ma_Chuong').val("");
+                
+                $('#modalBaihoc').hide();
+                $('#modalConfirm').hide();
 
-                    let += '</tr>'
-                    $('#bodeid').append(let);
 
-                });
+            });
+            $('#btnSubmit').click(function () {
+                let Mabai = $('#Mabai').val().trim();
+                let tenbai = $('#tenbai').val().trim();
+                
+                let Ma_Chuong = $('#Ma_Chuong').val();
 
+                if (tenbai.length == 0) {
+                    alert("Vui lòng nhập tên bài");
+                    return;
+                } else if (Ma_Chuong.length == 0) {
+                    alert("Mời chọn chương học");
+                } else {
 
+                    if (Mabai.length == 0) {
+                        //Add
+                        $.ajax({
+                            url: '/Admin/Admin/AddBai', type: 'post',
+                            data: {
+                                Ma_Chuong: Ma_Chuong,
+                                tenBai: tenbai,  
+                            },
+                            success: function (data) {
+                                if (data.code == 200) {
+                                    alert(data.msg);
+                                    window.location = "/Admin/Admin/baihoc";
+                                } else {
+                                    alert(data.msg);
 
-            }
+                                }
+                            }
+                        });
+                    } else {
+                        //Update
+                        $.ajax({
+                            url: '/Admin/Admin/UpdateBai', type: 'post',
+                            data: {
+                                Ma_Chuong: Ma_Chuong,
+                                tenBai: tenbai,
+                                Mabai: Mabai,
+                            },
+                            success: function (data) {
+                                if (data.code == 200) {
+                                    alert(data.msg);
+                                    window.location = "/Admin/Admin/baihoc";
+                                    
+                                } else {
+                                    alert.data(msg);
+                                }
+                            }
+                        });
+                    }
+                }
+
+               
+            });
+
+           
 
         })
 
@@ -100,10 +144,10 @@
 }
 
 
-<div class="modal" tabindex="-1" role="dialog" id="modalConfirm">
-    <div class="modal-dialog" role="document">
+<div class="modal" tabindex="-1" role="dialog" id="modalConfirm"  style="background-color: rgba(0, 0, 0, 0.6)">
+    <div class="modal-dialog" role="document" style="margin-top: 5%;">
         <div class="modal-content">
-            <div class="modal-header bg-dark">
+            <div class="modal-header bg-info">
                 <h5 class="modal-title">CẢNH BÁO</h5>
 
             </div>
@@ -113,35 +157,45 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="btnYes">Xác nhận</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnDong">Đóng</button>
+                <button type="button" class=" btnDong btn btn-secondary" >Đóng</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog" id="modalSinhVien">
-    <div class="modal-dialog" role="document">
+<div class="modal" tabindex="-2" role="dialog" id="modalBaihoc" style=" background-color: rgba(0, 0, 0, 0.6)">
+    <div class="modal-dialog" role="document" style="margin-top: 5%;">
         <div class="modal-content">
-            <div class="modal-header bg-dark" style="color:white">
+            <div class="modal-header bg-info" style="color:white">
                 <h5 class="modal-title">THÔNG TIN ĐỀ THI</h5>
             </div>
             <div class="modal-body">
-                <p>
+                
+                    
                     <div class="form-group">
                         <label>Tên Bài </label>
-                        <input type="text" class="form-control" id="NoiDung">
-               
+                        <input type="text" class="form-control" id="tenbai">
+                     
+                        <input type="text" hidden id="Mabai">
                     </div>
-                </p>
+                    <div class="form-group">
+                        <select id="Ma_Chuong" class="form-control">
+                            <option value=""> Chọn chương học  </option>
+                            @foreach (var item in (List<PhamTrongTruong_5951071113.Models.Chuong_Hoc>)ViewBag.lstChuong)
+                            {
+                                <option value="@item.Ma_Chuong"> @item.Ten_Chuong </option>
+                            }
+                        </select>
+                    </div>
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" id="btnSubmit">Xác nhận</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnDong">Đóng</button>
+                <button  class="btn btn-secondary btnDong" >Đóng</button>
             </div>
         </div>
     </div>
 </div>
-
 <div class="container-fluid ">
 
     <div class="card mb-4">
@@ -202,6 +256,16 @@
 
                                 </tbody>
                             </table>
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+
+                                </div>
+                                <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+                                    Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                                </div>
+                            </div>
+
+                            @Html.PagedListPager(Model, page => Url.Action("baihoc", new { page }))
 
                         </div>
 

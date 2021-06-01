@@ -28,7 +28,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                 if (TK != null)
                 {
 
-                    Session.Add("user", TK);
+                    Session.Add("Admin", TK);
 
                     return RedirectToAction("Index", "/Admin/Index");
 

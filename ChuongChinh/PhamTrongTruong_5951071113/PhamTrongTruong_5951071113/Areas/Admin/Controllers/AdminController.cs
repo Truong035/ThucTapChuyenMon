@@ -22,8 +22,9 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
         // GET: Admin/Admin
         public ActionResult Index(int ? page)
         {
+
           
-            // 2. Nếu page = null thì đặt lại là 1.
+           ; // 2. Nếu page = null thì đặt lại là 1.
             if (page == null) page = 1;
 
             // 3. Tạo truy vấn, lưu ý phải sắp xếp theo trường nào đó, ví dụ OrderBy
@@ -37,25 +38,211 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
             // 4.1 Toán tử ?? trong C# mô tả nếu page khác null thì lấy giá trị page, còn
             // nếu page = null thì lấy giá trị 1 cho biến pageNumber.
             int pageNumber = (page ?? 1);
-
+            ViewBag.listCH = new TracNghiemDB().KhoCauHois.Where(x => x.Xoa == true).ToList();
             // 5. Trả về các Link được phân trang theo kích thước và số trang.
             return View(links.ToPagedList(pageNumber, pageSize));
         
 
         }
-        
-        public ActionResult baihoc()
+        public JsonResult AddBai(int? Ma_Chuong,string tenBai)
         {
-            return View(new TracNghiemDB().Bai_Hoc.Where(x=>x.Xoa==true).ToList());
+            try {
+
+                TracNghiemDB db = new TracNghiemDB();
+                Bai_Hoc bai_Hoc = new Bai_Hoc();
+                bai_Hoc.Ma_Chuong = Ma_Chuong;
+                bai_Hoc.Tên_Bai = tenBai;
+                bai_Hoc.Xoa = true;
+                db.Bai_Hoc.Add(bai_Hoc);
+                db.SaveChanges();
+                return Json(new { code = 200, msg = "Thêm mới thành công" }, JsonRequestBehavior.AllowGet);
+            } catch(Exception e) {
+                return Json(new { code = 500, msg = "Không thành công" + e.Message }, JsonRequestBehavior.AllowGet);
+            
+
         }
+            
+
+        }
+        public JsonResult Deletebai( int? Mabai)
+        {
+            try
+            {
+
+                TracNghiemDB db = new TracNghiemDB();
+                Bai_Hoc bai_Hoc = db.Bai_Hoc.Find(Mabai);
+              
+                bai_Hoc.Xoa = false;
+                db.SaveChanges();
+                return Json(new { code = 200, msg = "Xóa thành công" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { code = 500, msg = "Xóa không thành công" + e.Message }, JsonRequestBehavior.AllowGet);
+
+
+            }
+
+
+        }
+        public JsonResult UpdateBai(int? Ma_Chuong, string tenBai,int? Mabai)
+        {
+            try
+            {
+
+                TracNghiemDB db = new TracNghiemDB();
+                Bai_Hoc bai_Hoc =db.Bai_Hoc.Find(Mabai);
+                bai_Hoc.Ma_Chuong = Ma_Chuong;
+                bai_Hoc.Tên_Bai = tenBai;
+                bai_Hoc.Xoa = true;
+                db.SaveChanges();
+                return Json(new { code = 200, msg = "Cập nhật thành công" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(new { code = 500, msg = "Không thành công" + e.Message }, JsonRequestBehavior.AllowGet);
+
+
+            }
+
+
+        }
+        public ActionResult baihoc(int? page)
+        {
+            // 2. Nếu page = null thì đặt lại là 1.
+            if (page == null) page = 1;
+
+            // 3. Tạo truy vấn, lưu ý phải sắp xếp theo trường nào đó, ví dụ OrderBy
+            // theo LinkID mới có thể phân trang.
+            var links = new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true).OrderBy(x => x.Ma_Bai);
+
+            // 4. Tạo kích thước trang (pageSize) hay là số Link hiển thị trên 1 trang
+            int pageSize = 10;
+
+            // 4.1 Toán tử ?? trong C# mô tả nếu page khác null thì lấy giá trị page, còn
+            // nếu page = null thì lấy giá trị 1 cho biến pageNumber.
+            int pageNumber = (page ?? 1);
+
+            List<Chuong_Hoc> ltsChuong = new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa ==true).ToList();
+            ViewBag.lstChuong = ltsChuong;
+            // 5. Trả về các Link được phân trang theo kích thước và số trang.
+            return View(links.ToPagedList(pageNumber, pageSize));
+           
+        }
+
+
+
         public ActionResult QuanLyTaiKhoan()
         {
             return View(new TracNghiemDB().TaiKhoans.Where(x=>x.Quyen==false && x.TrangThai==true).ToList());
         }
-        public ActionResult Dscauhoi(long id)
+        public JsonResult LoadCH(int? MaBai)
+        {
+            var CH = from c in new TracNghiemDB().KhoCauHois.Where(x => x.Ma_Bai==MaBai && x.Xoa==true).ToList()
+                     select new
+                     {
+                          c.Ma_CH,
+                         c.NoiDung,
+                         c.HinhAnh,
+                         c.MucDọ,
+                         D_AN = from D in c.D_An
+                                select new
+                                {
+                                    D.Ma_Dan,
+                                    D.NoiDung,
+                                    D.HinhAnh,
+                                    D.TrangThai,
+
+                                }
+
+
+                     };
+
+            return Json(new {CH }, JsonRequestBehavior.AllowGet);
+
+        }
+        public JsonResult UpdateCH(string listCH)
+        {
+            try{
+                TracNghiemDB db = new TracNghiemDB();
+                var kho = new JavaScriptSerializer().Deserialize<List<KhoCauHoi>>(listCH);
+                var item = kho[0];
+                if (item.NoiDung.Contains("$c$4"))
+                {
+                    item.NoiDung = item.NoiDung.Substring(4);
+                    item.MucDọ = 4;
+                }
+                else if (item.NoiDung.Contains("$c$3"))
+                {
+                    item.NoiDung = item.NoiDung.Substring(4);
+                    item.MucDọ = 3;
+                }
+                else if (item.NoiDung.Contains("$c$2"))
+                {
+                    item.NoiDung = item.NoiDung.Substring(4);
+                    item.MucDọ = 2;
+                }
+                else
+                {
+                    item.NoiDung = item.NoiDung.Substring(4);
+                    item.MucDọ = 1;
+                }
+                var cauhoi = db.KhoCauHois.Find(item.Ma_CH);
+                cauhoi.NoiDung = item.NoiDung;
+                cauhoi.MucDọ = item.MucDọ;
+                cauhoi.HinhAnh = item.HinhAnh;
+                db.SaveChanges();
+                foreach (var item1 in item.D_An)
+                {
+                    D_An d_An = new D_An();
+                    d_An = db.D_An.Find(item1.Ma_Dan);
+                   
+                    if (item1.NoiDung.Contains("$*$"))
+                    {
+                        d_An.NoiDung = item1.NoiDung.Substring(3);
+                        d_An.TrangThai = true;
+                    }
+                    else
+                    {
+                        d_An.NoiDung = item1.NoiDung;
+                        d_An.TrangThai = false;
+                    }
+                    d_An.HinhAnh = item1.HinhAnh;
+
+                    db.SaveChanges();
+                }
+                
+            }
+            catch
+            {
+                return Json(new {statust="Update thất bại........!"}, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { statust = "Cập nhật thành công---------" }, JsonRequestBehavior.AllowGet);
+
+
+
+        }
+
+        public ActionResult Dscauhoi(long id,int? page)
         {
             Session["mabai"] = id;
-            return View(new TracNghiemDB().KhoCauHois.Where(x=>x.Ma_Bai==id && x.Xoa==true));
+            if (page == null) page = 1;
+
+            // 3. Tạo truy vấn, lưu ý phải sắp xếp theo trường nào đó, ví dụ OrderBy
+            // theo LinkID mới có thể phân trang.
+            var links = new TracNghiemDB().KhoCauHois.Where(x => x.Xoa== true).OrderBy(x => x.MucDọ);
+
+            // 4. Tạo kích thước trang (pageSize) hay là số Link hiển thị trên 1 trang
+            int pageSize = 10;
+
+            // 4.1 Toán tử ?? trong C# mô tả nếu page khác null thì lấy giá trị page, còn
+            // nếu page = null thì lấy giá trị 1 cho biến pageNumber.
+            int pageNumber = (page ?? 1);
+
+            
+            // 5. Trả về các Link được phân trang theo kích thước và số trang.
+            return View(links.ToPagedList(pageNumber, pageSize));            
         }
         public ActionResult Taocauhoi()
         {
@@ -177,6 +364,34 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
             catch { }
             path = "/Content/" + file.FileName;
             return Json(new { path },JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult thongke()
+        {
+            DateTime date = DateTime.Now.AddDays(-7);
+            string[] ngay = new string[7];
+            int[] arr = new int[7];
+            for (int i = 1; i < 8; i++)
+            {
+                List<DeThi> deThis = new List<DeThi>();
+                List<DeThi> deThis1 = new TracNghiemDB().DeThis.Where(x => x.NgayThi.Day == date.Day).ToList();
+                foreach (var item in deThis1)
+                {
+                    if (!deThis.Exists(x => x.MaTK.Equals(item.MaTK)))
+                    {
+                        deThis.Add(item);
+                    }
+
+                }
+                arr[i-1] = deThis.Count;
+                ngay[i-1] = date.Day + "/" + date.Month + "/" + date.Year;
+                date = date.AddDays(1);
+            }
+
+            return Json(new
+            {
+                ngay,
+                arr
+            }, JsonRequestBehavior.AllowGet);
         }
         public JsonResult XuLyFile(HttpPostedFileBase file)
         {

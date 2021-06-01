@@ -12,7 +12,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin
         //GET: Base
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var session = (TaiKhoan)Session["user"];
+            var session = (TaiKhoan)Session["Admin"];
             if (session == null)
              {
                    filterContext.Result = new RedirectToRouteResult(
@@ -20,7 +20,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin
            }
 
 
-              Session["user"] = session;
+              Session["Admin"] = session;
 
 
             base.OnActionExecuting(filterContext);
