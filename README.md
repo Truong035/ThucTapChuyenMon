@@ -13,7 +13,7 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 -	Ngôn ngữ lập trình:  Javascript , HTML, Ajax, Jquery,JavaScript. Bootstrap
 
 ## Phần 2: Các chức năng đã hoàn thành:
-1.Đăng nhập login (Google ,Facebook) , Đăng kí (Gửi gmail)
+1.Đăng nhập login (Google ,Facebook) , Đăng kí (Gửi gmail) ,Mã hóa mật khẩu
 
 2.Học Bài 
 
@@ -31,6 +31,8 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 ## Phần 3: Các chức năng chưa hoàn thành:
 1 Liên Hệ
+
+2 Gioi thiệu phần mềm
 
 ## Hướng dẫn sử dụng:
 b1 cài csdl : trong muc CSDL
