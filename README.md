@@ -14,6 +14,7 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 ## Phần 2: Các chức năng đã hoàn thành:
 2.1 ================Người Dùng===============
+
 1.Đăng nhập login (Google ,Facebook) ()
 
 2.Học Bài tính % đúng sau mỗi lần học
@@ -29,6 +30,7 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 7.Đăng kí,Mã hóa mật khẩu ,Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
 
 2.2===============Admin=======================
+
 1 Đăng nhập login, Mã hoa mât khẩu
 
 2 Thông kê admin (Admin)
