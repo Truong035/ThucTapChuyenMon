@@ -13,26 +13,39 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 -	Ngôn ngữ lập trình:  Javascript , HTML, Ajax, Jquery,JavaScript. Bootstrap
 
 ## Phần 2: Các chức năng đã hoàn thành:
-1.Đăng nhập login (Google ,Facebook) , Đăng kí (Gửi gmail) ,Mã hóa mật khẩu
+2.1 ================Người Dùng===============
+1.Đăng nhập login (Google ,Facebook) ()
 
-2.Học Bài 
+2.Học Bài tính % đúng sau mỗi lần học
 
 3.Tao Đề Thi,trộn đề lấy theo mức độ dẽ khó trung bình 
 
-4.Upload file câu hỏi bằng excell,word ,thêm ,sửa xóa câu hỏi,
+4.Xem kêt quả đánh giá và thông kê bài thi
 
-5.Xem kêt quả đánh giá và thông kê bài thi
+5.Quản lý học tập (Xem kết quả các bài thi)
 
-6.Quản lý học tập (Xem kết quả các bài thi)
+6.Đánh giá quá trình học tập (đánh giá bằng biểu đồ)
 
-7.Dánh giá quá trình học tập (đánh giá bằng biểu đồ)
+7.Đăng kí,Mã hóa mật khẩu ,Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
 
-8 Thông kê admin
+2.2===============Admin=======================
+1 Đăng nhập login, Mã hoa mât khẩu
+
+2 Thông kê admin (Admin)
+
+3.Upload file câu hỏi bằng excell,word 
+
+4.Thêm ,sửa xóa câu hỏi,
+
+5.Thêm ,sửa xóa bài học,
+
+6 Quản lý người dùng
 
 ## Phần 3: Các chức năng chưa hoàn thành:
 1 Liên Hệ
 
 2 Gioi thiệu phần mềm
+
 
 ## Hướng dẫn sử dụng:
 b1 cài csdl : trong muc CSDL
