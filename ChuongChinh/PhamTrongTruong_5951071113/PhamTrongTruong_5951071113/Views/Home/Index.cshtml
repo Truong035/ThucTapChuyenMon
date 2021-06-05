@@ -2,11 +2,12 @@
 @{
     ViewBag.Title = "Học Bài";
     Layout = "~/Views/Shared/_Layout.cshtml";
+   var arr=(double[])ViewBag.pt;
 }
 @section scripts{
     <script>
         var item = $('#hocbai');
-        item.addClass("active");
+        item.addClass("Narlink");
 
     </script>
 
@@ -22,16 +23,16 @@
                 </div>
                 <div class="card-header">
                     <div class="stats">
-                        <label class="card-text" >@Model.ToArray()[i].Ten_Chuong</label>
+                        <label class="card-text">@Model.ToArray()[i].Ten_Chuong</label>
                     </div>
                     <div class="stats">
-                        <label class="small">Số Bài @Model.ToArray()[i].Bai_Hoc.Count</label>
+                        <label class="small">Số Bài @Model.ToArray()[i].Bai_Hoc.Where(x=>x.Xoa==true).ToList().Count</label>
                     </div>
                     <br />
-                    <div class="stats" style="border:1px solid #edeaea;border-radius:10px">
-                        <div style="background-color:aqua;width:@(i * 10)px;height:10px;border-radius:10px">
-                        </div>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: @arr[i]%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
+                  
                 </div>
                 <div class=" card-header-text text-center">
                     <a class="btn btn-facebook" href="/BaiHoc/@Model.ToArray()[i].Ma_Chuong">Học</a>

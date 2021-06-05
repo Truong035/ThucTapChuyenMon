@@ -7,16 +7,14 @@
 @section scripts{
     <script>
         var item = $('#lienhe');
-        item.addClass("active");
+        item.addClass("Narlink");
         $('#btnnhan').click(function () {
             var name = $('#txtname').val();
             var tieude = $('#txttieude').val();
             var noidung = $('#txtnoidung').val();
 
-            if (name.length == 0) {
-                alert("Vui lòng nhập tên")
-            }
-            else if (tieude.length == 0) {
+       
+            if (tieude.length == 0) {
                 alert("Vui lòng nhập tiêu đề")
             }
             else if (noidung.length == 0) {
@@ -26,7 +24,7 @@
                 $.ajax({
                     type: 'POST',
                     url: '/Home/Guimail',
-                    data: { nd: noidung, tieude: tieude, name: name},
+                    data: { nd: noidung, tieude: tieude, name: name },
                     success: function (data) {
                         $('#txtname').val("");
                         $('#txttieude').val("");

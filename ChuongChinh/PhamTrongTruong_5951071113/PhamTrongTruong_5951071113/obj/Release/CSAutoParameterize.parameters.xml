@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="DefaultConnection-Web.config Connection String" description="DefaultConnection Connection String used in web.config by the application to access the database." defaultValue="Data Source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\aspnet-PhamTrongTruong_5951071113-20210525030924.mdf;Initial Catalog=aspnet-PhamTrongTruong_5951071113-20210525030924;Integrated Security=True" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\PhamTrongTruong\\Desktop\\ThucTapChuyenMon\\ChuongChinh\\PhamTrongTruong_5951071113\\PhamTrongTruong_5951071113\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='DefaultConnection']/@connectionString" />
+  </parameter>
+  <parameter name="TracNghiemDB-Web.config Connection String" description="TracNghiemDB Connection String used in web.config by the application to access the database." defaultValue="data source=.;initial catalog=TTChuyenMon;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\PhamTrongTruong\\Desktop\\ThucTapChuyenMon\\ChuongChinh\\PhamTrongTruong_5951071113\\PhamTrongTruong_5951071113\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='TracNghiemDB']/@connectionString" />
+  </parameter>
+</parameters>

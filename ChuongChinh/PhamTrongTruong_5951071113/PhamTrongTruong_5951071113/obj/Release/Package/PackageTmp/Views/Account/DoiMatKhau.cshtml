@@ -1,0 +1,63 @@
+﻿@model  PhamTrongTruong_5951071113.Models.RegisterViewModel
+@{
+    ViewBag.Title = "DoiMatKhau";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row ">
+    <div class="col-md-8 container">
+        <div class="card">
+            <div class="card-header card-header-info">
+                <h4 class="card-title">Đổi Mật Khẩu</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("DoiMatKhau", "Account"))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Email</label>
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { type = "email", Class = "form-control col-md-12", name = "email" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                    </div>
+                      <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Name</label>
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { name = "your_name", Class = "form-control col-md-12" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">password</label>
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { type = "password", Class = "form-control col-md-12", name = "your_pass"} })
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Repeat your password</label>
+                                @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { type = "password", Class = "form-control col-md-12", name = "your_pass" } })
+                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary" id="btnnhan">Đổi</button>
+                }
+                <div class="clearfix"></div>
+
+            </div>
+            </div>
+        </div>
+
+    </div>

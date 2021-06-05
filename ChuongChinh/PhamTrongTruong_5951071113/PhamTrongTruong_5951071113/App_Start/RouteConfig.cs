@@ -22,6 +22,8 @@ namespace PhamTrongTruong_5951071113
            url: "HocBai/{id}",
            defaults: new { controller = "Home", action = "HocBai", id = UrlParameter.Optional }
        );
+
+
             routes.MapRoute(
   name: "SeachDethi",
   url: "SeachDethi/{id}",
@@ -31,7 +33,7 @@ namespace PhamTrongTruong_5951071113
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
+                defaults: new { controller = "Account", action = "GioiThieu", id = UrlParameter.Optional }
             );
         }
     }

@@ -224,6 +224,7 @@
     <Compile Include="Models\D_An.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\KhoCauHoi.cs" />
+    <Compile Include="Models\LienHe.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\TaiKhoan.cs" />
     <Compile Include="Models\TracNghiemDB.cs" />
@@ -249,11 +250,10 @@
     <Content Include="assets\img\city-profile.jpg" />
     <Content Include="assets\img\city.jpg" />
     <Content Include="assets\img\cover.jpg" />
-    <Content Include="assets\img\faces\avatar.jpg" />
-    <Content Include="assets\img\faces\card-profile1-square.jpg" />
-    <Content Include="assets\img\faces\card-profile2-square.jpg" />
-    <Content Include="assets\img\faces\marc.jpg" />
+    <Content Include="assets\img\du-hoc-thuy-si-dieu-dac-biet-1.jpg" />
+    <Content Include="assets\img\error-404-monochrome.svg" />
     <Content Include="assets\img\favicon.png" />
+    <Content Include="assets\img\hinh-anh-thac-nuoc-dep-14-1.jpg" />
     <Content Include="assets\img\mask.png" />
     <Content Include="assets\img\new_logo.png" />
     <Content Include="assets\img\sidebar-1.jpg" />
@@ -263,6 +263,7 @@
     <Content Include="assets\img\signin-image.jpg" />
     <Content Include="assets\img\signup-image.jpg" />
     <Content Include="assets\img\undraw_profile.svg" />
+    <Content Include="assets\img\undraw_profile_2.svg" />
     <Content Include="assets\js\core\bootstrap-material-design.min.js" />
     <Content Include="assets\js\core\jquery.min.js" />
     <Content Include="assets\js\core\popper.min.js" />
@@ -294,6 +295,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\css\styles.css" />
+    <Content Include="Content\Img\5.gif" />
     <Content Include="Content\Img\Anh143623.png" />
     <Content Include="Content\Img\Anh164143.png" />
     <Content Include="Content\Img\Anh179496.png" />
@@ -368,12 +370,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Content\bai1nhanbiet.docx" />
-    <Content Include="Content\bai1Vandungcao.docx" />
-    <Content Include="Content\bai2.2.docx" />
-    <Content Include="Content\bai2.docx" />
-    <Content Include="Content\Bai3.docx" />
-    <Content Include="Content\Bai4.docx" />
     <Content Include="Areas\Admin\Views\Admin\baihoc.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\Dscauhoi.cshtml" />
     <Content Include="Areas\Admin\Views\Admin\Index.cshtml" />
@@ -550,6 +546,8 @@
     <Content Include="assets\scss\material-dashboard\_type.scss" />
     <Content Include="assets\scss\material-dashboard\_variables.scss" />
     <Content Include="Areas\Admin\Views\Login\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Login\DoiMatKhau.cshtml" />
+    <Content Include="Areas\Admin\Views\Admin\LienHe.cshtml" />
     <None Include="Dockerfile" />
     <None Include=".dockerignore">
       <DependentUpon>Dockerfile</DependentUpon>
@@ -622,6 +620,8 @@
     <Content Include="fonts\poppins\roboto-condensed-v16-latin-regular.ttf" />
     <Content Include="fonts\poppins\roboto-condensed-v16-latin-regular.woff" />
     <Content Include="fonts\poppins\roboto-condensed-v16-latin-regular.woff2" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -649,8 +649,6 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
@@ -676,6 +674,8 @@
     <Content Include="Views\Account\DoiMatKhau.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\DoiMatKhau1.cshtml" />
+    <Content Include="Views\Account\GioiThieu.cshtml" />
+    <Content Include="Views\Account\TimKiem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

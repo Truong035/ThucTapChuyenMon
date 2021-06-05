@@ -1,4 +1,4 @@
-namespace PhamTrongTruong_5951071113.Models
+﻿namespace PhamTrongTruong_5951071113.Models
 {
     using System;
     using System.Collections.Generic;
@@ -12,16 +12,19 @@ namespace PhamTrongTruong_5951071113.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TaiKhoan()
         {
-            Da_LuaChon = new HashSet<Da_LuaChon>();
             DeThis = new HashSet<DeThi>();
-            DS_BaiHoc = new HashSet<DS_BaiHoc>();
+            LienHes = new HashSet<LienHe>();
         }
 
         [Key]
-        [StringLength(50)]
+     
+        [Required(ErrorMessage = "Bạn chưa nhập tài khoản")]
+        [StringLength(50, ErrorMessage = "Bạn chưa nhập tài khoản")]
         public string MaTK { get; set; }
+        [Required(ErrorMessage = "Bạn chưa nhập mật khẩu")]
 
-       
+        [StringLength(50, ErrorMessage = "Bạn chưa nhập mật khẩu")]
+        
         public string MatKhau { get; set; }
 
         [StringLength(50)]
@@ -32,15 +35,12 @@ namespace PhamTrongTruong_5951071113.Models
         [Column(TypeName = "date")]
         public DateTime? NgayTao { get; set; }
 
-        public bool? TrangThai { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Da_LuaChon> Da_LuaChon { get; set; }
+        public bool TrangThai { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DeThi> DeThis { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DS_BaiHoc> DS_BaiHoc { get; set; }
+        public virtual ICollection<LienHe> LienHes { get; set; }
     }
 }

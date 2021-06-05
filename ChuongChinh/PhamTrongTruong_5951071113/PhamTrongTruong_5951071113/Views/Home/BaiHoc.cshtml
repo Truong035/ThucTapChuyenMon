@@ -11,7 +11,7 @@
     <script>
       
         var item = $('#hocbai');
-        item.addClass("active");
+        item.addClass("Narlink");
 
     </script>
 
@@ -44,11 +44,20 @@
                                     Số câu đã làm : @{
                                         a = 0;
                                         pt = 0;
-                                        a = Convert.ToInt32(Model.ToArray()[i].DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(ma) && x.Ma_Bai == Model.ToArray()[i].Ma_Bai).SoCauDung);
+                                        try
+                                        {
 
-                                        int b = Convert.ToInt32(Model.ToArray()[i].DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(ma) && x.Ma_Bai == Model.ToArray()[i].Ma_Bai).SoCauSai);
-                                        pt = ((double)(a) / (double)(a + b)) * (double)100;
-                                        a = a + b;
+                                            a = Convert.ToInt32(Model.ToArray()[i].DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(ma) && x.Ma_Bai == Model.ToArray()[i].Ma_Bai).SoCauDung);
+
+                                            int b = Convert.ToInt32(Model.ToArray()[i].DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(ma) && x.Ma_Bai == Model.ToArray()[i].Ma_Bai).SoCauSai);
+                                            pt = ((double)(a) / (double)(a + b)) * (double)100;
+                                            a = a + b;
+                                        }
+                                        catch
+                                        {
+                                            a = 0;
+                                            pt = 0;
+                                        }
 
 
 

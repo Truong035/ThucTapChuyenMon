@@ -44,6 +44,26 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
         
 
         }
+        public void CloseTK(string matk,bool TrangThai)
+        {
+            TracNghiemDB tracNghiemDB = new TracNghiemDB();
+            var TK = tracNghiemDB.TaiKhoans.Find(matk);
+            TK.TrangThai = TrangThai;
+            tracNghiemDB.SaveChanges();
+        
+        }
+       public void CheckMess(long? STT)
+        {
+            TracNghiemDB db = new TracNghiemDB();
+            var lienhe = db.LienHes.Find(STT);
+            lienhe.TrangThai = true;
+            db.SaveChanges();
+        }
+        public ActionResult LienHe()
+        {
+            var lh = new TracNghiemDB().LienHes.Where(x=>x.NguoiNhan==null).ToList().OrderByDescending(x=>x.STT).ToList();
+            return View(lh);
+        }
         public JsonResult AddBai(int? Ma_Chuong,string tenBai)
         {
             try {
@@ -107,26 +127,17 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 
 
         }
-        public ActionResult baihoc(int? page)
+        public ActionResult baihoc()
         {
             // 2. Nếu page = null thì đặt lại là 1.
-            if (page == null) page = 1;
-
-            // 3. Tạo truy vấn, lưu ý phải sắp xếp theo trường nào đó, ví dụ OrderBy
-            // theo LinkID mới có thể phân trang.
+         
             var links = new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true).OrderBy(x => x.Ma_Bai);
 
-            // 4. Tạo kích thước trang (pageSize) hay là số Link hiển thị trên 1 trang
-            int pageSize = 10;
-
-            // 4.1 Toán tử ?? trong C# mô tả nếu page khác null thì lấy giá trị page, còn
-            // nếu page = null thì lấy giá trị 1 cho biến pageNumber.
-            int pageNumber = (page ?? 1);
 
             List<Chuong_Hoc> ltsChuong = new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa ==true).ToList();
             ViewBag.lstChuong = ltsChuong;
-            // 5. Trả về các Link được phân trang theo kích thước và số trang.
-            return View(links.ToPagedList(pageNumber, pageSize));
+        
+            return View(links.ToList());
            
         }
 
@@ -134,7 +145,12 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 
         public ActionResult QuanLyTaiKhoan()
         {
-            return View(new TracNghiemDB().TaiKhoans.Where(x=>x.Quyen==false && x.TrangThai==true).ToList());
+          
+            var links = new TracNghiemDB().TaiKhoans.Where(x=>x.Quyen==false).OrderByDescending(x => x.NgayTao);
+
+         
+            return View(links.ToList());
+          
         }
         public JsonResult LoadCH(int? MaBai)
         {
@@ -224,25 +240,15 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 
         }
 
-        public ActionResult Dscauhoi(long id,int? page)
+        public ActionResult Dscauhoi(long ?id)
         {
+          
             Session["mabai"] = id;
-            if (page == null) page = 1;
-
-            // 3. Tạo truy vấn, lưu ý phải sắp xếp theo trường nào đó, ví dụ OrderBy
-            // theo LinkID mới có thể phân trang.
-            var links = new TracNghiemDB().KhoCauHois.Where(x => x.Xoa== true).OrderBy(x => x.MucDọ);
-
-            // 4. Tạo kích thước trang (pageSize) hay là số Link hiển thị trên 1 trang
-            int pageSize = 10;
-
-            // 4.1 Toán tử ?? trong C# mô tả nếu page khác null thì lấy giá trị page, còn
-            // nếu page = null thì lấy giá trị 1 cho biến pageNumber.
-            int pageNumber = (page ?? 1);
-
-            
-            // 5. Trả về các Link được phân trang theo kích thước và số trang.
-            return View(links.ToPagedList(pageNumber, pageSize));            
+        
+            var links = new TracNghiemDB().KhoCauHois.Where(x => x.Xoa== true && x.Ma_Bai==id).OrderBy(x => x.MucDọ);
+ 
+         
+            return View(links.ToList());            
         }
         public ActionResult Taocauhoi()
         {

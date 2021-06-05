@@ -16,7 +16,46 @@ namespace PhamTrongTruong_5951071113.Controllers
         public ActionResult Index()
         {
             TaiKhoan tk = (TaiKhoan)Session["user"];
-           
+            double[] pt = new double[100];
+            List<Chuong_Hoc> list = new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa == true).ToList();
+            int i = 0;
+            foreach (var item2 in list)
+            {
+                pt[i] = 0;
+         var bai  =   new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true && x.Ma_Chuong == item2.Ma_Chuong);
+                foreach (var item in bai)
+                {
+                    int a = 0;
+                
+                   try
+                    {
+
+                        a = Convert.ToInt32(item.DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(tk.MaTK) && x.Ma_Bai == item.Ma_Bai).SoCauDung);
+
+
+                   int  b = Convert.ToInt32(item.DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(tk.MaTK) && x.Ma_Bai == item.Ma_Bai).SoCauSai);
+                        if (a != 0 && b!= 0)
+                        {
+                            pt[i] += ((double)pt[i] + (((double)(double)(a) / (double)(a + b)) * (double)100)) / (double)2;
+                        }
+                        else
+                        {
+                            pt[i] = pt[i] / (double)2;
+                        }
+
+                        
+                    }
+                    catch
+                    { 
+                      
+                    }
+
+                }
+
+                i++;
+            }
+
+            ViewBag.pt = pt;
             ViewBag.Name = tk.Ten;
           return View(new TracNghiemDB().Chuong_Hoc.Where(x=>x.Xóa==true).ToArray());
 
@@ -48,19 +87,22 @@ namespace PhamTrongTruong_5951071113.Controllers
             // 4.1 Toán tử ?? trong C# mô tả nếu page khác null thì lấy giá trị page, còn
             // nếu page = null thì lấy giá trị 1 cho biến pageNumber.
             int pageNumber = (page ?? 1);
-
+            ViewBag.Name = tk.Ten;
             // 5. Trả về các Link được phân trang theo kích thước và số trang.
             return View(links.ToPagedList(pageNumber, pageSize));
 
        
         }
        
-        public ActionResult SeachDethi(long id)
+        public ActionResult SeachDethi(long? id)
         {
-
+            if (id == null)
+            {
+                return View("Error");
+            }
             TaiKhoan tk = (TaiKhoan)Session["user"];
             DanhGia danhGia = new DanhGia();
-            new TaoDeDao().TimKiem(danhGia, id);
+            new TaoDeDao().TimKiem(danhGia, long.Parse(id.ToString()));
             Session["lambai"] = danhGia;
             Session["a"] = (int)0;
             ViewBag.Name = tk.Ten;
@@ -206,8 +248,12 @@ namespace PhamTrongTruong_5951071113.Controllers
             ViewBag.Name = tk.Ten;
             return View(new TracNghiemDB().Bai_Hoc.Where(x=>x.Xoa==true).ToList());
         }
-        public ActionResult BaiHoc(long id)
+        public ActionResult BaiHoc(long? id)
         {
+            if (id == null)
+            {
+                return View("Error");
+            }
             TaiKhoan tk = (TaiKhoan)Session["user"];
             ViewBag.ID = tk.MaTK;
           
@@ -232,13 +278,27 @@ namespace PhamTrongTruong_5951071113.Controllers
                 }
                
             }
-            return View(new TracNghiemDB().Bai_Hoc.Where(x=>x.Ma_Chuong==id));
+            return View(new TracNghiemDB().Bai_Hoc.Where(x=>x.Ma_Chuong==id&& x.Xoa==true));
         }
         public ActionResult LienHe()
         {
             TaiKhoan tk = (TaiKhoan)Session["user"];
             ViewBag.Name = tk.Ten;
             return View();
+        }
+        public void Guimail(string nd, string tieude,string name)
+        {
+            TaiKhoan tk = (TaiKhoan)Session["user"];
+            LienHe lienHe = new LienHe();
+            lienHe.Ma_TK = tk.MaTK;
+            lienHe.NoiDung = nd;
+            lienHe.HoTen = name;
+            lienHe.Title = tieude;
+            lienHe.TrangThai = false;
+            
+            TracNghiemDB db = new TracNghiemDB();
+            db.LienHes.Add(lienHe);
+            db.SaveChanges();
         }
 
         public void LuuDapAn(string listCH)
@@ -312,9 +372,12 @@ namespace PhamTrongTruong_5951071113.Controllers
             return View(danhGia.ketQuaThi);
         }
 
-        public ActionResult HocBai(long id)
+        public ActionResult HocBai(long? id)
         {
-
+            if (id == null)
+            {
+                return View("Error");
+            }
             TaiKhoan tk = (TaiKhoan)Session["user"];
             ViewBag.Name = tk.Ten;
             ViewBag.ID = id;

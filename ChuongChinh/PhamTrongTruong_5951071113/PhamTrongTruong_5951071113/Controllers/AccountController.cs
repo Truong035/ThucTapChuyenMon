@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -13,6 +14,7 @@ using System.Windows.Forms;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using PagedList;
 using PhamTrongTruong_5951071113.Models;
 
 namespace PhamTrongTruong_5951071113.Controllers
@@ -31,11 +33,20 @@ namespace PhamTrongTruong_5951071113.Controllers
         [AllowAnonymous]
         public ActionResult DoiMatKhau()
         {
-            var tk=(TaiKhoan)Session["user"];
-            RegisterViewModel RegisterViewMode = new RegisterViewModel();
-            RegisterViewMode.Email = tk.MaTK;
-            RegisterViewMode.Name = tk.Ten;
-            return View(RegisterViewMode);
+            try
+            {
+                var tk = (TaiKhoan)Session["user"];
+
+                RegisterViewModel RegisterViewMode = new RegisterViewModel();
+                RegisterViewMode.Email = tk.MaTK;
+                RegisterViewMode.Name = tk.Ten;
+                return View(RegisterViewMode);
+            }
+            catch
+            {
+                return RedirectToAction("Login", "Account");
+            }
+          
         }
         // POST: /Account/Register
         [HttpPost]
@@ -101,7 +112,7 @@ namespace PhamTrongTruong_5951071113.Controllers
 
             //uthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             // AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-
+            Session["user"]=null;
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -119,13 +130,18 @@ namespace PhamTrongTruong_5951071113.Controllers
             if (ModelState.IsValid)
             {
                 string mk = GetMD5(taiKhoan.MatKhau);
-                var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Equals(taiKhoan.MaTK) && x.Quyen==true && x.MatKhau.Equals(mk));
+                var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Trim().Equals(taiKhoan.MaTK) && x.Quyen==false && x.MatKhau.Equals(mk));
                 if (TK != null)
                 {
-
-                    Session.Add("user", TK);
-
-                    return RedirectToAction("Index", "Home");
+                    if (TK.TrangThai == true)
+                    {
+                        Session.Add("user", TK);
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa");
+                    }
 
                 }
                 else
@@ -197,18 +213,43 @@ namespace PhamTrongTruong_5951071113.Controllers
                     taiKhoan1.NgayTao = DateTime.UtcNow;
                     taiKhoan1.Ten = model.Name;
                     taiKhoan1.TrangThai = true;
-                    TracNghiemDB tracNghiemDB = new TracNghiemDB();
-                    tracNghiemDB.TaiKhoans.Add(taiKhoan1);
-                    tracNghiemDB.SaveChanges();
-                    Session.Add("user", taiKhoan1);
-                    return RedirectToAction("Index", "Home");
+                    //TracNghiemDB tracNghiemDB = new TracNghiemDB();
+                    //tracNghiemDB.TaiKhoans.Add(taiKhoan1);
+                    //tracNghiemDB.SaveChanges();
+                    Session.Add("taotk", taiKhoan1);
+                    SendEmail(model.Email, "Xác nhận tài khoản", "Please click here to confirm  <a class='btn btn-success' href =https://localhost:44343/Account/CreateAccount >Xác Nhận</a> ");
+                    return View("ForgotPasswordConfirmation");
+                   // return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Email Đã Tồn Tại");
             }
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        
+        [AllowAnonymous]
+        public ActionResult CreateAccount()
+        {
+            try
+            {
+              var tk=(TaiKhoan)Session["taotk"];
+
+                if (tk != null)
+                {
+
+                    TracNghiemDB tracNghiemDB = new TracNghiemDB();
+                    tracNghiemDB.TaiKhoans.Add(tk);
+                    tracNghiemDB.SaveChanges();
+                    Session.Add("user",tk);
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            catch { }
+
+            return View("Error");
+
+
+        }
         public string GetMD5(string chuoi)
         {
             string str_md5 = "";
@@ -268,12 +309,16 @@ namespace PhamTrongTruong_5951071113.Controllers
                 
                 if (Tk != null)
                 {
-                   
-                    Session["user"] = Tk;
-             
-                    SendEmail(loginInfo.Email, "Xác nhận mật khẩu", "Please reset your password by clicking <a class='btn btn-success' href =https://localhost:44343/Account/DoiMatKhau1 >Xác Nhận</a> ");
-                    return View("ForgotPasswordConfirmation");
-                    
+                    if (Tk.TrangThai == true)
+                    {
+                        Session["user"] = Tk;
+
+                        SendEmail(loginInfo.Email, "Xác nhận mật khẩu", "Please reset your password by clicking <a class='btn btn-success' href =https://localhost:44343/Account/DoiMatKhau1 >Xác Nhận</a> ");
+                        return View("ForgotPasswordConfirmation");
+                    }
+
+                    ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa");
+
                 }
                 else
                 {
@@ -293,6 +338,46 @@ namespace PhamTrongTruong_5951071113.Controllers
         {
             return View();
         }
+        [AllowAnonymous]
+        public ActionResult GioiThieu()
+        {
+
+            return View();
+        }
+
+        [AllowAnonymous]
+       
+        public ActionResult TimKiem(string txtsearch, int? page)
+        {
+            if (page == null)  page = 1;
+
+            List<KhoCauHoi> links = new List<KhoCauHoi>();
+                //new TracNghiemDB().KhoCauHois.Where(x => x.NoiDung.Contains(txtsearch)).OrderBy(x=>x.MucDọ).ToList();
+            // 3. Tạo truy vấn, lưu ý phải sắp xếp theo trường nào đó, ví dụ OrderBy
+            // theo LinkID mới có thể phân trang.
+            foreach (var item in new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true && x.Tên_Bai.Contains(txtsearch)))
+            {
+
+                links.AddRange(new TracNghiemDB().KhoCauHois.Where(x => x.Ma_Bai == item.Ma_Bai));
+
+            }
+
+            //var links = new TracNghiemDB().KhoCauHois.Where(x => x.Xoa == true && x.NoiDung.Contains(id)).OrderBy(x => x.MucDọ);
+
+            // 4. Tạo kích thước trang (pageSize) hay là số Link hiển thị trên 1 trang
+            int pageSize = 10;
+
+            // 4.1 Toán tử ?? trong C# mô tả nếu page khác null thì lấy giá trị page, còn
+            // nếu page = null thì lấy giá trị 1 cho biến pageNumber.
+            int pageNumber = (page ?? 1);
+            ViewBag.search = txtsearch;
+
+            // 5. Trả về các Link được phân trang theo kích thước và số trang.
+            return View(links.ToPagedList(pageNumber, pageSize)) ;
+
+          //  return View();
+        }
+
 
         //
         // POST: /Account/ExternalLogin
@@ -330,9 +415,16 @@ namespace PhamTrongTruong_5951071113.Controllers
                 taiKhoan1.Ten = loginInfo.DefaultUserName;
                 TracNghiemDB tracNghiemDB = new TracNghiemDB();
                 Tk = taiKhoan1;
-
+                taiKhoan1.MatKhau = GetMD5("1");
                 tracNghiemDB.TaiKhoans.Add(taiKhoan1);
                 tracNghiemDB.SaveChanges();
+            }
+            else if (Tk.TrangThai == false)
+            {
+                ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa");
+                return View("Login", new TaiKhoan { MaTK = Tk.MaTK, MatKhau = GetMD5(Tk.MatKhau), TrangThai = false });
+             
+                   
             }
             Session.Add("user", Tk);
 

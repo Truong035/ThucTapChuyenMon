@@ -1,0 +1,45 @@
+﻿@model IEnumerable<PhamTrongTruong_5951071113.Models.Chuong_Hoc>
+@{
+    ViewBag.Title = "Học Bài";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script>
+        var item = $('#hocbai');
+        item.addClass("active");
+
+    </script>
+
+}
+<div class="row" style="margin-top:-3%">
+    @for (int i = 0; i < @Model.ToArray().Count(); i++)
+    {
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+                <div class="card-header card-header-info">
+                    <h4 class="card-title text-center">Chương @(i + 1) </h4>
+                </div>
+                <div class="card-header">
+                    <div class="stats">
+                        <label class="card-text" >@Model.ToArray()[i].Ten_Chuong</label>
+                    </div>
+                    <div class="stats">
+                        <label class="small">Số Bài @Model.ToArray()[i].Bai_Hoc.Count</label>
+                    </div>
+                    <br />
+                    <div class="stats" style="border:1px solid #edeaea;border-radius:10px">
+                        <div style="background-color:aqua;width:@(i * 10)px;height:10px;border-radius:10px">
+                        </div>
+                    </div>
+                </div>
+                <div class=" card-header-text text-center">
+                    <a class="btn btn-facebook" href="/BaiHoc/@Model.ToArray()[i].Ma_Chuong">Học</a>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+
+

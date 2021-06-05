@@ -1,0 +1,117 @@
+﻿@model PagedList.IPagedList<PhamTrongTruong_5951071113.Models.KhoCauHoi>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "TimKiem";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="margin-top:-5%">
+
+    @if (Model.Count == 0)
+    {
+
+        <div class="text-body text-center">
+            Không tìm thấy
+        </div>
+
+    }
+    else
+    {
+
+        <div class=" row card">
+
+            <div class=" right card-header card-header-primary text-center" style=" left:40%; width:400px;">
+                <h4 class="card-title"> Kết quả tìm kiếm  @ViewBag.search</h4>
+            </div>
+            <div style="margin-left:2%">
+
+                <div class="col-12">
+
+                    @{
+                        int dem = 0;
+                        foreach (var item in Model.ToList())
+                        {
+
+
+                            dem++;
+                            <h4 class=" card-body chon" id="@item.Ma_CH">Câu @dem )@item.NoiDung </h4>
+                            try
+                            {
+                                if (item.HinhAnh.Length > 0)
+                                {
+                                    <div class="row card-header" style="margin-top:0px;margin-left:10%;margin-top:-30px">
+                                        <img src="@item.HinhAnh" width="150">
+                                    </div>}
+                            }
+                            catch { }
+
+
+                            foreach (var item1 in item.D_An)
+                            {
+                                if (item1.TrangThai == true)
+                                {
+                                    <div class="row card-header" style="margin-top:0px;margin-left:2.2%">
+                                        <label class="form-check-label" for="flexRadioDefault">
+                                            <i style="font-size: 1rem;margin-top:-3px; color: #44ad57" class=" form-check-input bi bi-check-circle-fill" name="flexRadioDefault" id="flexRadioDefault1"></i>'
+                                            @item1.NoiDung
+
+                                        </label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="row card-header" style="margin-top:0px;margin-left:2.5%" ;>
+                                        <label class="form-check-label" for="@item1.Ma_Dan">
+                                            <input class="form-check-input txtch" disabled type="radio" value="@item.Ma_CH" name="@item.Ma_CH" id="@item1.Ma_Dan">
+                                            @item1.NoiDung
+                                        </label>
+                                    </div>
+                                }
+
+
+                                try
+                                {
+
+                                    if (item1.HinhAnh.Length > 0)
+                                    {
+                                        <div class="row card-header" style="margin-top:0px;margin-left:6%" ;>
+                                            <img src="@item1.HinhAnh" width="150">
+                                        </div>}
+                                }
+                                catch { }
+
+
+
+
+
+
+                            }
+                        }
+                    }
+                    <div class="row">
+                        <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+
+                        </div>
+                        <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+                            Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                        </div>
+                    </div>
+                    @if (Model.Count > 0)
+                    {
+                        <input id="mabai" value="@Model[0].Ma_Bai" hidden />
+                        @Html.PagedListPager(Model, page => Url.Action("TimKiem", new { txtsearch = ViewBag.search,page }))
+                    }
+
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+
+    }
+
+</div>

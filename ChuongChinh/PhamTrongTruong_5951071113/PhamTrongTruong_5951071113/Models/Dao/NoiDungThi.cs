@@ -28,12 +28,12 @@ namespace PhamTrongTruong_5951071113.Models.Dao
             mang[1,3] = kiemtra((double)(SoCau) * ((double)25 / (double)100));
             mang[1,2] = kiemtra((double)(SoCau) * ((double)25 / (double)100));
             mang[1,1] = kiemtra((double)(SoCau) * ((double)25 / (double)100));
-            mang[1,0] = kiemtra((double)SoCau - (double)(mang[0,1] + mang[0,2] + mang[0,3]));
+            mang[1,0] = kiemtra((double)SoCau - (double)(mang[1,1] + mang[1,2] + mang[1,3]));
             //kho
             mang[2,3] = kiemtra((double)(SoCau) * ((double)40 / (double)100));
             mang[2,2] = kiemtra((double)(SoCau) * ((double)30 / (double)100));
             mang[2,1] = kiemtra((double)(SoCau) * ((double)20 / (double)100));
-            mang[2,0] = kiemtra((double)SoCau - (double)(mang[0,1] + mang[0,2] + mang[0,3]));
+            mang[2,0] = kiemtra((double)SoCau - (double)(mang[2,1] + mang[2,2] + mang[2,3]));
 
             return mang;
         }

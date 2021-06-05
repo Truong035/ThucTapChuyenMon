@@ -140,7 +140,7 @@
 }
 
 <!-- Content Row -->
-<div class="container-fluid" style="margin-top:-3%">
+<div class="container-fluid" style="margin-top:4%">
     <div class="row">
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
@@ -219,7 +219,7 @@
     </div>
 
     <!-- Content Row -->
-    <div class="row">
+    <div class="row p-5">
         <!-- Area Chart -->
         <div class="col-xl-7 col-lg-6">
             <div class="card shadow mb-4">
@@ -230,7 +230,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <div class="chart-area" style="height:300px">
+                    <div class="chart-area" style="height:330px">
                         <canvas id="myAreaChart"></canvas>
                     </div>
                 </div>
@@ -243,9 +243,9 @@
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-info">User</h6>
                 </div>
-                <div class="card-body " style="height:326px">
+                <div class="card-body " style="height:356px">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>Email</th>
@@ -269,7 +269,7 @@
 
                             </tbody>
                         </table>
-                        <div class="row col-5" style="margin-left:2% ;margin-top:-5%">
+                        <div class="row col-5 text-right" style="margin-left:2% ;margin-top:-5%">
 
                             @Html.PagedListPager(Model, page => Url.Action("/Index", new { page }))
 

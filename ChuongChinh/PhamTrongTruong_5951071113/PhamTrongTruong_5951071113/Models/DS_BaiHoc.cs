@@ -24,7 +24,5 @@ namespace PhamTrongTruong_5951071113.Models
         public int? SoCauSai { get; set; }
 
         public virtual Bai_Hoc Bai_Hoc { get; set; }
-
-        public virtual TaiKhoan TaiKhoan { get; set; }
     }
 }

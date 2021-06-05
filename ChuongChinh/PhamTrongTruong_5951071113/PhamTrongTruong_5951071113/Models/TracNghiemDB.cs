@@ -21,6 +21,7 @@ namespace PhamTrongTruong_5951071113.Models
         public virtual DbSet<DeThi> DeThis { get; set; }
         public virtual DbSet<DS_BaiHoc> DS_BaiHoc { get; set; }
         public virtual DbSet<KhoCauHoi> KhoCauHois { get; set; }
+        public virtual DbSet<LienHe> LienHes { get; set; }
         public virtual DbSet<TaiKhoan> TaiKhoans { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -49,10 +50,10 @@ namespace PhamTrongTruong_5951071113.Models
 
             modelBuilder.Entity<TaiKhoan>()
                 .Property(e => e.MatKhau)
-                .IsFixedLength();
+                .IsUnicode(false);
 
             modelBuilder.Entity<TaiKhoan>()
-                .HasMany(e => e.DS_BaiHoc)
+                .HasMany(e => e.LienHes)
                 .WithOptional(e => e.TaiKhoan)
                 .HasForeignKey(e => e.Ma_TK);
         }

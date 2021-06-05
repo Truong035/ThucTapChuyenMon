@@ -19,30 +19,62 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Index( TaiKhoan taiKhoan)
+        public ActionResult Index(TaiKhoan taiKhoan)
         {
             if (ModelState.IsValid)
+            { 
+            string mk = GetMD5(taiKhoan.MatKhau);
+            var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Equals(taiKhoan.MaTK) && x.MatKhau.Equals(mk));
+            if (TK != null)
             {
-                string mk = GetMD5(taiKhoan.MatKhau);
-                var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Equals(taiKhoan.MaTK) && x.MatKhau.Equals(mk));
-                if (TK != null)
-                {
 
-                    Session.Add("Admin", TK);
+                Session.Add("Admin", TK);
 
-                    return RedirectToAction("Index", "/Admin/Index");
-
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Đăng Nhập Không Đúng ");
-                }
+                return RedirectToAction("Index", "/Admin/Index");
 
             }
-
+            else
+            {
+                ModelState.AddModelError("", "Đăng Nhập Không Đúng ");
+            }
+        }
             return View(taiKhoan);
 
            
+        }
+
+        public ActionResult DoiMatKhau()
+        {
+       var tk= (TaiKhoan)Session["Admin"];
+            RegisterViewModel model = new RegisterViewModel();
+            model.Email = "truong@gmail.com";
+            model.Name = tk.Ten;
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult DoiMatKhau(RegisterViewModel model )
+        {
+            var tk = (TaiKhoan)Session["Admin"];
+           
+            if (ModelState.IsValid)
+            {
+                TracNghiemDB tracNghiemDB = new TracNghiemDB();
+                var Tk = tracNghiemDB.TaiKhoans.Find(tk.MaTK);
+
+                if (Tk != null)
+                {
+                    TaiKhoan taiKhoan1 = Tk;
+                    string mk = GetMD5(model.ConfirmPassword);
+                    taiKhoan1.MatKhau = mk;
+                    taiKhoan1.Ten = model.Name;
+                    taiKhoan1.TrangThai = true;
+                    tracNghiemDB.SaveChanges();
+                    Session.Add("user", taiKhoan1);
+                    return RedirectToAction("Index", "/Admin/Index");
+                }
+              
+            }
+            return View();
         }
         public string GetMD5(string chuoi)
         {

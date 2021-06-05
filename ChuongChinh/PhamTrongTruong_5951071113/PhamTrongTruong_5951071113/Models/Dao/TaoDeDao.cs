@@ -252,14 +252,23 @@ namespace PhamTrongTruong_5951071113.Models.Dao
             TracNghiemDB db= new TracNghiemDB();
             var danhgia =  db.DS_BaiHoc.SingleOrDefault(x => x.Ma_Bai == mabai && x.Ma_TK.Equals(tk.MaTK));
             string[] ListCH = danhgia.ListCauHoi.Split('/');
-            if ((ListCH.Length) == 7)
+            if ((ListCH.Length) == 50)
             {
                 danhgia.SoCauDung = 0;
                 danhgia.SoCauSai = 0;
                 danhgia.ListCauHoi = "";
                 ListCH = danhgia.ListCauHoi.Split('/');
                 db.SaveChanges();
-            }  
+            }
+            
+           else if (danhgia.SoCauSai - danhgia.SoCauDung > 40) {
+                danhgia.SoCauDung = 0;
+                danhgia.SoCauSai = 0;
+                danhgia.ListCauHoi = "";
+                ListCH = danhgia.ListCauHoi.Split('/');
+                db.SaveChanges();
+
+            }
 
                 Random(bo_De1, mabai, 2, 1, ListCH);
                 Random(bo_De1, mabai, 2, 2,ListCH);

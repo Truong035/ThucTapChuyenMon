@@ -1,0 +1,116 @@
+﻿@model IEnumerable<PhamTrongTruong_5951071113.Models.Bai_Hoc>
+@{
+    ViewBag.Title = "Học Bài";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string ma = ViewBag.ID;
+ 
+}
+
+@section scripts{
+
+    <script>
+      
+        var item = $('#hocbai');
+        item.addClass("active");
+
+    </script>
+
+}
+
+
+<div class="row card" style="margin-top:0px" id="frmbai">
+    <div class="card-header card-header-primary">
+        <h4 class="card-title">Danh Sách Bài Học</h4>
+      
+        <p class="card-category">Các bài cần hoàn thành </p>
+    </div>
+    @{
+        int a = 0;
+        double pt = 0;
+        for (int i = 0; i < Model.ToArray().Count(); i++)
+        {
+            <div class="col-md-12">
+                <div class="card" style="margin-top:0px">
+                    <div class="row">
+                        <div class="col-md-auto" style="margin-top:45px">
+                            <img src="https://img.icons8.com/carbon-copy/70/000000/book-reading.png" />
+                        </div>
+                        <div class="col-md-4 ">
+                            <div class="form-group">
+                                <h4 class="card-title text-info">Bài @(i + 1) :@Model.ToArray()[i].Tên_Bai</h4>
+                                <label class="bmd-label-floating row">Số câu yêu cầu :50</label>
+                                <label class="bmd-label-floating row">
+
+                                    Số câu đã làm : @{
+                                        a = 0;
+                                        pt = 0;
+                                        a = Convert.ToInt32(Model.ToArray()[i].DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(ma) && x.Ma_Bai == Model.ToArray()[i].Ma_Bai).SoCauDung);
+
+                                        int b = Convert.ToInt32(Model.ToArray()[i].DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(ma) && x.Ma_Bai == Model.ToArray()[i].Ma_Bai).SoCauSai);
+                                        pt = ((double)(a) / (double)(a + b)) * (double)100;
+                                        a = a + b;
+
+
+
+                                    }
+                                    @a    
+                                    @if (a < 50)
+                {
+                                    <i class="bi bi-exclamation-lg" style="margin-left:5px;color:#ff0000"></i>
+                }
+
+
+                                </label>
+
+                                <label class="bmd-label-floating row">
+                                    Số câu làm đúng
+
+                                    @Model.ToArray()[i].DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(ma) && x.Ma_Bai == Model.ToArray()[i].Ma_Bai).SoCauDung
+
+                                </label>
+                                <label class="bmd-label-floating row">Số câu làm sai @Model.ToArray()[i].DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(ma) && x.Ma_Bai == Model.ToArray()[i].Ma_Bai).SoCauSai</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="margin-top:60px">
+                            @if (pt < 80)
+                            {
+                                
+                            }
+
+                            @{ if (pt > 0)
+                                {
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: @pt%" ; aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">@pt.ToString().Substring(0,2)%</div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 0%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                }
+                            }
+
+
+
+                        </div>
+                        <div class="col-md-3" style="margin-top:40px;margin-left:25px">
+                            <a class="btn btn-info" href="/HocBai/@Model.ToArray()[i].Ma_Bai" onclick="LamBai(id)">Làm bài</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+
+
+
+</div>
+
+
+
+
+
+
+

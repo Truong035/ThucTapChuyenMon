@@ -21,7 +21,5 @@ namespace PhamTrongTruong_5951071113.Models
         public virtual D_An D_An { get; set; }
 
         public virtual DeThi DeThi { get; set; }
-
-        public virtual TaiKhoan TaiKhoan { get; set; }
     }
 }
