@@ -29,9 +29,15 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 7.Đăng kí,Mã hóa mật khẩu ,Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
 
+8 Thông tin phần mềm
+
+10 Liên Hệ
+
+11 Tìm kiếm câu hỏi
+
 2.2===============Admin=======================
 
-1 Đăng nhập login, Mã hoa mât khẩu
+1 Đăng nhập login, Mã hoá mât khẩu
 
 2 Thông kê admin (Admin)
 
@@ -41,13 +47,13 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 5.Thêm ,sửa xóa bài học,
 
-6 Quản lý người dùng
+6 Quản lý người dùng 
+
+7 Nhận phản hồi từ người dùng 
 
 ## Phần 3: Các chức năng chưa hoàn thành:
-1 Liên Hệ
 
-2 Gioi thiệu phần mềm
-
+-Đang nghiên cứu 
 
 ## Hướng dẫn sử dụng:
 b1 cài csdl : trong muc CSDL
