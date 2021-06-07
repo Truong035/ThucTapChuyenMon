@@ -15,7 +15,7 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 ## Phần 2: Các chức năng đã hoàn thành:
 2.1 ================Người Dùng===============
 
-1.Đăng nhập login (Google ,Facebook) ()
+1.Đăng nhập login (Google ,Facebook) 
 
 2.Học Bài tính % đúng sau mỗi lần học
 
