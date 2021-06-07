@@ -76,8 +76,8 @@
 
                             }
                         }
-                        
-                   
+
+                        $('#particles1').show();
                        
                         $.ajax({
                             type: 'post',
@@ -156,6 +156,7 @@
                                 document.getElementById("hvn").innerHTML = "Ngày " + dateTime;
 
                                 $('#frmketqua').slideDown();
+                                $('#particles1').hide();
                                 $('#frmhoc').hide();
                             }
                         });
@@ -232,13 +233,13 @@
             $('#frmbody').append(let);
         }
         var item = $('#hocbai');
-        item.addClass("active");
+        item.addClass("Narlink");
     </script>
 
 }
 
 
-<div class="col-12">
+<div class="col-12" >
     <input id="txtid" hidden value="@ma1" />
     <input id="txtmasach" hidden value="@ma" />
 
@@ -260,7 +261,7 @@
     <div class="row container" id="frmhoc">
         <div class="card row card-body col-9" style="padding:30px; margin-top:-5px;margin-left:20%">
             <div class=" right card-header card-header-primary text-center" style=" left:35%; width:200px; margin-top:-60px">
-                <h4 class="card-title">Danh Sách Bài Học</h4>
+                <h4 class="card-title">Học Bài</h4>
             </div>
             <div class="row  align-self-sm-end" style="margin-right:-2.2%; margin-top:-3.6%">
                 <i id="btnClose1" class="bi bi-x-square-fill" style="font-size: 2rem; color: #ff4a4a; height: 20px; width: 20px"></i>
@@ -315,7 +316,7 @@
 
         </div>
     </div>
-    <div id="frmketqua">
+    <div id="frmketqua" style="margin-top:-2%">
 
         <div class= "text-right">
             <button class="btn btn-primary" id="btnnext">Tiếp Tuc</button>

@@ -1,0 +1,95 @@
+﻿@model List<PhamTrongTruong_5951071113.Models.LienHe>
+@{
+    ViewBag.Title = "LienHe";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script>
+
+
+        function DocMess(Div) {
+            $.ajax({
+                url: "/Admin/Admin/CheckMess",
+                type: "get",
+                data: { STT: Div.id},
+                success: function () {}
+
+
+            });
+        }
+</script>
+}
+<div class="row">
+    <div class="col-md-12 container" >
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Liên Hệ-Góp Ý</h4>
+            </div>
+            @foreach (var item in Model)
+            {
+                string id1 = "collapseLayouts" + item.STT;
+                string id2 = "#collapseLayouts" + item.STT;
+                if (item.TrangThai == false)
+                {
+                    <div class="card-body container" id="@item.STT" onclick="DocMess(this)" style="margin-bottom:-2%">
+                        <div class="row collapsed" data-toggle="collapse" data-target="@id2">
+                            <div class="col-md-9">
+                                <div class="form-group row">
+                                    <label class="bmd-label-floating" style="width:30%"><i class="fas fa-envelope fa-fw"></i> @item.Ma_TK </label>
+                                    <label class="bmd-label-floating">  @item.Title  </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse" id="@id1" style="margin-left:10%">
+
+                            <div class="row">
+                                <div class="col-md-9 text-center">
+                                    <div class="form-group">
+                                        <label>Nội Dung</label>
+                                        <div>
+                                            @item.NoiDung
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+                else
+                {
+                    <div class="card-body container" style="margin-bottom:-2%">
+                        <div class="row collapsed" data-toggle="collapse" data-target="@id2">
+                            <div class="col-md-9">
+                                <div class="form-group row">
+                                    <p class="text-nowrap" style="width:30%"><i class="fas fa-envelope fa-fw"></i> @item.Ma_TK </p>
+                                    <p class="">  @item.Title  </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse" id="@id1" style="margin-left:10%">
+
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label>Nội Dung</label>
+                                        <div>
+                                            @item.NoiDung
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+                <div class="dropdown-divider col-12"></div>
+            }
+        </div>
+    </div>
+
+</div>
+

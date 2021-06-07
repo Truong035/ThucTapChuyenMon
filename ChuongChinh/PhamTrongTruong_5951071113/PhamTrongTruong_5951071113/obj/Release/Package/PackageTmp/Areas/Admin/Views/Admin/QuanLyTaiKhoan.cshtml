@@ -1,22 +1,31 @@
-﻿@model PagedList.IPagedList<PhamTrongTruong_5951071113.Models.TaiKhoan>
+﻿@model List<PhamTrongTruong_5951071113.Models.TaiKhoan>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "QuanLyTaiKhoan";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+@section scripts{
+    <script>
+        function Close(check) {
+            $.ajax({
+                url: '/Admin/Admin/CloseTK',
+                type: 'get',
+                data: {
+                    matk: check.id, TrangThai: check.checked
+                },
+                success: function (data) { }
+            });
+        }
 
-<div class="container-fluid ">
+    </script>
+}
+<div class="container-fluid p-5" >
 
     <div class="card mb-4">
         <div class="row" style="padding:10px; ">
             <div class="col-sm-12 col-md-6">
                 <svg class="svg-inline--fa fa-table fa-w-16 mr-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="table" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zM224 416H64v-96h160v96zm0-160H64v-96h160v96zm224 160H288v-96h160v96zm0-160H288v-96h160v96z"></path></svg><!-- <i class="fas fa-table mr-1"></i> Font Awesome fontawesome.com -->
-                Danh sách đề thi
-            </div>
-            <div class="col-sm-12 col-md-6">
-                <a href="/Home/TaoDe" class="btn btn-primary" style="float:right">
-                    <span>Thêm đề thi</span>
-                </a>
+                Danh sách Tài Khoản
             </div>
         </div>
         <div style="width:auto; height:3px; background-color:rgb(248,249,250);"></div>
@@ -53,11 +62,29 @@
                                                         @item.DeThis.Count
                                                     }
                                                     catch { }
-                                                }
+
+
+}
                                             </td>
 
                                             <td>
-                                                <button name="Delete" class="btn btn-xs btn-danger">Đóng</button>
+                                                @{
+                                                    if (item.TrangThai == true)
+                                                    {
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox"  onclick="Close(this)" checked="checked" class="custom-control-input" id="@item.MaTK">
+                                                            <label class="custom-control-label" for="@item.MaTK"></label>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="custom-control custom-switch">
+                                                            <input type="checkbox" onclick="Close(this)" class="custom-control-input" id="@item.MaTK">
+                                                            <label class="custom-control-label" for="@item.MaTK"></label>
+                                                        </div>
+                                                    }
+                                                }
+
                                             </td>
 
                                         </tr>
@@ -66,20 +93,8 @@
 
                                 </tbody>
                             </table>
-                            <div class="row">
-                                <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+                          
 
-                                    Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
-                                </div>
-                                <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
-                                    @if (Model != null)
-                                    {
-
-                                        @Html.PagedListPager(Model, page => Url.Action("QuanLyTaiKhoan", new { page }))
-                                    }
-                                </div>
-                            </div>
-                            
                         </div>
 
                     </div>

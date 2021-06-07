@@ -246,9 +246,6 @@
     <Content Include="assets\demo\demo.css" />
     <Content Include="assets\demo\demo.js" />
     <Content Include="assets\img\apple-icon.png" />
-    <Content Include="assets\img\bg2.jpg" />
-    <Content Include="assets\img\city-profile.jpg" />
-    <Content Include="assets\img\city.jpg" />
     <Content Include="assets\img\cover.jpg" />
     <Content Include="assets\img\du-hoc-thuy-si-dieu-dac-biet-1.jpg" />
     <Content Include="assets\img\error-404-monochrome.svg" />
@@ -268,7 +265,6 @@
     <Content Include="assets\js\core\jquery.min.js" />
     <Content Include="assets\js\core\popper.min.js" />
     <Content Include="assets\js\JavaScript.js" />
-    <Content Include="assets\js\main.js" />
     <Content Include="assets\js\material-dashboard.js" />
     <Content Include="assets\js\material-dashboard.min.js" />
     <Content Include="assets\js\plugins\arrive.min.js" />
