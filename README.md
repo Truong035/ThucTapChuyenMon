@@ -64,6 +64,9 @@ b2:sữa đường dẫn kết nối database trong webconfig
 
 b3 đăng nhập bằng google hoăc facebook 
 
-link chạy demo : http://trongtruong809-001-site1.ctempurl.com/
+link chạy demo : http://trongtruong809-001-site1.ctempurl.com/ 
 
-Xin cám ơn!
+(chương trình chưa đăng kí tên miền nên chưa thể đăng nhập goole và facebook
+chỉ có thể đk bình thường)
+
+Xin cảm ơn!
