@@ -35,6 +35,8 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 11 Tìm kiếm câu hỏi
 
+12 Phân Trang 
+
 2.2===============Admin=======================
 
 1 Đăng nhập login, Mã hoá mât khẩu
