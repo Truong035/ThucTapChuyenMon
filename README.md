@@ -68,5 +68,11 @@ link chạy demo : http://trongtruong809-001-site1.ctempurl.com/
 
 (chương trình chưa đăng kí tên miền nên chưa thể đăng nhập goole và facebook
 chỉ có thể đk bình thường)
+Tk đăng nhập admin:Admin
+MK đăng nhập admin:1
+
+Tk đăng nhập hocsinh:phamtruong0305@gmail.com
+MK đăng nhập hocsinh:Cf0353573467*
+
 
 Xin cảm ơn!
