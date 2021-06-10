@@ -9,7 +9,7 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 ## Phần 1: Công nghệ sử dụng:
 -	Công cụ lập trình: Visual Studio
--	Công nghệ sử dụng: ASP.NET.
+-	Công nghệ sử dụng: ASP.NET API
 -	Ngôn ngữ lập trình:  Javascript , HTML, Ajax, Jquery,JavaScript. Bootstrap
 
 ## Phần 2: Các chức năng đã hoàn thành:
@@ -17,7 +17,7 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 1.Đăng nhập login (Google ,Facebook) 
 
-2.Học Bài tính % đúng sau mỗi lần học
+2.Học Bài tính mức độ % bạn hoàn thành bài đó
 
 3.Tao Đề Thi
 
@@ -29,23 +29,31 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 7.Đánh giá quá trình học tập (đánh giá bằng biểu đồ)
 
-8.Đăng kí,Mã hóa mật khẩu ,Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
+8.Đăng kí,
 
-9 Thông tin phần mềm
+9.Mã hóa mật khẩu 
 
-10 Liên Hệ
+10 Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
 
-11 Tìm kiếm câu hỏi
+11 Thông tin phần mềm
 
-12 Phân Trang 
+12 Liên Hệ
 
-13 Sử dụng youtube API xem video lý thuyết
+13 Tìm kiếm câu hỏi
 
-14 Vi phạm quy chế thi
+14 Phân Trang 
+
+15 Xử lí Page not foun
+
+16 Sử dụng youtube API xem video lý thuyết
+
+17 Vi phạm quy chế thi
+
+18 Xử lí Page not found
 
 2.2===============Admin=======================
 
-1 Đăng nhập login, Mã hoá mât khẩu
+1 Đăng nhập login admin
 
 2 Thông kê admin (Admin)
 
