@@ -14,40 +14,42 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 ## Phần 2: Các chức năng đã hoàn thành:
 2.1 ================Người Dùng===============
+ 
+1.Xây dựng cơ sở dữ liệu
 
-1.Đăng nhập login (Google ,Facebook) 
+2.Đăng nhập login (Google ,Facebook) 
 
-2.Học Bài tính mức độ % bạn hoàn thành bài đó
+3.Học Bài tính mức độ % bạn hoàn thành bài đó
 
-3.Tao Đề Thi
+4.Tao Đề Thi
 
-4.trộn đề lấy theo mức độ dẽ khó trung bình 
+5.trộn đề lấy theo mức độ dẽ khó trung bình 
 
-5.Xem kêt quả đánh giá và thông kê bài thi
+6.Xem kêt quả đánh giá và thông kê bài thi
 
-6.Quản lý học tập (Xem kết quả các bài thi)
+7.Quản lý học tập (Xem kết quả các bài thi)
 
-7.Đánh giá quá trình học tập (đánh giá bằng biểu đồ)
+8.Đánh giá quá trình học tập (đánh giá bằng biểu đồ)
 
-8.Đăng kí,
+9.Đăng kí,
 
-9.Mã hóa mật khẩu 
+10.Mã hóa mật khẩu 
 
-10 Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
+11.Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
 
-11 Thông tin phần mềm
+12.Thông tin phần mềm
 
-12 Liên Hệ
+13 Liên Hệ
 
-13 Tìm kiếm câu hỏi
+14 Tìm kiếm câu hỏi
 
-14 Phân Trang 
+15 Phân Trang 
 
-15 Xử lí Page not founD
+16 Xử lí Page not founD
 
-16 Sử dụng youtube API xem video lý thuyết
+17 Sử dụng youtube API xem video lý thuyết
 
-17 Vi phạm quy chế thi
+18 Vi phạm quy chế thi
 
 
 
