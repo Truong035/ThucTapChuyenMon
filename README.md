@@ -19,23 +19,29 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 2.Học Bài tính % đúng sau mỗi lần học
 
-3.Tao Đề Thi,trộn đề lấy theo mức độ dẽ khó trung bình 
+3.Tao Đề Thi
 
-4.Xem kêt quả đánh giá và thông kê bài thi
+4.trộn đề lấy theo mức độ dẽ khó trung bình 
 
-5.Quản lý học tập (Xem kết quả các bài thi)
+5.Xem kêt quả đánh giá và thông kê bài thi
 
-6.Đánh giá quá trình học tập (đánh giá bằng biểu đồ)
+6.Quản lý học tập (Xem kết quả các bài thi)
 
-7.Đăng kí,Mã hóa mật khẩu ,Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
+7.Đánh giá quá trình học tập (đánh giá bằng biểu đồ)
 
-8 Thông tin phần mềm
+8.Đăng kí,Mã hóa mật khẩu ,Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
+
+9 Thông tin phần mềm
 
 10 Liên Hệ
 
 11 Tìm kiếm câu hỏi
 
 12 Phân Trang 
+
+13 Sử dụng youtebe API xem video lý thuyết
+
+14 Vi phạm quy chế thi
 
 2.2===============Admin=======================
 
