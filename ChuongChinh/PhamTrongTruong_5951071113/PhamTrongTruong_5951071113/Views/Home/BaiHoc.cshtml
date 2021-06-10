@@ -3,27 +3,77 @@
     ViewBag.Title = "Học Bài";
     Layout = "~/Views/Shared/_Layout.cshtml";
     string ma = ViewBag.ID;
- 
+
 }
 
 @section scripts{
+    <script src="~/Scripts/app1.js"></script>
+
+    <script src="https://apis.google.com/js/client.js?onload=init"></script>
+    <script src="~/Scripts/JavaScript.js"></script>
 
     <script>
-      
+
+        $(document).ready(function () {
+            $('#video').hide();
+            $(document).on('click', "button[name=Hocbai]", function () {
+
+          
+                search($(this).attr("id"));
+                window.location = '#video'
+               
+            });
+            $('#frmbai').click(function () {
+
+                $('#video').slideUp();
+                window.location = '#layoutSidenav_content'
+
+            })
+
+        })
+
         var item = $('#hocbai');
         item.addClass("Narlink");
 
+
     </script>
+
 
 }
 
+<div >
+    <div class="row" id="video" style="margin-top:-2% ;margin-top:-3%">
+
+        <div class="col-11 col-sm-12 col-md-9" style="margin-top:3%" id="frmleft">
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowfullscreen></iframe>
+            </div>
+            <h3 class="card-title text-info"></h3>
+        </div>
+        <div class="col-md-3" style="margin-left:-2%" id="frmright">
+            <img src="https://i.ytimg.com/vi/Lom1Xn8Mw-8/mqdefault.jpg" class="rounded" alt="Responsive image" />
+            <h4 class="col-12 text-truncate">sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss</h4>
+        </div>
+
+    </div>
+    <br />
+</div>
+
+
+
+
+
+
 
 <div class="row card" style="margin-top:0px" id="frmbai">
+
     <div class="card-header card-header-primary">
         <h4 class="card-title">Danh Sách Bài Học</h4>
-      
+
         <p class="card-category">Các bài cần hoàn thành </p>
     </div>
+
+
     @{
         int a = 0;
         double pt = 0;
@@ -62,11 +112,11 @@
 
 
                                     }
-                                    @a    
+                                    @a
                                     @if (a < 50)
-                {
-                                    <i class="bi bi-exclamation-lg" style="margin-left:5px;color:#ff0000"></i>
-                }
+                                    {
+                                        <i class="bi bi-exclamation-lg" style="margin-left:5px;color:#ff0000"></i>
+                                    }
 
 
                                 </label>
@@ -83,13 +133,13 @@
                         <div class="col-md-3" style="margin-top:60px">
                             @if (pt < 80)
                             {
-                                
+
                             }
 
                             @{ if (pt > 0)
                                 {
                                     <div class="progress">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: @pt%" ; aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">@pt.ToString().Substring(0,2)%</div>
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: @pt%" ; aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">@pt.ToString().Substring(0, 2)%</div>
                                     </div>
                                 }
                                 else
@@ -103,7 +153,8 @@
 
 
                         </div>
-                        <div class="col-md-3" style="margin-top:40px;margin-left:25px">
+                        <div class="col-md-2" style="margin-top:20px;margin-left:25px">
+                            <button class="btn btn-danger" name="Hocbai" id="@Model.ToArray()[i].Tên_Bai">Học Bài</button>
                             <a class="btn btn-info" href="/HocBai/@Model.ToArray()[i].Ma_Bai" onclick="LamBai(id)">Làm bài</a>
                         </div>
                     </div>

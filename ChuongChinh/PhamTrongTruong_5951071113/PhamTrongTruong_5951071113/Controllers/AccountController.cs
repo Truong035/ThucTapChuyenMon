@@ -126,30 +126,38 @@ namespace PhamTrongTruong_5951071113.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login (TaiKhoan taiKhoan, string returnUrl)
         {
-
-            if (ModelState.IsValid)
+            try
             {
-                string mk = GetMD5(taiKhoan.MatKhau);
-                var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Trim().Equals(taiKhoan.MaTK) && x.Quyen==false && x.MatKhau.Equals(mk));
-                if (TK != null)
+                if (ModelState.IsValid)
                 {
-                    if (TK.TrangThai == true)
+                    string mk = GetMD5(taiKhoan.MatKhau);
+                    var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Trim().Equals(taiKhoan.MaTK) && x.Quyen == false && x.MatKhau.Equals(mk));
+                    if (TK != null)
                     {
-                        Session.Add("user", TK);
-                        return RedirectToAction("Index", "Home");
+                        if (TK.TrangThai == true)
+                        {
+                            Session.Add("user", TK);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa");
+                        }
+
                     }
+                  
                     else
                     {
-                        ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa");
+                        ModelState.AddModelError("", "Đăng Nhập Không Đúng ");
                     }
 
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Đăng Nhập Không Đúng ");
-                }
-
             }
+            catch
+            {
+                ModelState.AddModelError("", "Vui lòng nhập mật khẩu");
+            }
+           
 
             return View(taiKhoan);
 
@@ -213,12 +221,14 @@ namespace PhamTrongTruong_5951071113.Controllers
                     taiKhoan1.NgayTao = DateTime.UtcNow;
                     taiKhoan1.Ten = model.Name;
                     taiKhoan1.TrangThai = true;
-                    //TracNghiemDB tracNghiemDB = new TracNghiemDB();
-                    //tracNghiemDB.TaiKhoans.Add(taiKhoan1);
-                    //tracNghiemDB.SaveChanges();
-                    Session.Add("taotk", taiKhoan1);
-                    SendEmail(model.Email, "Xác nhận tài khoản", "Please click here to confirm  <a class='btn btn-success' href =https://localhost:44343/Account/CreateAccount >Xác Nhận</a> ");
-                    return View("ForgotPasswordConfirmation");
+                    TracNghiemDB tracNghiemDB = new TracNghiemDB();
+                    tracNghiemDB.TaiKhoans.Add(taiKhoan1);
+                    tracNghiemDB.SaveChanges();
+                    //  Session.Add("taotk", taiKhoan1);
+                    //     SendEmail(model.Email, "Xác nhận tài khoản", "Please click here to confirm  <a class='btn btn-success' href =https://localhost:44343/Account/CreateAccount >Xác Nhận</a> ");
+                    Session.Add("user", taiKhoan1);
+                    return RedirectToAction("Index", "Home");
+                //    return View("ForgotPasswordConfirmation");
                    // return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Email Đã Tồn Tại");
@@ -305,8 +315,9 @@ namespace PhamTrongTruong_5951071113.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Tk = new TracNghiemDB().TaiKhoans.Find(loginInfo.Email);
+                var Tk = new TracNghiemDB().TaiKhoans.SingleOrDefault(x=>x.MaTK.Equals(loginInfo.Email) && x.MatKhau!=null);
                 
+
                 if (Tk != null)
                 {
                     if (Tk.TrangThai == true)
@@ -403,7 +414,8 @@ namespace PhamTrongTruong_5951071113.Controllers
             {
                 return RedirectToAction("Login");
             }
-            var Tk = new TracNghiemDB().TaiKhoans.Find(loginInfo.Email);
+            TracNghiemDB tracNghiemDB = new TracNghiemDB();
+            var Tk =  tracNghiemDB.TaiKhoans.Find(loginInfo.Email);
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             if (Tk == null)
             {
@@ -413,9 +425,9 @@ namespace PhamTrongTruong_5951071113.Controllers
                 taiKhoan1.Quyen = false;
                 taiKhoan1.NgayTao = DateTime.UtcNow;
                 taiKhoan1.Ten = loginInfo.DefaultUserName;
-                TracNghiemDB tracNghiemDB = new TracNghiemDB();
+              //  TracNghiemDB tracNghiemDB = new TracNghiemDB();
                 Tk = taiKhoan1;
-                taiKhoan1.MatKhau = GetMD5("1");
+                taiKhoan1.MatKhau = "";
                 tracNghiemDB.TaiKhoans.Add(taiKhoan1);
                 tracNghiemDB.SaveChanges();
             }

@@ -19,11 +19,11 @@
         [Key]
      
         [Required(ErrorMessage = "Bạn chưa nhập tài khoản")]
-        [StringLength(50, ErrorMessage = "Bạn chưa nhập tài khoản")]
+        [StringLength(50)]
         public string MaTK { get; set; }
-        [Required(ErrorMessage = "Bạn chưa nhập mật khẩu")]
 
-        [StringLength(50, ErrorMessage = "Bạn chưa nhập mật khẩu")]
+        
+        [StringLength(50)]
         
         public string MatKhau { get; set; }
 

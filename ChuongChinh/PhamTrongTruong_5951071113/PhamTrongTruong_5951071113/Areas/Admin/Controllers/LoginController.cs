@@ -21,23 +21,31 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(TaiKhoan taiKhoan)
         {
-            if (ModelState.IsValid)
-            { 
-            string mk = GetMD5(taiKhoan.MatKhau);
-            var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Equals(taiKhoan.MaTK) && x.MatKhau.Equals(mk));
-            if (TK != null)
+            try
             {
+                if (ModelState.IsValid)
+                {
+                    string mk = GetMD5(taiKhoan.MatKhau);
+                    var TK = new TracNghiemDB().TaiKhoans.SingleOrDefault(x => x.MaTK.Equals(taiKhoan.MaTK) && x.MatKhau.Equals(mk));
+                    if (TK != null)
+                    {
 
-                Session.Add("Admin", TK);
+                        Session.Add("Admin", TK);
 
-                return RedirectToAction("Index", "/Admin/Index");
+                        return RedirectToAction("Index", "/Admin/Index");
+
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Đăng Nhập Không Đúng ");
+                    }
+                }
 
             }
-            else
-            {
-                ModelState.AddModelError("", "Đăng Nhập Không Đúng ");
+            catch {
+                        ModelState.AddModelError("", "Vui lòng nhập mật khẩu");
+
             }
-        }
             return View(taiKhoan);
 
            

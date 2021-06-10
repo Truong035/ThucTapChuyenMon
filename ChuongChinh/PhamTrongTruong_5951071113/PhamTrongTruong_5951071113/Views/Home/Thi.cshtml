@@ -22,6 +22,34 @@
         });
         $(document).ready(function () {
             // Thiết lập thời gian đích mà ta sẽ đếm
+
+            $.ajax({
+                type: 'POST',
+                url: '/Home/kiemTrade',
+                //  data: { listCH: JSON.stringify(listch) },
+                success: function (data) {
+                    if (data.startust == false)
+                    $('#dialog').show();
+                }
+            });
+
+             
+                    document.addEventListener('visibilitychange', function () {
+                        if (document.visibilityState == "hidden") {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/Home/HuyDe',
+                              //  data: { listCH: JSON.stringify(listch) },
+                                success: function (data) {
+                                    $('#dialog').show();
+                                }
+                            });
+
+                          
+                        }
+                    });
+     
+
             $('#btnnop').click(function () {
                 var buton = $('.btnchon');
 
@@ -117,6 +145,7 @@
 
     </script>
 }
+
 <div class="container-fluid" style="margin-top:-5%">
     <div class=" row card" style="width:102%">
 

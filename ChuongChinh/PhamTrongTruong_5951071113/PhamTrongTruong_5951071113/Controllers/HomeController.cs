@@ -1,17 +1,16 @@
-﻿using PhamTrongTruong_5951071113.Models;
+﻿using PagedList;
+using PhamTrongTruong_5951071113.Models;
+using PhamTrongTruong_5951071113.Models.Dao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using PhamTrongTruong_5951071113.Models.Dao;
 using System.Web.Script.Serialization;
 using DanhGia = PhamTrongTruong_5951071113.Models.Dao.DanhGia;
-using PagedList;
 
 namespace PhamTrongTruong_5951071113.Controllers
 {
-    public class HomeController :TracNghiemOnline.Controllers.BaseController
+    public class HomeController : TracNghiemOnline.Controllers.BaseController
     {
         public ActionResult Index()
         {
@@ -22,19 +21,19 @@ namespace PhamTrongTruong_5951071113.Controllers
             foreach (var item2 in list)
             {
                 pt[i] = 0;
-         var bai  =   new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true && x.Ma_Chuong == item2.Ma_Chuong);
+                var bai = new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true && x.Ma_Chuong == item2.Ma_Chuong);
                 foreach (var item in bai)
                 {
                     int a = 0;
-                
-                   try
+
+                    try
                     {
 
                         a = Convert.ToInt32(item.DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(tk.MaTK) && x.Ma_Bai == item.Ma_Bai).SoCauDung);
 
 
-                   int  b = Convert.ToInt32(item.DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(tk.MaTK) && x.Ma_Bai == item.Ma_Bai).SoCauSai);
-                        if (a != 0 && b!= 0)
+                        int b = Convert.ToInt32(item.DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(tk.MaTK) && x.Ma_Bai == item.Ma_Bai).SoCauSai);
+                        if (a != 0 && b != 0)
                         {
                             pt[i] += ((double)pt[i] + (((double)(double)(a) / (double)(a + b)) * (double)100)) / (double)2;
                         }
@@ -43,11 +42,11 @@ namespace PhamTrongTruong_5951071113.Controllers
                             pt[i] = pt[i] / (double)2;
                         }
 
-                        
+
                     }
                     catch
-                    { 
-                      
+                    {
+
                     }
 
                 }
@@ -57,17 +56,17 @@ namespace PhamTrongTruong_5951071113.Controllers
 
             ViewBag.pt = pt;
             ViewBag.Name = tk.Ten;
-          return View(new TracNghiemDB().Chuong_Hoc.Where(x=>x.Xóa==true).ToArray());
+            return View(new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa == true).ToArray());
 
         }
 
         public ActionResult OnTap()
         {
-            
+
             TaiKhoan tk = (TaiKhoan)Session["user"];
 
             ViewBag.Name = tk.Ten;
-            return View(new TracNghiemDB().Chuong_Hoc.Where(x=>x.Xóa==true).ToList());
+            return View(new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa == true).ToList());
         }
 
         public ActionResult QuanLy(int? page)
@@ -91,9 +90,9 @@ namespace PhamTrongTruong_5951071113.Controllers
             // 5. Trả về các Link được phân trang theo kích thước và số trang.
             return View(links.ToPagedList(pageNumber, pageSize));
 
-       
+
         }
-       
+
         public ActionResult SeachDethi(long? id)
         {
             if (id == null)
@@ -106,96 +105,99 @@ namespace PhamTrongTruong_5951071113.Controllers
             Session["lambai"] = danhGia;
             Session["a"] = (int)0;
             ViewBag.Name = tk.Ten;
-            return  RedirectToAction("KetQuathi", "Home");
+            return RedirectToAction("KetQuathi", "Home");
 
         }
-       public JsonResult ThongKe(int mabai)
+        public JsonResult ThongKe(int mabai)
         {
             string startut = "";
             TaiKhoan tk = (TaiKhoan)Session["user"];
             List<DeThi> deThis = new List<DeThi>();
             foreach (var item in new TracNghiemDB().DeThis.Where(x => x.MaTK.Equals(tk.MaTK)).ToList())
             {
-                if(new TracNghiemDB().DanhGias.Where(x => x.Ma_Bai == mabai).ToList().Exists(x => x.Ma_De == item.Ma_De))
+                if (new TracNghiemDB().DanhGias.Where(x => x.Ma_Bai == mabai).ToList().Exists(x => x.Ma_De == item.Ma_De))
                 {
                     deThis.Add(item);
                 }
 
             }
-           
+
             if (deThis.Count == 0)
             {
                 return Json(new
                 {
-                    arr=new int[0],
+                    arr = new int[0],
                     startut
                 }, JsonRequestBehavior.AllowGet);
             }
 
 
             List<PhamTrongTruong_5951071113.Models.DanhGia> danhGias = new List<Models.DanhGia>();
-          
-            DateTime dateTime=DateTime.Now ;
+
+            DateTime dateTime = DateTime.Now;
             try
             {
                 dateTime = deThis.Where(x => x.MaTK.Equals(tk.MaTK)).ToList().Last().NgayThi;
             }
-            catch {}
+            catch { }
             double[] DTB = new double[4];
-         
+
             for (int i = 0; i < 3; i++)
             {
-                List<PhamTrongTruong_5951071113.Models.DanhGia> danhGias1 = new List<Models.DanhGia>(); 
+                List<PhamTrongTruong_5951071113.Models.DanhGia> danhGias1 = new List<Models.DanhGia>();
                 DateTime dateTime1 = dateTime.AddDays(-1);
                 var dethi = deThis.Where(x => x.NgayThi <= dateTime && x.NgayThi > dateTime1);
                 var decuoi = dethi.ToList().First();
-              
+
                 foreach (var item in dethi)
                 {
                     var danhgia = new TracNghiemDB().DanhGias.SingleOrDefault(x => x.Ma_De == item.Ma_De && x.Ma_Bai == mabai);
                     if (danhgia != null)
                     {
-                       
+
                         if (!danhGias.Exists(x => x.Ma_De == item.Ma_De))
                         {
                             danhGias.Add(danhgia);
                         }
                         danhGias1.Add(danhgia);
                     }
-               }
+                }
                 double dtb = 0; ;
                 foreach (var item in danhGias1)
                 {
-                    dtb +=item.Diem;
+                    dtb += item.Diem;
                 }
                 try
                 {
-               
 
-                        dtb = dtb / (double)danhGias1.Count;
-                        DTB[i] = dtb;
-                  
+
+                    dtb = dtb / (double)danhGias1.Count;
+                    DTB[i] = dtb;
+
                 }
                 catch { dtb = 0; }
-                try {
+                try
+                {
                     dateTime = deThis.Where(x => x.NgayThi < decuoi.NgayThi).ToList().Last().NgayThi;
-                } catch {
+                }
+                catch
+                {
                     break;
                 }
-                
+
             }
-            double NX1 = (DTB[0] + DTB[1] + DTB[2])/(double)3;
-            
+            double NX1 = (DTB[0] + DTB[1] + DTB[2]) / (double)3;
+
 
 
             if (DTB[0] > DTB[1] && DTB[1] >= DTB[2])
             {
                 startut = "Có sự tiến bộ ổn định trong thời gian qua.";
             }
-         
+
             else if (DTB[0] < DTB[1] && DTB[1] <= DTB[2])
             {
-                startut = "Bạn không có sự tiến bộ trong thời gian qua. Kết quả"+    
+                startut = "Bạn không có sự tiến bộ trong thời gian qua. Kết quả" +
   "các bài kiếm tra có chứa nội dung này đang giảm .";
             }
             else if (DTB[0] <= DTB[1] && DTB[1] >= DTB[2])
@@ -226,27 +228,28 @@ namespace PhamTrongTruong_5951071113.Controllers
             {
                 startut += "Kiến thức của bạn ở phần bạn rất làm rất tốt. Bạn cố gắng duy trì phong độ nhé";
             }
-          
-             
 
-           var  arr = from c in danhGias.ToList().OrderBy(x=>x.Ma_De)
+
+
+            var arr = from c in danhGias.ToList().OrderBy(x => x.Ma_De)
                       select new
                       {
                           c.Ma_De,
-                         c.Diem,
-                       
+                          c.Diem,
+
                       };
-      
+
             return Json(new
             {
-                arr ,startut
-            },JsonRequestBehavior.AllowGet) ;
+                arr,
+                startut
+            }, JsonRequestBehavior.AllowGet);
         }
         public ActionResult DanhGia()
         {
             TaiKhoan tk = (TaiKhoan)Session["user"];
             ViewBag.Name = tk.Ten;
-            return View(new TracNghiemDB().Bai_Hoc.Where(x=>x.Xoa==true).ToList());
+            return View(new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true).ToList());
         }
         public ActionResult BaiHoc(long? id)
         {
@@ -256,12 +259,12 @@ namespace PhamTrongTruong_5951071113.Controllers
             }
             TaiKhoan tk = (TaiKhoan)Session["user"];
             ViewBag.ID = tk.MaTK;
-          
+
             ViewBag.Name = tk.Ten;
-            Session["machuong"]= id;
-            foreach (var item in new TracNghiemDB().Bai_Hoc.Where(x=>x.Xoa==true))
+            Session["machuong"] = id;
+            foreach (var item in new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true))
             {
-                if(!new TracNghiemDB().DS_BaiHoc.Select(x=>x).ToList().Exists(x=>x.Ma_Bai==item.Ma_Bai && x.Ma_TK.Equals(tk.MaTK)))
+                if (!new TracNghiemDB().DS_BaiHoc.Select(x => x).ToList().Exists(x => x.Ma_Bai == item.Ma_Bai && x.Ma_TK.Equals(tk.MaTK)))
                 {
 
                     TracNghiemDB tracNghiemDB = new TracNghiemDB();
@@ -271,14 +274,14 @@ namespace PhamTrongTruong_5951071113.Controllers
                         Ma_Bai = item.Ma_Bai,
                         Ma_TK = tk.MaTK,
                         SoCauDung = 0,
-                        ListCauHoi =""
+                        ListCauHoi = ""
 
-                    }) ;
+                    });
                     tracNghiemDB.SaveChanges();
                 }
-               
+
             }
-            return View(new TracNghiemDB().Bai_Hoc.Where(x=>x.Ma_Chuong==id&& x.Xoa==true));
+            return View(new TracNghiemDB().Bai_Hoc.Where(x => x.Ma_Chuong == id && x.Xoa == true));
         }
         public ActionResult LienHe()
         {
@@ -286,7 +289,7 @@ namespace PhamTrongTruong_5951071113.Controllers
             ViewBag.Name = tk.Ten;
             return View();
         }
-        public void Guimail(string nd, string tieude,string name)
+        public void Guimail(string nd, string tieude, string name)
         {
             TaiKhoan tk = (TaiKhoan)Session["user"];
             LienHe lienHe = new LienHe();
@@ -295,7 +298,7 @@ namespace PhamTrongTruong_5951071113.Controllers
             lienHe.HoTen = name;
             lienHe.Title = tieude;
             lienHe.TrangThai = false;
-            
+
             TracNghiemDB db = new TracNghiemDB();
             db.LienHes.Add(lienHe);
             db.SaveChanges();
@@ -309,7 +312,7 @@ namespace PhamTrongTruong_5951071113.Controllers
 
             foreach (var item in danhGia.ketQuaThi.Cau_Hoi)
             {
-                foreach (var item1  in item.KhoCauHoi.D_An)
+                foreach (var item1 in item.KhoCauHoi.D_An)
                 {
                     if (option.Exists(x => x.Ma_Dan == item1.Ma_Dan))
                     {
@@ -321,30 +324,30 @@ namespace PhamTrongTruong_5951071113.Controllers
                     }
                 }
 
-            } 
+            }
             danhGia.ketQuaThi.Da_LuaChon = option;
-          Session["lambai"]=danhGia;
+            Session["lambai"] = danhGia;
         }
-        public void TaoDe(string nd, int tg,string tgbd, int sl,int mucdo)
+        public void TaoDe(string nd, string tgbd, int sl, int mucdo)
         {
             TaiKhoan tk = (TaiKhoan)Session["user"];
             ViewBag.Name = tk.Ten;
             string[] list = nd.Split('/');
             string[] ngay = tgbd.Split('/');
             List<NoiDungThi> bai_Hocs = new List<NoiDungThi>();
-            for (int i = 0; i < list.Length-1; i++)
+            for (int i = 0; i < list.Length - 1; i++)
             {
                 NoiDungThi noiDungthi = new NoiDungThi();
-                noiDungthi.noidung= new TracNghiemDB().Bai_Hoc.Find(int.Parse(list[i]));
+                noiDungthi.noidung = new TracNghiemDB().Bai_Hoc.Find(int.Parse(list[i]));
                 bai_Hocs.Add(noiDungthi);
             }
             DanhGia danhGia = new DanhGia();
             danhGia.DanhGiaMucDo = bai_Hocs;
             danhGia.ketQuaThi = new DeThi();
-             new TaoDeDao().TaoDe(danhGia, sl, mucdo);
+            new TaoDeDao().TaoDe(danhGia, sl, mucdo);
             Session["noidung"] = bai_Hocs;
-            danhGia.ketQuaThi.NgayThi = new DateTime(int.Parse(ngay[0]),int.Parse(ngay[1]), int.Parse(ngay[2]), int.Parse(ngay[3]), int.Parse(ngay[4]), int.Parse(ngay[5]));
-            danhGia.ketQuaThi.ThoiGianThi = tg;
+            danhGia.ketQuaThi.NgayThi = new DateTime(int.Parse(ngay[0]), int.Parse(ngay[1]), int.Parse(ngay[2]), int.Parse(ngay[3]), int.Parse(ngay[4]), int.Parse(ngay[5])).AddMinutes(2 * sl);
+            danhGia.ketQuaThi.ThoiGianThi = 2 * sl;
             danhGia.ketQuaThi.DiêmSo = 0;
             danhGia.ketQuaThi.TrangThai = false;
             foreach (var item in danhGia.ketQuaThi.Cau_Hoi)
@@ -355,21 +358,29 @@ namespace PhamTrongTruong_5951071113.Controllers
                 }
             }
             DateTime dateTime = new DateTime(int.Parse(ngay[0]), int.Parse(ngay[1]), int.Parse(ngay[2]), int.Parse(ngay[3]), int.Parse(ngay[3]), int.Parse(ngay[4]));
-     
-           
+
+
             danhGia.ketQuaThi.MaTK = tk.MaTK;
             Session["lambai"] = danhGia;
-            Session["a"] =(int) 1;
+            Session["a"] = (int)1;
 
         }
         public ActionResult Thi()
         {
-            TaiKhoan tk = (TaiKhoan)Session["user"];
-            ViewBag.Name = tk.Ten;
-            var danhGia = (DanhGia)Session["lambai"];
-            DateTime dateTime = DateTime.Parse(danhGia.ketQuaThi.NgayThi.ToString());
-            ViewBag.GioThi = dateTime.ToString("yyyy/MM/dd HH:mm:ss");
-            return View(danhGia.ketQuaThi);
+            try
+            {
+                TaiKhoan tk = (TaiKhoan)Session["user"];
+                ViewBag.Name = tk.Ten;
+                var danhGia = (DanhGia)Session["lambai"];
+                DateTime dateTime = DateTime.Parse(danhGia.ketQuaThi.NgayThi.ToString());
+                ViewBag.GioThi = dateTime.ToString("yyyy/MM/dd HH:mm:ss");
+                return View(danhGia.ketQuaThi);
+            }
+            catch
+            {
+                return RedirectToAction("OnTap");
+            }
+
         }
 
         public ActionResult HocBai(long? id)
@@ -381,17 +392,29 @@ namespace PhamTrongTruong_5951071113.Controllers
             TaiKhoan tk = (TaiKhoan)Session["user"];
             ViewBag.Name = tk.Ten;
             ViewBag.ID = id;
-            ViewBag.machuong =(long)Session["machuong"];
+            ViewBag.machuong = (long)Session["machuong"];
             return View();
         }
-        public  ActionResult KetQuathi()
+        public JsonResult kiemTrade()
+        {
+            if (Session["lambai"] == null)
+            {
+                return Json(new { startust = false }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { startust = true }, JsonRequestBehavior.AllowGet);
+        }
+        public void HuyDe()
+        {
+            Session["lambai"] = null;
+        }
+        public ActionResult KetQuathi()
         {
             TaiKhoan tk = (TaiKhoan)Session["user"];
             ViewBag.Name = tk.Ten;
             var danhGia = (DanhGia)Session["lambai"];
-           int a= (int) Session["a"];
-            new TaoDeDao().Mark(danhGia,a);
-            Session["a"]=(int) 0;
+            int a = (int)Session["a"];
+            new TaoDeDao().Mark(danhGia, a);
+            Session["a"] = (int)0;
 
             return View(danhGia);
         }
@@ -417,7 +440,7 @@ namespace PhamTrongTruong_5951071113.Controllers
                                       }
                           };
 
-                Session["dethi"] ="";
+                Session["dethi"] = "";
                 return Json(new { arr, result = false }, JsonRequestBehavior.AllowGet);
             }
             catch { }
@@ -448,25 +471,25 @@ namespace PhamTrongTruong_5951071113.Controllers
 
 
                           };
-            
+
                 Session["dethi"] = thi;
-                
-                return Json(new { arr  ,result = false }, JsonRequestBehavior.AllowGet);
+
+                return Json(new { arr, result = false }, JsonRequestBehavior.AllowGet);
             }
-           catch { }
-            return Json(new { result=false }, JsonRequestBehavior.AllowGet);
+            catch { }
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
 
 
         }
-        public void Check(long id ,long mabai)
+        public void Check(long id, long mabai)
         {
             TaiKhoan tk = (TaiKhoan)Session["user"];
-            TracNghiemDB     db=  new TracNghiemDB();
+            TracNghiemDB db = new TracNghiemDB();
             if (db.D_An.ToList().Exists(x => x.Ma_Dan == id && x.TrangThai == true))
             {
                 var danhgia = db.DS_BaiHoc.SingleOrDefault(x => x.Ma_Bai == mabai && x.Ma_TK.Equals(tk.MaTK));
                 danhgia.SoCauDung++;
-                danhgia.ListCauHoi= danhgia.ListCauHoi.Trim()+new TracNghiemDB().D_An.Find(id).Ma_CH + "/";
+                danhgia.ListCauHoi = danhgia.ListCauHoi.Trim() + new TracNghiemDB().D_An.Find(id).Ma_CH + "/";
                 db.SaveChanges();
             }
             else

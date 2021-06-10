@@ -15,7 +15,7 @@
            
             $('#btntao').click(function () {
                 var mucdo = $('#txtmudo').val();
-                var thoigian = $('#txttg').val().trim();
+      
                 var sl = $('#txtsl').val();
                 var input = $('.txtchon');
                 var arr="";
@@ -29,9 +29,7 @@
                 if (mucdo.length == 0) {
                     alert("Bạn vui lòng chọn mức độ câu hỏi")
                 }
-                else if (thoigian.length == 0) {
-                    alert("Bạn vui lòng nhập thời gian câu hỏi");
-                }
+               
                 else if (sl.length == 0) { alert("Bạn vui lòng nhập số lượng câu hỏi") }
                 else if (dem == 0) {
                     alert("Bạn vui lòng chọn bài cần thi")
@@ -44,14 +42,14 @@
                 }
                 else {
                   
-                    var ngay = new Date();
-                    var now = TaoNgay(ngay, thoigian);
+                    var now = new Date();
+                    //var now = TaoNgay(ngay, thoigian);
                     var tgbd = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() + '/' + now.getHours() + '/' + now.getMinutes() + '/' + now.getSeconds() + ""
 
                     $.ajax({
                         type: 'POST',
                         url: '/Home/TaoDe',
-                        data: { nd: arr, tg: thoigian, tgbd:tgbd,sl:sl.trim(), mucdo: mucdo.trim()},
+                        data: { nd: arr, tgbd:tgbd,sl:sl.trim(), mucdo: mucdo.trim()},
                         success: function (data) {
                             window.location = "/Home/Thi";
                         }
@@ -112,7 +110,7 @@
 
 
 
-                <div class="row">
+                @*<div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label class="bmd-label-floating">Thời Gian</label>
@@ -131,7 +129,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
