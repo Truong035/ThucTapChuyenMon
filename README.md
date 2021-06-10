@@ -39,7 +39,7 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 12 Phân Trang 
 
-13 Sử dụng youtebe API xem video lý thuyết
+13 Sử dụng youtube API xem video lý thuyết
 
 14 Vi phạm quy chế thi
 
