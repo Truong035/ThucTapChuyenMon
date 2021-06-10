@@ -43,13 +43,13 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 14 Phân Trang 
 
-15 Xử lí Page not foun
+15 Xử lí Page not founD
 
 16 Sử dụng youtube API xem video lý thuyết
 
 17 Vi phạm quy chế thi
 
-18 Xử lí Page not found
+
 
 2.2===============Admin=======================
 
