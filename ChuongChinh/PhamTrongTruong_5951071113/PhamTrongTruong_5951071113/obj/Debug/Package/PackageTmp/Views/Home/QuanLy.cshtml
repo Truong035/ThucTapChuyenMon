@@ -1,0 +1,101 @@
+﻿@model PagedList.IPagedList<PhamTrongTruong_5951071113.Models.DeThi>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Quản Lý Học Tập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script>
+        var item = $('#quanly');
+        item.addClass("Narlink");
+
+    </script>
+
+}
+<div class="col-lg-12 col-md-12" style="margin-top:-3%">
+    <div class="card">
+        <div class="card-header card-header-info">
+            <h4 class="card-title">Danh Sách Đề Thi</h4>
+
+        </div>
+        <div class="card-body table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="font-weight:500">Mã đề</th>
+                        <th style="font-weight:900">Kiến Thức</th>
+                        <th style="font-weight:600">Điểm Số</th>
+                        <th style="font-weight:600">Thời Gian </th>
+                        <th style="font-weight:600">Ngày Thi </th>
+                        <th style="font-weight:200"></th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td> @item.Ma_De</td>
+
+                            @{
+                                var listnd = new List<PhamTrongTruong_5951071113.Models.Bai_Hoc>();
+
+                                foreach (var item1 in item.Cau_Hoi)
+                                {
+                                    if (!listnd.Exists(x => x.Ma_Bai == item1.KhoCauHoi.Ma_Bai))
+                                    {
+                                        listnd.Add(new PhamTrongTruong_5951071113.Models.TracNghiemDB().Bai_Hoc.Find(item1.KhoCauHoi.Ma_Bai));
+
+                                    }
+
+                                }
+                                <td>
+                                    @foreach (var item2 in listnd)
+                                    {
+                                        <div class="stats">
+                                            @item2.Tên_Bai.ToString()
+                                        </div>
+                                    }
+
+                                </td>
+                            }
+
+                            <td>
+                                @item.DiêmSo
+                            </td>
+                            <td>
+                                @item.ThoiGianThi phút
+                            </td>
+                            <td>
+                                @item.NgayThi
+                            </td>
+                            <td>
+                                <a href="/SeachDethi/@item.Ma_De">
+
+                                    <i class="bi bi-eye" style="font-size: 1.7rem;"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+                  
+                </div>
+                <div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+                    Trang: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+                </div>
+            </div>
+
+            @Html.PagedListPager(Model, page => Url.Action("QuanLy", new { page}))
+
+        </div>
+    </div>
+</div>
+
+

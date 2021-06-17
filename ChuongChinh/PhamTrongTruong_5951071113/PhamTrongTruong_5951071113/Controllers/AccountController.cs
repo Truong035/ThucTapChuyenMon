@@ -6,11 +6,12 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mail;
 using System.Web.Mvc;
-using System.Windows.Forms;
+using HtmlAgilityPack;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -19,11 +20,58 @@ using PhamTrongTruong_5951071113.Models;
 
 namespace PhamTrongTruong_5951071113.Controllers
 {
+ 
+   
     [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        public List<KhoCauHoi> getdl()
+        {
+            List<KhoCauHoi> khocauhoi = new List<KhoCauHoi>();
+            string link = "https://khoahoc.vietjack.com/thi-online/10-de-thi-thu-tot-nghiep-thpt-quoc-gia-nam-2021-mon-vat-li-co-loi-giai-chi-tiet/62201/ket-qua";
+            HtmlWeb htmlWeb = new HtmlWeb()
+            {
+                AutoDetectEncoding = false,
+                OverrideEncoding = Encoding.UTF8  //Set UTF8 để hiển thị tiếng Việt
+            };
+
+            HtmlDocument document = htmlWeb.Load(link);
+
+            var t0 = document.DocumentNode.SelectNodes("//div[@class='col-md-12']").ToList();
+    
+            //var threadItems = threadI.SelectNodes("//div[@class='col-md-12']").ToList();
+            foreach (var s in t0)
+            {
+                //KhoCauHoi cauhoi = new KhoCauHoi();
+
+                //var c = s.SelectSingleNode(".//div[@class='question-name']/p");
+                //cauhoi.NoiDung = c.InnerText;
+                //cauhoi.D_An = new List<D_An>();
+                //for (int i = 0; i < 4; i++)
+                //{
+                //    cauhoi.D_An.Add(new D_An
+                //    {
+
+                //    });
+
+                //}
+                //var dapandung = s.SelectSingleNode(".//div[@ class='anwser-item col-xs-12 d-flex correct ']/p").InnerText;
+
+                //var dapan = s.SelectNodes(".//div[@ class='anwser-item col-xs-12 d-flex']").ToList();
+                //foreach (var cauhoisai in dapan)
+                //{
+                //    var dapansai = cauhoisai.SelectSingleNode(".//p").InnerText;
+                //}
+
+
+            }
+
+            //   Lkhocauhoi = new List<KhoCauHoi>();
+            return khocauhoi;
+
+        }
 
         public AccountController()
         {
@@ -352,6 +400,7 @@ namespace PhamTrongTruong_5951071113.Controllers
         [AllowAnonymous]
         public ActionResult GioiThieu()
         {
+            getdl();
 
             return View();
         }

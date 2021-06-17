@@ -1,0 +1,314 @@
+﻿
+@model PhamTrongTruong_5951071113.Models.DeThi
+@{
+    ViewBag.Title = "Thi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script>
+        var item = $('#onbai');
+        item.addClass("Narlink");
+        $(document).on('click', "button[name ='chon']", function () {
+            var ma = this.id;
+            var roll = $('.chon');
+            for (var i = 0; i < roll.length; i++) {
+                if (roll[i].id == ma) {
+                    roll[i].click();
+
+                }
+            }
+
+        });
+        $(document).ready(function () {
+            // Thiết lập thời gian đích mà ta sẽ đếm
+
+            $.ajax({
+                type: 'POST',
+                url: '/Home/kiemTrade',
+                //  data: { listCH: JSON.stringify(listch) },
+                success: function (data) {
+                    if (data.startust == false) {
+                        var let = `    <div id="dialog">
+
+        <div class="col-lg-5 col-md-10 col-sm-10 container text-center" style="margin-top:10%">
+            <div class="card card-stats">
+                <div class="card-header card-header-warning">
+                    <h4 class="card-title text-center">Thông báo</h4>
+                </div>
+                <div class="card-header">
+                    <div class="stats">
+
+                        <h3 class="card-text">Bạn đã vi phạm quy chế thi</h3>
+                    </div>
+                 </div>
+                <div class=" card-header-text text-center">
+                    <a class="btn btn-info" href="/Home/OnTap">Thoát</a>
+                </div>
+            </div>
+        </div>
+    </div>`
+
+
+                        $('#thongbao').append(let);
+
+                        $('#thongbao').show();
+                    }
+                }
+            });
+
+             
+                    document.addEventListener('visibilitychange', function () {
+                        if (document.visibilityState == "hidden") {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/Home/HuyDe',
+                              //  data: { listCH: JSON.stringify(listch) },
+                                success: function (data) {
+
+                                    var let =`    <div id="dialog">
+
+        <div class="col-lg-5 col-md-10 col-sm-10 container text-center" style="margin-top:10%">
+            <div class="card card-stats">
+                <div class="card-header card-header-warning">
+                    <h4 class="card-title text-center">Thông báo</h4>
+                </div>
+                <div class="card-header">
+                    <div class="stats">
+
+                        <h3 class="card-text">Bạn đã vi phạm quy chế thi</h3>
+                    </div>
+                 </div>
+                <div class=" card-header-text text-center">
+                    <a class="btn btn-info" href="/Home/OnTap">Thoát</a>
+                </div>
+            </div>
+        </div>
+    </div>`
+
+
+                                    $('#thongbao').append(let);
+
+                                    $('#thongbao').show();
+                                }
+                            });
+
+                          
+                        }
+                    });
+     
+
+            $('#btnnop').click(function () {
+                var buton = $('.btnchon');
+
+            listch = [];
+            var checkbox = $('.txtch');
+            for (var i = 0; i < checkbox.length; i++) {
+                if (checkbox[i].checked == true) {
+                    listch.push({
+                        Ma_Dan: checkbox[i].id,
+                        Ma_De: 1,
+                    });
+                }
+                }
+                if (listch.length == buton.length) {
+                    window.location = "/Home/KetQuathi";
+                }
+                else {
+                    alert("vui lòng làm hết câu hỏi");
+                }
+
+
+            });
+            var tg = $('#TxtThoiGian').val();
+            var countDownDate = new Date(tg).getTime();
+            // cập nhập thời gian sau mỗi 1 giây
+            var x = setInterval(function () {
+                // Lấy thời gian hiện tại
+                var now = new Date().getTime();
+                // Lấy số thời gian chênh lệch
+                var distance = countDownDate - now;
+
+                // Tính toán số ngày, giờ, phút, giây từ thời gian chênh lệch
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // HIển thị chuỗi thời gian trong thẻ p
+                if (hours > 0) {
+                    document.getElementById("thoigian").innerHTML = "Thời Gian Còn Lại  " + hours + " : "
+                        + minutes + " : " + seconds + " Phút ";
+                }
+                else {
+                    document.getElementById("thoigian").innerHTML = "Thời Gian Còn Lại  "
+                        + minutes + " : " + seconds + " Phút ";
+                }
+                // Nếu thời gian kết thúc, hiển thị chuỗi thông báo
+                if (distance < 0) {
+                    alert("Đã Hết Giờ Làm Bài")
+                      window.location = "/Home/KetQuathi";
+                    clearInterval(x);
+                }
+            }, 1000);
+        });
+
+        var listch = [];
+        function chonan(button) {
+            var mach = $(button).val();
+            var buton = $('.btnchon');
+            $.each(buton, function (k, v) {
+
+                if (v.id == mach) {
+                    $(v).removeClass('btn-outline-secondary');
+                    $(v).addClass('btn-success');
+
+                }
+            })
+
+            listch = [];
+            var checkbox = $('.txtch');
+            for (var i = 0; i < checkbox.length; i++) {
+                if (checkbox[i].checked == true) {
+                    listch.push({
+                        Ma_Dan: checkbox[i].id,
+                        Ma_De: 1,
+                    });
+                }
+
+            }
+            if (listch.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/LuuDapAn',
+                    data: { listCH: JSON.stringify(listch) },
+                    success: function (data) {
+                        // window.location = "/Admin/Admin/LoadCauHoi";
+                    }
+                });
+            }
+
+        }
+
+
+    </script>
+}
+
+<div class="container-fluid" style="margin-top:-5%">
+    <div class=" row card" style="width:102%">
+
+        <input id="TxtThoiGian" value="@ViewBag.GioThi" hidden />
+        <div class=" right card-header card-header-primary text-center" style=" left:40%; width:200px;">
+            <h4 class="card-title">Bài Thi</h4>
+        </div>
+
+        <div class="col-9">
+
+            @{
+                int dem = 0;
+                foreach (var item in Model.Cau_Hoi)
+                {
+
+
+                    dem++;
+                    <h4 class=" card-body chon"  id="@item.KhoCauHoi.Ma_CH">Câu @dem )@item.KhoCauHoi.NoiDung </h4>
+                    try
+                    {
+                        if (item.KhoCauHoi.HinhAnh.Length > 0)
+                        {
+                            <div class="row card-header" style="margin-top:0px;margin-left:10%;margin-top:-30px">
+                                <img src="@item.KhoCauHoi.HinhAnh" width="150">
+                            </div>}
+                    }
+                    catch { }
+
+
+                    foreach (var item1 in item.KhoCauHoi.D_An)
+                    {
+                        if (item1.TrangThai == false)
+                        {
+                            <div class="row card-header" style="margin-top:0px;margin-left:3%" ;>
+                                <label class="form-check-label" for="@item1.Ma_Dan">
+                                    <input class="form-check-input txtch" onclick="chonan(this)" type="radio" value="@item.KhoCauHoi.Ma_CH" name="@item.KhoCauHoi.Ma_CH" id="@item1.Ma_Dan">
+                                    @item1.NoiDung
+                                </label>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="row card-header" style="margin-top:0px;margin-left:3%" ;>
+                                <label class="form-check-label" id="@item1.Ma_Dan" for="@item1.Ma_Dan">
+                                    <input class="form-check-input txtch" type="radio" onclick="chonan(this)" value="@item.KhoCauHoi.Ma_CH" checked name="@item.KhoCauHoi.Ma_CH" id="@item1.Ma_Dan">
+                                    @item1.NoiDung
+                                </label>
+                            </div>
+
+                        }
+                        try
+                        {
+
+                            if (item1.HinhAnh.Length > 0)
+                            {
+                                <div class="row card-header" style="margin-top:0px;margin-left:6%" ;>
+                                    <img src="@item1.HinhAnh" width="150">
+                                </div>}
+                        }
+                        catch { }
+
+
+                    }
+
+
+                }
+            }
+        </div>
+        <div id="DongHo" class="col-2">
+            <div class="card" style="border-color:#000000">
+                <div class=" card-header-info">
+                    <h5 class="card-title text-center">Danh sách câu hỏi  </h5>
+                </div>
+                <div class="card-header">
+                    <div class="stats">
+                        <label id="thoigian"></label>
+                    </div>
+                    <div class="stats">
+                        <label class="small">Số câu @Model.Cau_Hoi.Count câu </label>
+                    </div>
+                    <div class="stats">
+                        @{
+                            int cout = 1;
+                            foreach (var item in Model.Cau_Hoi)
+                            {
+                                if (item.KhoCauHoi.D_An.ToList().Exists(x => x.TrangThai == true))
+                                {
+                                    <a name="chon" href="#@item.KhoCauHoi.Ma_CH" id="@item.KhoCauHoi.Ma_CH" class="btn btn-success btnchon" style=" margin-bottom:3px; border-radius:30% ;padding:2px;width:30px;height:30px"> @cout</a>
+
+                                }
+                                else
+                                {
+                                    <a name="chon" href="#@item.KhoCauHoi.Ma_CH" id="@item.KhoCauHoi.Ma_CH" class="btn btn-outline-secondary btnchon" style=" margin-bottom:3px; border-radius:30% ;padding:2px;width:30px;height:30px"> @cout</a>
+                                }
+
+                                cout++;
+                            }
+                        }
+
+                    </div>
+
+
+                </div>
+                <div class=" card-header-text text-center">
+                    <button class="btn btn-facebook " id="btnnop"> Nộp Bài</button>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+

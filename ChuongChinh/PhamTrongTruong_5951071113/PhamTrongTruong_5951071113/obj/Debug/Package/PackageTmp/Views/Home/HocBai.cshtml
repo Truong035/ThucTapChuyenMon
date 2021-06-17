@@ -1,0 +1,340 @@
+﻿
+@{
+    ViewBag.Title = "Học Bài";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    long ma1 = ViewBag.machuong;
+    long ma = ViewBag.ID;
+}
+
+@section scripts{
+    <script>
+        var i = 0;
+        var caudung = 0;
+        $(document).ready(function () {
+            $('#frmhoc').hide();
+           $('#frmketqua').hide();
+        
+            $('#btnBatDau').click(function () {
+                $.ajax({
+                    type: 'post',
+                    url: '/Home/CauHoi/' + $('#txtmasach').val(),
+                    success: function (data) {
+                        arr = data.arr
+                        i = 0;
+                        LoadCauHoi();
+                        //  i--;
+                        $('#frmhoc').slideDown();
+                        $('#frmBatDau').hide();
+
+                    }
+                })
+            }),
+
+                $('#btnnext').click(function () {
+                    i = 0;
+                    $('#btnright').empty();
+                    $('#btnright').addClass("btn-primary");
+                    $('#btnright').removeClass("btn-success");
+                    $('#btnright').append('<i class="bi bi-arrow-right card-body" style="top:10px; font-size:25px"></i>')
+                    $('#frmBatDau').slideDown();
+                    $('#frmketqua').hide();
+                });
+
+
+                $('#btnright').click(function () {
+
+                    if (i < 0) { i = 0; }
+                    i++;
+                    if (i > 5) {
+                        var cauchualam = 0;
+                        caudung = 0;
+                        var causai = 0;
+                        for (var k = 0; k < arr.length; k++) {
+                            dem =0;
+
+                            for (var j = 0; j < arr[k].Dapan.length; j++) {
+                                if (arr[k].Dapan[j].TrangThai == true) {
+                                 
+                                    dem++;
+                                  
+                                
+                                    $.ajax({
+                                        type: 'post',
+                                        url: '/Home/Check',
+                                        data: { id: arr[k].Dapan[j].Ma_Dan, mabai: $('#txtmasach').val() },
+                                        success: function (data) {
+                                        
+                                        }
+                                    });
+                                 
+                                }
+                                 
+                            }
+                            if (dem == 0) {
+                                
+                                cauchualam++;
+
+                            }
+                        }
+
+                        $('#particles1').show();
+                       
+                        $.ajax({
+                            type: 'post',
+                            url: '/Home/KetQuaHocTap',
+                            success: function (data) {
+                                arr1 = data.arr;
+                                $('#frmbailam').empty();
+                                for (var j = 0; j < arr.length; j++){
+                                   
+                                    var let = '<div class="col-6" style="margin-bottom:-30px">';
+                                    let += '<div class="card">';   
+                                    let += '<h5 class="row card-body card-title" >' + arr[j].NoiDung + '</h5 >';
+                                    for (var k = 0; k < arr[j].Dapan.length; k++) {
+                                        if (arr1[j].Dapan[k].TrangThai == true & arr[j].Dapan[k].TrangThai == true){
+                                            let += '<div class="row card-header" style = "margin-top:0px;margin-left:3%">';
+                                            let += '<label class="form-check-label" for= "flexRadioDefault">';
+                                            let += '<i style = "font-size: 1rem;margin-top:-3px; color: #44ad57" class=" form-check-input bi bi-check-circle-fill" name = "flexRadioDefault" id = "flexRadioDefault1" ></i >';
+                                            let += arr[j].Dapan[k].NoiDung;
+                                            let += '</label >';
+                                            let += '</div >';
+                                            caudung++;
+                                          
+                                        }
+                                        else {
+                                            if (arr1[j].Dapan[k].TrangThai == true) {
+                                                let += '<div class="row card-header" style = "margin-top:0px;margin-left:3%">';
+                                                let += '<label class="form-check-label text-success" for="flexRadioDefault1">';
+                                                let += '<input class="form-check-input" disabled type="radio" name="flexRadioDefault" id="flexRadioDefault2">';
+                                                     let += arr[j].Dapan[k].NoiDung;
+                                                let += '</label>';
+                                                let += '</div >';
+                                            }
+
+                                            else {
+                                                if (arr[j].Dapan[k].TrangThai == true & arr1[j].Dapan[k].TrangThai == false) {
+                                                    let += '<div class="row card-header" style = "margin-top:0px;margin-left:3%">';
+                                                    let += '<label class="form-check-label" for="flexRadioDefault1">';
+                                                    let += '<i style = "font-size: 1rem;margin-top:-3px;color: #9b0000" class="form-check-input bi bi-x-circle-fill" name = "flexRadioDefault" id = "flexRadioDefault1" ></i >';
+                                                    let += arr[j].Dapan[k].NoiDung;
+                                                    let += '</label>';
+                                                    let += '</div >';
+                                                    causai++;
+                                                  
+                                                }
+                                                else if (arr[j].Dapan[k].TrangThai == false) {
+                                                    let += '<div class="row card-header" style="margin-top:0px;margin-left:3%">';
+                                                    let += '<label class="form-check-label" for="flexRadioDefault2">';
+                                                    let += '<input class="form-check-input" disabled type="radio" name="flexRadioDefault" id="flexRadioDefault2">';
+                                                    let += arr[j].Dapan[k].NoiDung;
+                                                    let += '</label>';
+                                                    let += '</div>';
+                                                }
+
+                                            }
+                                        } 
+                                  
+                                    }
+
+                                    let += '</div >';
+                                    let += '</div >';
+                                    $('#frmbailam').append(let);      
+                                }
+                              
+               
+                                $('#ketqua').empty();
+                                var let = ` <label class="card-title col-md-2 "> <i style="font-size: 1rem;margin-top:-3px; color: #44ad57" class="bi bi-check-circle-fill"></i> ` + caudung + ` Câu đúng  </label>  
+                <label class="card-title col-md-2 "><i style="font-size: 1rem;margin-top:-3px; color: #9b0000" class=" bi bi-x-circle-fill"></i> `+ causai + ` Câu sai  </label>
+                <label class="card-title col-md-2"> <i class="bi bi-x-circle" style="font-size: 1rem;margin-top:-3px"></i> `+ cauchualam + ` Chưa làm </label>`;
+
+                                $('#ketqua').append(let);
+                                var today = new Date();
+                                var date = today.getDate() + '-' + (today.getMonth() + 1) + '-' + today.getFullYear();
+                                var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                                var dateTime = date + ' ' + time;
+
+                                document.getElementById("hvn").innerHTML = "Ngày " + dateTime;
+
+                                $('#frmketqua').slideDown();
+                                $('#particles1').hide();
+                                $('#frmhoc').hide();
+                            }
+                        });
+
+
+                    }
+                    else if (i < 6) {
+                        LoadCauHoi();
+                        if (i == 5) {
+                            $('#btnright').empty();
+                            $('#btnright').removeClass("btn-primary");
+                            $('#btnright').addClass("btn-success");
+                            $('#btnright').append('<h5 style="margin-top: 10px"> Nộp Bài </h5>')
+
+                        }
+                    }
+                })
+                $('#btnleft').click(function () {
+                    if (i>5) {
+                        i = 5;
+                        $('#btnright').empty();
+                        $('#btnright').addClass("btn-primary");
+                        $('#btnright').removeClass("btn-success");
+                        $('#btnright').append('<i class="bi bi-arrow-right card-body" style="top:10px; font-size:25px"></i>')
+                    }
+                    i--;
+                    if (i>=0) {
+                        LoadCauHoi();
+
+                    }
+                })
+            var dem = 0;
+            $('#btnClose1').click(function () {
+                window.location = "/BaiHoc/" + $('#txtid').val();
+            });
+            $('#btnClose').click(function () {
+                window.location = "/BaiHoc/" + $('#txtid').val();
+            });
+        });
+        var arr = [];
+        var arr1 = [];
+        function chon(ID) {
+
+            $.each(arr[i].Dapan, function (k, v) {
+
+                if (v.Ma_Dan == ID) {
+                    v.TrangThai =true;
+                }
+            });
+        }
+        function LoadCauHoi() {
+            $('#frmbody').empty();
+
+            var let = '<h3 class="row card-body card-title"> Câu ' +(i+1) + arr[i].NoiDung + '</h3>';
+            @*let+= '< div class="row card-header" style = "margin-top:0px;margin-left:10%;margin-top:-30px" >
+                    <img src="~/assets/img/signin-image.jpg" width="150">
+                </div>*@
+            $.each(arr[i].Dapan, function (k, v) {
+
+                let += '<div class="row card-header" style = "margin-top:0px;margin-left:3%";>';
+                if (v.TrangThai == true) {
+                    let += '<input class="form-check-input txtluachon" onclick="chon(id)" type = "radio" checked="checked" name = "' + arr[i].Ma_CH + '" id = "' + v.Ma_Dan + '" >';
+                }
+                else {
+                    let += '<input class="form-check-input txtluachon" onclick="chon(id)" type = "radio" name = "' + arr[i].Ma_CH + '" id = "' + v.Ma_Dan + '" >';
+                }
+
+                let += '<label class="form-check-label" for= "' + v.Ma_Dan + '" >'
+                let += v.NoiDung;
+                let += '</label >';
+                let+='</div >';
+            });
+            $('#txtbai').text((i + 1) + '/6');
+            $('#frmbody').append(let);
+        }
+        var item = $('#hocbai');
+        item.addClass("Narlink");
+    </script>
+
+}
+
+
+<div class="col-12" >
+    <input id="txtid" hidden value="@ma1" />
+    <input id="txtmasach" hidden value="@ma" />
+
+
+    <div class="row" id="frmBatDau">
+        <div class="card row col-8 container" style="margin-top:0px;margin-left:20%;height:250px">
+            <div class="row align-self-sm-end" style="margin-right:-2px">
+
+                <i id="btnClose" class="bi bi-x-square-fill" style="font-size: 2rem; color: #ff4a4a; height: 20px; width: 20px"></i>
+
+            </div>
+            <div class="card-body text-center" style="margin-top:60px">
+                <button id="btnBatDau" class="btn btn-warning"> Bắt đầu</button>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="row container" id="frmhoc">
+        <div class="card row card-body col-9" style="padding:30px; margin-top:-5px;margin-left:20%">
+            <div class=" right card-header card-header-primary text-center" style=" left:35%; width:200px; margin-top:-60px">
+                <h4 class="card-title">Học Bài</h4>
+            </div>
+            <div class="row  align-self-sm-end" style="margin-right:-2.2%; margin-top:-3.6%">
+                <i id="btnClose1" class="bi bi-x-square-fill" style="font-size: 2rem; color: #ff4a4a; height: 20px; width: 20px"></i>
+            </div>
+            <br />
+            <div id="frmbody">
+                <h3 class="row card-body card-title"> </h3>
+                <div class="row card-header" style="margin-top:0px;margin-left:10%;margin-top:-30px">
+                    <img src="~/assets/img/signin-image.jpg" width="150">
+                </div>
+                <div class="row card-header" style="margin-top:0px;margin-left:3%" ;>
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault">
+                    <label class="form-check-label" for="flexRadioDefault">
+                        Default checked radio
+                    </label>
+                </div>
+                <div class="row card-header" style="margin-top:0px;margin-left:3%" ;>
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Default checked radio
+                    </label>
+                </div>
+                <div class="row card-header" style="margin-top:0px;margin-left:3%" ;>
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Default checked radio
+                    </label>
+                </div>
+                <div class="row card-header" style="margin-top:0px;margin-left:6%" ;>
+                    <img src="~/assets/img/signin-image.jpg" width="150">
+                </div>
+
+            </div>
+
+            <div class="row" style="margin-top:0px;margin-left:5px" ;>
+                <div class="col-12 row">
+                    <div class="row col-12 align-items-end text-center">
+                        <div id="btnleft" class="col btn-primary" style=" height:40px">
+                            <i class="bi bi-arrow-left card-body" style="top:10px; font-size:25px"></i>
+                        </div>
+                        <div class="col btn-outline-primary" style=" border:1px solid #08a2ee; height: 40px">
+                            <h5 id="txtbai" style="margin-top: 8px"> 0/5 </h5>
+                        </div>
+                        <div id="btnright" class="col col btn-primary" style="height:40px">
+                            <i class="bi bi-arrow-right card-body" style="top:10px; font-size:25px"></i>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="frmketqua" style="margin-top:-2%">
+
+        <div class= "text-right">
+            <button class="btn btn-primary" id="btnnext">Tiếp Tuc</button>
+            <a href="/BaiHoc/@ma1" class="btn btn-dark">Đóng</a>
+        </div>
+        <div class=" card card-header text-center">
+            <h3 class="card-title text-center">Kết quả bài làm của bạn </h3>
+            <label id="hvn" class="card-title text-center">  </label>
+            <div class="col-12" id="ketqua">
+               
+            </div>
+        </div>
+        <div class="row" id="frmbailam">
+         
+
+
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "Liên Hệ Góp Ý";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script>
+        var item = $('#lienhe');
+        item.addClass("Narlink");
+        $('#btnnhan').click(function () {
+            var name = $('#txtname').val();
+            var tieude = $('#txttieude').val();
+            var noidung = $('#txtnoidung').val();
+
+       
+            if (tieude.length == 0) {
+                alert("Vui lòng nhập tiêu đề")
+            }
+            else if (noidung.length == 0) {
+                alert("Vui lòng nhập tiêu đề")
+            }
+            else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/Guimail',
+                    data: { nd: noidung, tieude: tieude, name: name },
+                    success: function (data) {
+                        $('#txtname').val("");
+                        $('#txttieude').val("");
+                        $('#txtnoidung').val("");
+                    }
+                });
+            }
+
+
+
+        });
+
+    </script>
+
+}
+
+        <div class="row ">
+            <div class="col-md-8 container">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Liên Hệ -Góp Ý</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Họ Và Tên</label>
+                                        <input type="text" id="txtname" class="form-control col-md-12">
+                                    </div>
+                                </div>
+
+                            </div>
+
+   
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="bmd-label-floating">Tiêu Đề</label>
+                                        <input type="text" id="txttieude" class="form-control col-md-12">
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label>Nội Dung</label>
+                                        <div class="form-group">
+                                   
+                                            <textarea class="form-control form-control col-md-12" id="txtnoidung" rows="5"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-secondary" id="btnnhan">Gửi</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+

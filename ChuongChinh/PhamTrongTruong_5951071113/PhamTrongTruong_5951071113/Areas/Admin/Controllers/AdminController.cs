@@ -14,22 +14,24 @@ using Spire.Doc.Documents;
 using Spire.Doc.Fields;
 using System.Web.Script.Serialization;
 using PagedList;
+using HtmlAgilityPack;
+using System.Text;
 
 namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 {
-    public class AdminController :BaseController
+    public class AdminController : BaseController
     {
         // GET: Admin/Admin
-        public ActionResult Index(int ? page)
+        public ActionResult Index(int? page)
         {
+     
 
-          
-           ; // 2. Nếu page = null thì đặt lại là 1.
+            ; // 2. Nếu page = null thì đặt lại là 1.
             if (page == null) page = 1;
 
             // 3. Tạo truy vấn, lưu ý phải sắp xếp theo trường nào đó, ví dụ OrderBy
             // theo LinkID mới có thể phân trang.
-            var links = (from l in new TracNghiemDB().TaiKhoans.Where(x => x.Quyen==false && x.TrangThai==true).ToList()
+            var links = (from l in new TracNghiemDB().TaiKhoans.Where(x => x.Quyen == false && x.TrangThai == true).ToList()
                          select l).OrderBy(x => x.NgayTao);
 
             // 4. Tạo kích thước trang (pageSize) hay là số Link hiển thị trên 1 trang
@@ -41,18 +43,18 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
             ViewBag.listCH = new TracNghiemDB().KhoCauHois.Where(x => x.Xoa == true).ToList();
             // 5. Trả về các Link được phân trang theo kích thước và số trang.
             return View(links.ToPagedList(pageNumber, pageSize));
-        
+
 
         }
-        public void CloseTK(string matk,bool TrangThai)
+        public void CloseTK(string matk, bool TrangThai)
         {
             TracNghiemDB tracNghiemDB = new TracNghiemDB();
             var TK = tracNghiemDB.TaiKhoans.Find(matk);
             TK.TrangThai = TrangThai;
             tracNghiemDB.SaveChanges();
-        
+
         }
-       public void CheckMess(long? STT)
+        public void CheckMess(long? STT)
         {
             TracNghiemDB db = new TracNghiemDB();
             var lienhe = db.LienHes.Find(STT);
@@ -61,10 +63,10 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
         }
         public ActionResult LienHe()
         {
-            var lh = new TracNghiemDB().LienHes.Where(x=>x.NguoiNhan==null).ToList().OrderByDescending(x=>x.STT).ToList();
+            var lh = new TracNghiemDB().LienHes.Where(x => x.NguoiNhan == null).ToList().OrderByDescending(x => x.STT).ToList();
             return View(lh);
         }
-        public JsonResult AddBai(int? Ma_Chuong,string tenBai)
+        public JsonResult AddBai(int? Ma_Chuong, string tenBai)
         {
             try {
 
@@ -76,22 +78,22 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                 db.Bai_Hoc.Add(bai_Hoc);
                 db.SaveChanges();
                 return Json(new { code = 200, msg = "Thêm mới thành công" }, JsonRequestBehavior.AllowGet);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 return Json(new { code = 500, msg = "Không thành công" + e.Message }, JsonRequestBehavior.AllowGet);
-            
+
+
+            }
+
 
         }
-            
-
-        }
-        public JsonResult Deletebai( int? Mabai)
+        public JsonResult Deletebai(int? Mabai)
         {
             try
             {
 
                 TracNghiemDB db = new TracNghiemDB();
                 Bai_Hoc bai_Hoc = db.Bai_Hoc.Find(Mabai);
-              
+
                 bai_Hoc.Xoa = false;
                 db.SaveChanges();
                 return Json(new { code = 200, msg = "Xóa thành công" }, JsonRequestBehavior.AllowGet);
@@ -105,13 +107,13 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 
 
         }
-        public JsonResult UpdateBai(int? Ma_Chuong, string tenBai,int? Mabai)
+        public JsonResult UpdateBai(int? Ma_Chuong, string tenBai, int? Mabai)
         {
             try
             {
 
                 TracNghiemDB db = new TracNghiemDB();
-                Bai_Hoc bai_Hoc =db.Bai_Hoc.Find(Mabai);
+                Bai_Hoc bai_Hoc = db.Bai_Hoc.Find(Mabai);
                 bai_Hoc.Ma_Chuong = Ma_Chuong;
                 bai_Hoc.Tên_Bai = tenBai;
                 bai_Hoc.Xoa = true;
@@ -130,34 +132,34 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
         public ActionResult baihoc()
         {
             // 2. Nếu page = null thì đặt lại là 1.
-         
+
             var links = new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true).OrderBy(x => x.Ma_Bai);
 
 
-            List<Chuong_Hoc> ltsChuong = new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa ==true).ToList();
+            List<Chuong_Hoc> ltsChuong = new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa == true).ToList();
             ViewBag.lstChuong = ltsChuong;
-        
+
             return View(links.ToList());
-           
+
         }
 
 
 
         public ActionResult QuanLyTaiKhoan()
         {
-          
-            var links = new TracNghiemDB().TaiKhoans.Where(x=>x.Quyen==false).OrderByDescending(x => x.NgayTao);
 
-         
+            var links = new TracNghiemDB().TaiKhoans.Where(x => x.Quyen == false).OrderByDescending(x => x.NgayTao);
+
+
             return View(links.ToList());
-          
+
         }
         public JsonResult LoadCH(int? MaBai)
         {
-            var CH = from c in new TracNghiemDB().KhoCauHois.Where(x => x.Ma_Bai==MaBai && x.Xoa==true).ToList()
+            var CH = from c in new TracNghiemDB().KhoCauHois.Where(x => x.Ma_Bai == MaBai && x.Xoa == true).ToList()
                      select new
                      {
-                          c.Ma_CH,
+                         c.Ma_CH,
                          c.NoiDung,
                          c.HinhAnh,
                          c.MucDọ,
@@ -174,12 +176,12 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 
                      };
 
-            return Json(new {CH }, JsonRequestBehavior.AllowGet);
+            return Json(new { CH }, JsonRequestBehavior.AllowGet);
 
         }
         public JsonResult UpdateCH(string listCH)
         {
-            try{
+            try {
                 TracNghiemDB db = new TracNghiemDB();
                 var kho = new JavaScriptSerializer().Deserialize<List<KhoCauHoi>>(listCH);
                 var item = kho[0];
@@ -212,7 +214,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                 {
                     D_An d_An = new D_An();
                     d_An = db.D_An.Find(item1.Ma_Dan);
-                   
+
                     if (item1.NoiDung.Contains("$*$"))
                     {
                         d_An.NoiDung = item1.NoiDung.Substring(3);
@@ -227,11 +229,11 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 
                     db.SaveChanges();
                 }
-                
+
             }
             catch
             {
-                return Json(new {statust="Update thất bại........!"}, JsonRequestBehavior.AllowGet);
+                return Json(new { statust = "Update thất bại........!" }, JsonRequestBehavior.AllowGet);
             }
 
             return Json(new { statust = "Cập nhật thành công---------" }, JsonRequestBehavior.AllowGet);
@@ -240,15 +242,15 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 
         }
 
-        public ActionResult Dscauhoi(long ?id)
+        public ActionResult Dscauhoi(long? id)
         {
-          
+
             Session["mabai"] = id;
-        
-            var links = new TracNghiemDB().KhoCauHois.Where(x => x.Xoa== true && x.Ma_Bai==id).OrderBy(x => x.MucDọ);
- 
-         
-            return View(links.ToList());            
+
+            var links = new TracNghiemDB().KhoCauHois.Where(x => x.Xoa == true && x.Ma_Bai == id).OrderBy(x => x.MucDọ);
+
+            ViewBag.ma = id;
+            return View(links.ToList());
         }
         public ActionResult Taocauhoi()
         {
@@ -271,14 +273,14 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
             long id = (long)Session["mabai"];
             foreach (var item in cauHois)
             {
-                try{
+                try {
                     KhoCauHoi khoCauHoi = new KhoCauHoi();
                     khoCauHoi.NoiDung = item.NoiDung;
                     khoCauHoi.HinhAnh = item.HinhAnh;
                     khoCauHoi.MucDọ = item.MucDọ;
                     khoCauHoi.Xoa = true;
-                    khoCauHoi.Ma_Bai =(int)id;
-                  //  khoCauHoi.D_An = item.D_An;
+                    khoCauHoi.Ma_Bai = (int)id;
+                    //  khoCauHoi.D_An = item.D_An;
                     TracNghiemDB db = new TracNghiemDB();
                     db.KhoCauHois.Add(khoCauHoi);
                     db.SaveChanges();
@@ -286,21 +288,21 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                     foreach (var item1 in item.D_An)
                     {
                         item1.Ma_CH = khoCauHoi.Ma_CH;
-                       
+
                         db.D_An.Add(item1);
                         db.SaveChanges();
 
                     }
                 }
-                 catch ( Exception e) {
+                catch (Exception e) {
                     Console.WriteLine(e.Message);
-                   }
+                }
             }
-                Session["CH"]=null;
+            Session["CH"] = null;
             ViewBag.cauhoi = cauHois;
-        
+
             return RedirectToAction("Dscauhoi/" + id, "Admin");
-       
+
         }
         public ActionResult LoadCauHoi()
         {
@@ -313,7 +315,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
             var lisch = new JavaScriptSerializer().Deserialize<List<KhoCauHoi>>(listCH);
             foreach (KhoCauHoi item in lisch)
             {
-                if(item.NoiDung.Contains("$c$4"))
+                if (item.NoiDung.Contains("$c$4"))
                 {
                     item.NoiDung = item.NoiDung.Substring(4);
                     item.MucDọ = 4;
@@ -323,12 +325,12 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                     item.NoiDung = item.NoiDung.Substring(4);
                     item.MucDọ = 3;
                 }
-                else if(item.NoiDung.Contains("$c$2"))
+                else if (item.NoiDung.Contains("$c$2"))
                 {
                     item.NoiDung = item.NoiDung.Substring(4);
                     item.MucDọ = 2;
                 }
-                else  
+                else
                 {
                     item.NoiDung = item.NoiDung.Substring(4);
                     item.MucDọ = 1;
@@ -354,11 +356,12 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
             Session["CH"] = lisch;
 
         }
-      public JsonResult Saveanh(HttpPostedFileBase file)
+
+        public JsonResult Saveanh(HttpPostedFileBase file)
         {
             string path = "";
-          string strExtexsion = Path.GetFileName(file.FileName).Trim();
-             path = Server.MapPath("~/Content/" + file.FileName);
+            string strExtexsion = Path.GetFileName(file.FileName).Trim();
+            path = Server.MapPath("~/Content/" + file.FileName);
             try
             {
                 if (System.IO.File.Exists(path))
@@ -369,7 +372,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
             }
             catch { }
             path = "/Content/" + file.FileName;
-            return Json(new { path },JsonRequestBehavior.AllowGet);
+            return Json(new { path }, JsonRequestBehavior.AllowGet);
         }
         public JsonResult thongke()
         {
@@ -388,8 +391,8 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                     }
 
                 }
-                arr[i-1] = deThis.Count;
-                ngay[i-1] = date.Day + "/" + date.Month + "/" + date.Year;
+                arr[i - 1] = deThis.Count;
+                ngay[i - 1] = date.Day + "/" + date.Month + "/" + date.Year;
                 date = date.AddDays(1);
             }
 
@@ -399,6 +402,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                 arr
             }, JsonRequestBehavior.AllowGet);
         }
+
         public JsonResult XuLyFile(HttpPostedFileBase file)
         {
             List<KhoCauHoi> cauHois = new List<KhoCauHoi>();
@@ -443,11 +447,11 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 
                             if (((EXCELL.Range)range.Cells[i, 7]).Text.Equals("1"))
                             {
-                                cauHoi.MucDọ =1;
+                                cauHoi.MucDọ = 1;
                             }
                             else if (((EXCELL.Range)range.Cells[i, 7]).Text.Equals("2"))
                             {
-                                cauHoi.MucDọ =2;
+                                cauHoi.MucDọ = 2;
                             }
                             else if (((EXCELL.Range)range.Cells[i, 7]).Text.Equals("3"))
                             {
@@ -455,7 +459,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                             }
                             else
                             {
-                                cauHoi.MucDọ= 4;
+                                cauHoi.MucDọ = 4;
                             }
 
 
@@ -546,7 +550,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                         }
                         catch (Exception e)
                         {
-                           // MessageBox.Show(e.Message);
+                            // MessageBox.Show(e.Message);
                         }
 
                     }
@@ -593,7 +597,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                             if (docObject.DocumentObjectType == DocumentObjectType.Picture)
                             {
                                 int sas = new Random().Next(1000000);
-                                    //Convert.ToInt32(aDateTime.Year * 12 * 30 * 24 * 60 * 60 + aDateTime.Month * 30 * 24 * 60 * 60 + aDateTime.Day * 24 * 60 * 60 + aDateTime.Hour * 60 * 60 + aDateTime.Minute * 60 + aDateTime.Second);
+                                //Convert.ToInt32(aDateTime.Year * 12 * 30 * 24 * 60 * 60 + aDateTime.Month * 30 * 24 * 60 * 60 + aDateTime.Day * 24 * 60 * 60 + aDateTime.Hour * 60 * 60 + aDateTime.Minute * 60 + aDateTime.Second);
                                 DocPicture pic = docObject as DocPicture;
                                 String imgName = Server.MapPath("~/Content/Img/Anh" + sas + String.Format(".png"));
                                 anh.Add("/Content/Img/Anh" + sas + String.Format(".png"));
@@ -648,7 +652,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                                     {
                                         ch.MucDọ = 4;
                                     }
-                                    else ch.MucDọ =5;
+                                    else ch.MucDọ = 5;
                                     ch.NoiDung = ch.NoiDung.Substring(1, ch.NoiDung.Length - 1);
                                     ch.HinhAnh = "";
                                     for (int z = 0; z < ch.NoiDung.Length - 2; z++)
@@ -667,7 +671,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
                                 }
 
 
-                                if (ch.MucDọ ==5) break;
+                                if (ch.MucDọ == 5) break;
                                 for (int k = j + 2; k < totalText.Length; k++)
                                 {
 
@@ -904,5 +908,7 @@ namespace PhamTrongTruong_5951071113.Areas.Admin.Controllers
 
             return "/Content/Img/" + Filename;
         }
+    
     }
+    
 }

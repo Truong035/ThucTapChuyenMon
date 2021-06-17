@@ -1,0 +1,270 @@
+﻿@model List<PhamTrongTruong_5951071113.Models.Bai_Hoc>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "baihoc";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+           
+            var Bode
+            $(document).on('click', 'button[name=btnSua]', function () {
+
+                @*Bode = $(this).closest('tr');
+                
+              
+                $('#MaDe').val(ma.trim());
+                $('#NoiDung').val(ten.trim());
+                $('#txtTG').val(tg.trim());*@
+                  let ten = $(this).closest('tr').find("td:eq(1)").text();
+
+                let machuong = $(this).closest('tr').find("td:eq(2)").text();
+                let ma = $(this).closest('tr').find("td:eq(0)").text().trim();
+                $('#tenbai').val(ten.trim());
+                $('#Ma_Chuong').val(ma.trim())
+                $('#Mabai').val(ma)
+                $('#modalBaihoc').slideDown();
+
+
+            })
+
+            $(document).on('click', 'button[name=Delete]', function () {
+                let ma = $(this).closest('tr').find("td:eq(0)").text().trim();
+                
+                $('#Mabai').val(ma)
+              
+                $('#modalConfirm').slideDown();
+
+            });
+            $('#btnYes').click(function () {
+
+                let mabai = $('#Mabai').val();;
+                
+
+                $('#modalConfirm').modal('hide');
+                $.ajax({
+                    url: '/Admin/Admin/Deletebai', type: 'post',
+                    data: {
+                        Mabai: mabai,
+                      
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert(data.msg);
+                            window.location = "/Admin/Admin/baihoc";
+                        } else {
+                            alert(data.msg);
+
+                        }
+                    }
+                });
+
+            });
+
+            $('#addbai').click(function () {
+
+
+                $('#modalBaihoc').slideDown();
+
+
+            });
+            $('.btnDong').click(function () {
+                $('#Mabai').val("");
+                $('#tenbai').val("");
+                $('#Ma_Chuong').val("");
+                
+                $('#modalBaihoc').hide();
+                $('#modalConfirm').hide();
+
+
+            });
+            $('#btnSubmit').click(function () {
+                let Mabai = $('#Mabai').val().trim();
+                let tenbai = $('#tenbai').val().trim();
+                
+                let Ma_Chuong = $('#Ma_Chuong').val();
+
+                if (tenbai.length == 0) {
+                    alert("Vui lòng nhập tên bài");
+                    return;
+                } else if (Ma_Chuong.length == 0) {
+                    alert("Mời chọn chương học");
+                } else {
+
+                    if (Mabai.length == 0) {
+                        //Add
+                        $.ajax({
+                            url: '/Admin/Admin/AddBai', type: 'post',
+                            data: {
+                                Ma_Chuong: Ma_Chuong,
+                                tenBai: tenbai,  
+                            },
+                            success: function (data) {
+                                if (data.code == 200) {
+                                    alert(data.msg);
+                                    window.location = "/Admin/Admin/baihoc";
+                                } else {
+                                    alert(data.msg);
+
+                                }
+                            }
+                        });
+                    } else {
+                        //Update
+                        $.ajax({
+                            url: '/Admin/Admin/UpdateBai', type: 'post',
+                            data: {
+                                Ma_Chuong: Ma_Chuong,
+                                tenBai: tenbai,
+                                Mabai: Mabai,
+                            },
+                            success: function (data) {
+                                if (data.code == 200) {
+                                    alert(data.msg);
+                                    window.location = "/Admin/Admin/baihoc";
+                                    
+                                } else {
+                                    alert.data(msg);
+                                }
+                            }
+                        });
+                    }
+                }
+
+               
+            });
+
+           
+
+        })
+
+
+    </script>
+}
+
+
+<div class="modal" tabindex="-1" role="dialog" id="modalConfirm"  style="background-color: rgba(0, 0, 0, 0.6)">
+    <div class="modal-dialog" role="document" style="margin-top: 5%;">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title">CẢNH BÁO</h5>
+
+            </div>
+            <div class="modal-body">
+                <input type="text" hidden id="ma" value="" />
+                Bạn có chắc chắn muốn xóa?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnYes">Xác nhận</button>
+                <button type="button" class=" btnDong btn btn-secondary" >Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-2" role="dialog" id="modalBaihoc" style=" background-color: rgba(0, 0, 0, 0.6)">
+    <div class="modal-dialog" role="document" style="margin-top: 5%;">
+        <div class="modal-content">
+            <div class="modal-header bg-info" style="color:white">
+                <h5 class="modal-title">THÔNG TIN BÀI HỌC</h5>
+            </div>
+            <div class="modal-body">
+                
+                    
+                    <div class="form-group">
+                        <label>Tên Bài </label>
+                        <input type="text" class="form-control" id="tenbai">
+                     
+                        <input type="text" hidden id="Mabai">
+                    </div>
+                    <div class="form-group">
+                        <select id="Ma_Chuong" class="form-control">
+                            <option value=""> Chọn chương học  </option>
+                            @foreach (var item in (List<PhamTrongTruong_5951071113.Models.Chuong_Hoc>)ViewBag.lstChuong)
+                            {
+                                <option value="@item.Ma_Chuong"> @item.Ten_Chuong </option>
+                            }
+                        </select>
+                    </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="btnSubmit">Xác nhận</button>
+                <button  class="btn btn-secondary btnDong" >Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid p-5">
+
+    <div class="card mb-4">
+        <div class="row" style="padding:10px; ">
+            <div class="col-sm-12 col-md-6">
+                <svg class="svg-inline--fa fa-table fa-w-16 mr-1" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="table" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M464 32H48C21.49 32 0 53.49 0 80v352c0 26.51 21.49 48 48 48h416c26.51 0 48-21.49 48-48V80c0-26.51-21.49-48-48-48zM224 416H64v-96h160v96zm0-160H64v-96h160v96zm224 160H288v-96h160v96zm0-160H288v-96h160v96z"></path></svg><!-- <i class="fas fa-table mr-1"></i> Font Awesome fontawesome.com -->
+                Danh sách bài học
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <button id="addbai" class="btn btn-primary" style="float:right">
+                    <span>Thêm bài học</span>
+                </button>
+            </div>
+        </div>
+        <div style="width:auto; height:3px; background-color:rgb(248,249,250);"></div>
+        <div class="card-body">
+            <div class="">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dataTable" id="dataTable" width="100%" cellspacing="0" role="grid" aria-describedby="dataTable_info" style="width: 100%;">
+
+                                <thead>
+                                    <tr>
+                                        <th>Mã Bài </th>
+                                        <th>Tên Bài </th>
+                                        <th>Chương Học </th>
+                                        <th>Số Câu Hỏi</th>
+
+
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="bodeid">
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td> @item.Ma_Bai </td>
+                                            <td>  @item.Tên_Bai </td>
+                                            <td> @item.Chuong_Hoc.Ten_Chuong</td>
+                                            <td> @item.KhoCauHois.Count</td>
+
+                                            <td>
+
+                                                <a href="/Admin/Admin/Dscauhoi/@item.Ma_Bai" class="btn btn-xs btn-primary">
+                                                    <span><i class="far fa-eye"></i></span>
+                                                </a>
+
+                                                <button name="btnSua" class="btn btn-xs btn-success"><i class="far fa-edit" aria-hidden="true" style="color:white"></i></button>
+
+                                                <button name="Delete" class="btn btn-xs btn-danger"><i class="far fa-trash-alt" aria-hidden="true"></i></button>
+                                            </td>
+
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                          
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewBag.Title = "LoadCauHoi";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<PhamTrongTruong_5951071113.Models.KhoCauHoi> cauHois = (List<PhamTrongTruong_5951071113.Models.KhoCauHoi>)ViewBag.cauhoi;
+}
+@section scripts{
+    <script>
+       // $(document).ready(function () {
+
+            @*$('#btnThem').click(function () {
+
+                $.ajax({
+                    url: "/Admin/Admin/LuuCH",
+                    type: "POST",
+                    success: function () {
+                        window.location = "/Admin/Admin/LoadCauHoi";
+                    }
+                }),
+
+            });
+        });*@
+        
+
+    </script>
+        }
+<div class="container card" id="ChonDe">
+    <div class="card-body">
+        <div id="de">
+            <div>
+                @{try
+                    {
+                        int i = 0;
+                        foreach (var item in cauHois)
+                        {
+
+
+
+                            <div class="card-body">
+                                                <form>
+                                                    <div class="form-group">
+                                                        <h5 style="width:710px;"> Câu @(i = i + 1) :  @item.NoiDung </h5>
+
+                                                        @if (item.HinhAnh.Length > 0)
+                                                        {
+                                                            <div class="card-body ">
+                                                                <img class=" center-block" style="margin-left:140px" src="@item.HinhAnh.Trim()"
+                                                                     alt="anh viet nam anh 1 " width="200px" height="200px" />
+                                                            </div>
+
+                                                        }
+
+                                                    </div>
+                                                    @foreach (var item1 in item.D_An)
+                                                    {
+                                                        <div class="form-group">
+                                                            @{ try
+                                                                {
+                                                                    if (item1.HinhAnh.Length > 0)
+                                                                    {
+                                                                        <img class=" center-block" style="margin-left:80px" src="@item1.HinhAnh"
+                                                                             alt="anh viet nam anh 1 " width="150px" />
+
+                                                                    }
+                                                                }
+                                                                catch { }
+                                                            }
+
+
+                                                            <div class="custom-control custom-radio">
+
+                                                                @if (item1.TrangThai == true)
+                                                                {
+                                                                    <label class="custom-control-inline" style="width:700px;color:orangered " for="@item1.Ma_Dan">
+                                                                        @item1.NoiDung
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label class="custom-control-inline" style="width:700px" for="@item1.Ma_Dan">
+                                                                        @item1.NoiDung
+                                                                    </label>
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                    }
+
+
+
+
+
+
+                                                    @{
+                                                        if (item.MucDọ == 1)
+                                                        {
+                                                             <label style="color:orangered ">  Mức đô: nhân biết   </label>
+                                                        }
+                                                        else if (item.MucDọ == 2)
+                                                        {
+                                                <label style="color:orangered ">  Mức đô: Thông hiểu  </label>
+
+                                                        }
+                                                        else if (item.MucDọ == 3)
+                                                        {
+                                                            <label style="color:orangered "> Mức đô: vận dụng  </label>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <label style="color:orangered "> Mức đô : vận dụng cao  </label>
+
+                                                        }
+                                                    }
+
+
+                                                </form>
+                            </div>
+
+                                                    }
+
+
+                                                }
+                                                catch { }
+
+                                                  <a class="btn btn-success" href="/Admin/Admin/LuuCH"> Thêm </a>
+                                                        }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

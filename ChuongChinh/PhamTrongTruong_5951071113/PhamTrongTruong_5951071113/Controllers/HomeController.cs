@@ -14,52 +14,64 @@ namespace PhamTrongTruong_5951071113.Controllers
     {
         public ActionResult Index()
         {
-            TaiKhoan tk = (TaiKhoan)Session["user"];
-            double[] pt = new double[100];
-            List<Chuong_Hoc> list = new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa == true).ToList();
-            int i = 0;
-            foreach (var item2 in list)
+            try
             {
-                pt[i] = 0;
-                var bai = new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true && x.Ma_Chuong == item2.Ma_Chuong);
-                foreach (var item in bai)
+                TaiKhoan tk = (TaiKhoan)Session["user"];
+                double[] pt = new double[100];
+                List<Chuong_Hoc> list = new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa == true).ToList();
+                int i = 0;
+                foreach (var item2 in list)
                 {
-                    int a = 0;
-
-                    try
+                    pt[i] = 0;
+                    double dem = 0;
+                    var bai = new TracNghiemDB().Bai_Hoc.Where(x => x.Xoa == true && x.Ma_Chuong == item2.Ma_Chuong);
+                    foreach (var item in bai)
                     {
+                        int a = 0;
 
-                        a = Convert.ToInt32(item.DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(tk.MaTK) && x.Ma_Bai == item.Ma_Bai).SoCauDung);
-
-
-                        int b = Convert.ToInt32(item.DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(tk.MaTK) && x.Ma_Bai == item.Ma_Bai).SoCauSai);
-                        if (a != 0 && b != 0)
+                        try
                         {
-                            pt[i] += ((double)pt[i] + (((double)(double)(a) / (double)(a + b)) * (double)100)) / (double)2;
-                        }
-                        else
-                        {
-                            pt[i] = pt[i] / (double)2;
-                        }
 
+                            a = Convert.ToInt32(item.DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(tk.MaTK) && x.Ma_Bai == item.Ma_Bai).SoCauDung);
+
+
+                            int b = Convert.ToInt32(item.DS_BaiHoc.SingleOrDefault(x => x.Ma_TK.Equals(tk.MaTK) && x.Ma_Bai == item.Ma_Bai).SoCauSai);
+                            if (a != 0 && b != 0)
+                            {
+                                double c = (double)(a + b);
+                                double so1= ((double)(double)(a) /c ) * (double)100;
+                                pt[i] = ((double)pt[i] + so1);
+                            }
+                            else
+                            {
+                                pt[i] = pt[i];
+                            }
+
+                            dem++;
+                        }
+                        catch
+                        {
+
+                        }
 
                     }
-                    catch
-                    {
 
-                    }
-
+                    pt[i] = pt[i]/(dem);
+                    i++;
                 }
 
-                i++;
-            }
+                ViewBag.pt = pt;
+                ViewBag.Name = tk.Ten;
+                return View(new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa == true).ToArray());
 
-            ViewBag.pt = pt;
-            ViewBag.Name = tk.Ten;
-            return View(new TracNghiemDB().Chuong_Hoc.Where(x => x.Xóa == true).ToArray());
+            }
+            catch {
+                return View("Error");
+            }
+            
 
         }
-
+        
         public ActionResult OnTap()
         {
 
@@ -145,7 +157,7 @@ namespace PhamTrongTruong_5951071113.Controllers
             for (int i = 0; i < 3; i++)
             {
                 List<PhamTrongTruong_5951071113.Models.DanhGia> danhGias1 = new List<Models.DanhGia>();
-                DateTime dateTime1 = dateTime.AddDays(-1);
+                DateTime dateTime1 = dateTime.AddDays(-3);
                 var dethi = deThis.Where(x => x.NgayThi <= dateTime && x.NgayThi > dateTime1);
                 var decuoi = dethi.ToList().First();
 

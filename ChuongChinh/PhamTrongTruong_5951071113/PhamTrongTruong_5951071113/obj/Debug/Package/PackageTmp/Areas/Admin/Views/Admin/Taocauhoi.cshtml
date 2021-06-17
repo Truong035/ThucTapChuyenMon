@@ -1,0 +1,330 @@
+﻿
+@{
+    ViewBag.Title = "Taocauhoi";
+    List<PhamTrongTruong_5951071113.Models.KhoCauHoi> cauHois = (List<PhamTrongTruong_5951071113.Models.KhoCauHoi>)ViewBag.cauhoi;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+@section scripts{
+    <script>
+        var cout = 20000;
+        var dem = 2000;
+        var check = false;
+        $(document).ready(function () {
+
+              // $('.file-upload-content').hide();
+            $('#btnthem').click(function () {
+
+                   var let = `<div class="container card-body frmCH" id="` + dem +`" >
+            <div class="card">
+    <i class="col-auto bi bi-x-square-fill remove-image " id="`+ dem +`" style="right:-97.5%; margin-top:-0.5%; font-size: 2rem; color: #ff0000" onclick="removeUploadfrm(this)"></i>
+                <div class="container">
+                    <div class="row">
+                        <div class="form-outline card-body col-10">
+                            <label class="form-label" for="textAreaExample3">Nhập nội dung câu hỏi </label>
+                            <textarea class="form-control col-12 txtCH" id="`+ dem +`" rows="2"></textarea>
+                        </div>
+                        <div class="text-center" style="margin-top:5%">   <button class="file-upload-btn btn-primary btn" type="button" onclick="$('.`+ dem +`').trigger( 'click' )">Add Image</button> </div>
+                    </div>
+                    <input class="`+ dem + `" id="` + dem + `" hidden type='file' onchange="readURL(this);" accept="image/*" />
+                    <div class=" row file-upload-content" name=btnanh id="`+ dem +`" style="margin-top:-2%">
+
+                    </div>
+                </div>`;
+                   for (var j = 0; j < 4; j++)
+                   {
+                       cout++;
+                       let += `<div class="container ">
+                            <div class="row">
+                                <div class="form-outline card-body col-7">
+
+                                <label class="form-label" for="textAreaExample3" >Nội dung đáp án thứ ` + (j + 1) +` </label>
+                                <textarea class="form-control col-12 txtdan" id="`+ cout + `" rows="1"></textarea>
+
+                            </div>
+                            <div class="text-center" style="margin-top:3%">   <button class="file-upload-btn btn-primary btn" type="button" onclick="$('.`+ cout  +`').trigger( 'click' )">Add Image</button> </div>
+                        </div>
+
+                        <input class="`+ cout+ `" id="` + cout+ `" hidden type='file' onchange="readURL(this);" accept="image/*" />
+                        <div class=" card-body row file-upload-content" id="`+ cout +`" name=btnanh style="margin-top:-2%">
+
+
+                        </div>
+                    </div>`
+
+
+                }
+                   let += '</div >';
+
+                   let+='</div>';
+                dem++;
+                   cout = cout + 5;
+                   $('#frmCauhoi').append(let);
+               });
+
+        })
+        function readURL(input) {
+
+            if (input.files && input.files[0]) {
+
+
+                    var img = $('.file-upload-content');
+                    $.each(img, function (k, v) {
+                        if (v.id == input.id) {
+                            $(this).empty();
+                            var formdata = new FormData();
+                            formdata.append('file', input.files[0]);
+                            var let = "";
+                            $.ajax({
+                                type: 'POST',
+                                url: '/Admin/Admin/Saveanh',
+                                contentType: false, //Khong co hear
+                                processData: false,//Khong Xu Ly Du Lieu
+                                data: formdata,
+                                success: function (data) {
+                                    var let = `<div class="col-auto">
+      <input class="txtlinkHinh" value="`+ data.path + `" id="` + v.id + `" hidden />
+                        <img class="file-upload-image" id="`+ v.id + `"  src="` + data.path + `" alt="your image" />
+                    </div>
+                    <i class="col-auto bi bi-x-circle-fill remove-image " onclick="removeUpload(this)"   id="`+ v.id + `" style="margin-left:-4.2% ;margin-top:5px; font-size: 2rem; color: #ff0000" ></i>`;
+                                    $(v).append(let);
+                                    $(v).show();
+                                    $(input).val("");
+                                }
+                            });
+
+
+                        }
+                    })
+
+                };
+            }
+
+            function removeUpload(anh) {
+
+                var hinh= $('.file-upload-content');
+                $.each(hinh, function (k, v) {
+                    if (v.id == anh.id) {
+                        $(v).empty();
+                        $(v).hide();
+
+                    }
+                })
+
+        }
+
+        function removeUploadfrm(anh) {
+
+            var hinh = $('.frmCH');
+
+            $.each(hinh, function (k, v) {
+                if (v.id == anh.id) {
+                   $(this).empty();
+                    $(this).hide();
+                }
+            })
+
+        }
+
+        $('#btnNhan').click(function () {
+            if ($('#txtFile').val().length > 0) {
+                if (window.FormData !== undefined) {
+                    var fileupload = $('#txtFile').get(0);
+                    var file = fileupload.files;
+                    var formdata = new FormData();
+                    formdata.append('file', file[0]);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Admin/Admin/XuLyFile ',
+                        contentType: false, //Khong co hear
+                        processData: false,//Khong Xu Ly Du Lieu
+                        data: formdata,
+                        success: function (urlImage) {
+                            if (urlImage.status == true) {
+                                window.location = "/Admin/Admin/Taocauhoi";
+                            }
+                            else {
+                                alert("Sai Định Dạng Vui Lòng Kiểm Trả Lại");
+                            }
+
+                        }
+                    });
+                }
+            } else {
+                alert("Vui lòng chọn file");
+            }
+        });
+        var CH = [];
+        $('#Them').click(function () {
+            dem = -1;
+            var classch = $('.txtCH');
+            $.each(classch, function (k, v) {
+                if ($(this).text().trim().length > 0) {
+                    CH.push({
+                        Ma_CH: 1,
+                        NoiDung: $(this).val().trim(),
+                        HinhAnh: "",
+                        MucDọ: 1,
+                        D_An: [],
+                    });
+                    var da = $('.txtdan');
+                    var n = 0;
+
+
+                    while (n < 4) {
+                        var anhdapan = "";
+
+                        dem++;
+                        n++;
+                        var img = $('.txtlinkHinh');
+                        $.each(img, function (a, b) {
+
+                            if (b.id == da[dem].id) {
+                                anhdapan = $(this).val();
+
+                            }
+                        })
+                        CH[k].D_An.push({
+                            Ma_Dan: 1,
+                            NoiDung: $(da[dem]).val().trim(),
+                            HinhAnh: anhdapan,
+                        });
+                       
+                    }
+                    var img = $('.txtlinkHinh');
+                    $.each(img, function (a, b) {
+
+                        if (b.id == v.id) {
+
+                            CH[k].HinhAnh = $(this).val();
+                        }
+                    })
+
+                }
+              
+            })
+            console.log(CH)
+            if (CH.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    data:'json',
+                    url: '/Admin/Admin/LuuCauHoi',
+                    data: { listCH: JSON.stringify(CH)},
+                    success: function (data) {
+                        window.location = "/Admin/Admin/LoadCauHoi";
+                    }
+                });
+            }
+          
+         
+        });
+    </script>
+
+}
+<input id="txtSoCau" hidden="hidden" value="@cauHois.Count" />
+<div class="container card" id="ChonDe">
+    <div class="card-body">
+        <div class="row" id="DsThethi">
+            <input id="txtFile" class="form-control col-7" type="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.doc,.docx" />
+            <div class="col-4">
+                <button id="btnNhan" class="bi-cloud-arrow-up btn btn-primary"> Tải Lên</button>     
+                <a class="bi bi-arrow-down-circle btn btn-primary" id="btbdowloal" download="" href="/Content/BieuMauCH.rar"> Dowload Biểu Mẩu</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="frmCauhoi">
+        @{
+            int Cout = 50;
+            int i = 0;
+            try
+            {
+
+                foreach (var item in cauHois)
+
+                {
+    <div class="container card-body frmCH" id="@i">
+        <div class="card card-body" >
+
+            <i class="col-auto bi bi-x-square-fill remove-image " id="@i" style="right:-97.5%; margin-top:-0.5%; font-size: 2rem; color: #ff0000" onclick="removeUploadfrm(this)"></i>
+            <div class="container">
+
+                <div class="row">
+                    <div class="form-outline card-body col-10">
+                        <label class="form-label" for="textAreaExample3">Nhập nội dung câu hỏi </label>
+                        <textarea class="form-control col-12 txtCH" id="@i" rows="2"> $c$@item.MucDọ.Value.ToString()  @item.NoiDung</textarea>
+                    </div>
+                    <div class="text-center" style="margin-top:5%">   <button class="file-upload-btn btn-primary btn" type="button" onclick="$('.@i').trigger( 'click' )">Add Image</button> </div>
+                </div>
+                <input class="@i" id="@i" hidden type='file' onchange="readURL(this);" accept="image/*" />
+                <div class=" row file-upload-content" name=btnanh id="@i" style="margin-top:-2%">
+                    @{ 
+                        if (item.HinhAnh.Length>0)
+                        {
+                              <input class="txtlinkHinh"  id="@i" value="@item.HinhAnh" hidden/>
+                            <div class="col-auto">
+                                <img class="file-upload-image" id="@i" src="@item.HinhAnh" alt="your image" />
+                            </div>
+                            <i class="col-auto bi bi-x-circle-fill remove-image " id="@i" style="margin-left:-4.2% ;margin-top:5px; font-size: 2rem; color: #ff0000" onclick="removeUpload(this)"></i>
+                        }
+                    }
+
+                </div>
+            </div>
+            @foreach (var item1 in item.D_An)
+            {
+
+<div class="container card-body">
+                    <div class="row">
+                        <div class="form-outline card-body col-7">
+                            <label class="form-label" for="textAreaExample3">Nội dung đáp án    </label>
+                            @{
+                                if (item1.TrangThai == true)
+                                {
+                                           <textarea class="form-control col-12 txtdan" id="@Cout" rows="1">$*$ @item1.NoiDung</textarea>
+                                }
+                                else
+                                {
+                                    <textarea class="form-control col-12 txtdan" id="@Cout" rows="1"> @item1.NoiDung</textarea>
+                                }
+                            }
+
+                        </div>
+                        <div class="text-center" style="margin-top:3%">   <button class="file-upload-btn btn-primary btn" type="button" onclick="$('.@Cout').trigger( 'click' )">Add Image</button> </div>
+                    </div>
+
+                    <input class="@Cout" id="@Cout" hidden type='file' onchange="readURL(this);" accept="image/*" />
+                    <div class=" row file-upload-content" id="@Cout" name=btnanh style="margin-top:-2%">
+                        @{
+                            if (item1.HinhAnh.Length>0)
+                            {<input class="txtlinkHinh" hidden value="@item1.HinhAnh" id="@Cout"  />
+                                <div class="col-auto ">
+                                    <img class="file-upload-image " id="@Cout" src="@item1.HinhAnh" alt="your image" />
+                                </div>
+                                <i class="col-auto bi bi-x-circle-fill remove-image " onclick="removeUpload(this)" id="@Cout" style="margin-left:-4.2% ;margin-top:5px; font-size: 2rem; color: #ff0000"></i>
+                            }
+                        }
+                    </div>
+                </div>
+                Cout++;
+                i++;
+            }
+        </div>
+    </div>     }
+                }
+                catch { }
+            i++;
+            <input id="txtlanluot" hidden value="@i"/>
+            }
+</div>
+<div class=" card-body container col-10">
+    <div class=" row">
+        <button class="btnthem btn btn-primary" id="btnthem">Thêm Câu Hỏi</button>
+        <button class="btnthem btn btn-primary" id="Them"> Xem </button>
+    </div>
+
+</div>
+

@@ -1,0 +1,131 @@
+﻿@model List<PhamTrongTruong_5951071113.Models.Bai_Hoc>
+@{
+    ViewBag.Title = "Đánh Gía Kết Qủa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script>
+        var arr = [];
+        var arr1 = [];
+        var statust = "";
+        var item = $('#danhgia');
+        item.addClass("Narlink");
+        $(document).ready(function () {
+            arr1 = [1, 3, 6, 7, 8, 9, 7, 10, 10, 10, 9, 8, 9, 1, 4]
+            load();
+        });
+        $('#txtbai').change(function () {
+
+            var mabai = $('#txtbai').val();
+            
+            if (mabai> 0) {
+                arr = [];
+                arr1 = [];
+                $('#txtnx').text("");
+                $.ajax({
+                    type: 'get',
+                    url: '/Home/ThongKe',
+                    data: { mabai: mabai },
+                    success: function (data) {
+                        // window.location = "/Home/Thi";
+                        $.each(data.arr, function (k, v) {
+                            arr.push(v.Ma_De);
+                            arr1.push(v.Diem);
+                          
+                        })
+                        load();
+                        if (arr.length > 0) {
+                            $('#txtnx').text(data.startut);
+                        }
+                        else {
+                            $('#txtnx').text("Phần này chưa thể đánh giá");
+                        }
+                    }
+                });
+            } else {
+                arr=[]
+                arr1 = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+                load();
+                $('#txtnx').text("Vui lòng chọn mục kiến thức để đánh giá");
+            }
+       
+
+        })
+        function load() {
+            // Javascript method's body can be found in assets/js/demos.js
+            dataDailySalesChart = {
+                labels: arr,
+                series: [arr1]
+            };
+
+            optionsDailySalesChart = {
+                lineSmooth: Chartist.Interpolation.cardinal({
+                    tension: 0
+                }),
+                //low:,
+                 high: 10, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+                chartPadding: {
+                    top: 30,
+                    right: 0,
+                    bottom: 0,
+                    left: 0
+                },
+
+            }
+          
+
+            var dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
+
+           md.startAnimationForLineChart(dailySalesChart);
+
+        }
+      
+    </script>
+
+}
+
+<div class="col-md-11 card container"  style="margin-top:-3%">
+    <div class="row">
+        <div class="col-md-4 text-center"   >
+            <div class="form-group">
+                <select class="col-md-11 form-control" id="txtbai" >
+                    <option value="0">Mời chọn mục kiến thức   </option>
+                    @foreach (var item in Model)
+                    {
+
+                        <option value="@item.Ma_Bai" > @item.Tên_Bai </option>
+                    }
+
+                </select>
+
+            </div>
+        </div>
+        <div class="col-md-auto">
+            <div class="stats">
+                <h3 class="card-title">  Biểu Đồ Đánh Giá Quá Trình Học Tập </h3>
+            </div>
+        </div>
+    </div>
+     
+    <div class=" card-chart" style="margin-top:-1%"> 
+        <div class="card-header card-header-tabs">
+            <h4 class="card-title text-center">ssss </h4>
+        </div>
+        <div class="card-header card-header-info">
+            <br />
+            <div class="ct-chart" id="dailySalesChart"></div>
+        </div>
+        <div class="card-body">
+            <h4  class="card-title">Nhận Xét</h4>
+            <h5 id="txtnx" class="card-category text-success">
+             
+            </h5>
+        </div>
+        <div class="card-footer">
+            <div class="stats">
+                <i class="material-icons"> access_time</i> updated 4 minutes ago
+            </div>
+        </div>
+    </div>
+</div>
