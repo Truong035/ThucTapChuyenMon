@@ -23,7 +23,7 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 4.Tao Đề Thi
 
-5.trộn đề lấy theo mức độ dễ khó trung bình 
+5 Trộn đề lấy theo mức độ dễ khó trung bình 
 
 7 Random câu hỏi
 
@@ -88,8 +88,6 @@ b3 đăng nhập bằng google hoăc facebook
 
 link chạy demo : http://trongtruong809-001-site1.ctempurl.com/ 
 
-(chương trình chưa đăng kí tên miền nên chưa thể đăng nhập goole và facebook
-chỉ có thể đk bình thường)
 Tk đăng nhập admin:Admin
 MK đăng nhập admin:1
 
