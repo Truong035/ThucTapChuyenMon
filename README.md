@@ -23,35 +23,37 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 4.Tao Đề Thi
 
-5.trộn đề lấy theo mức độ dẽ khó trung bình 
+5.trộn đề lấy theo mức độ dễ khó trung bình 
 
-6.Xem kêt quả đánh giá và thông kê bài thi
+7 Random câu hỏi
 
-7.Quản lý học tập (Xem kết quả các bài thi)
+8 Chức năng realtime thông báo hết thời gian làm bài 
 
-8.Đánh giá quá trình học tập (đánh giá bằng biểu đồ)
+9.Xem kêt quả bài thi và thông kê đánh giá bài thi
 
-9.Đăng kí,
+10.Quản lý học tập (Xem kết quả các bài thi)
 
-10.Mã hóa mật khẩu 
+11.Đánh giá quá trình học tập (đánh giá bằng biểu đồ)
 
-11.Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
+12.Đăng kí,
 
-12.Thông tin phần mềm
+13.Mã hóa mật khẩu 
 
-13 Liên Hệ
+14.Đổi mật khẩu,Quên mật khẩu (Gưỉ gmail)  
 
-14 Tìm kiếm câu hỏi
+15.Thông tin giới thiệu
 
-15 Phân Trang 
+16 Liên Hệ
 
-16 Xử lí Page not founD
+17 Tìm kiếm câu hỏi
 
-17 Sử dụng youtube API xem video lý thuyết
+18 Phân Trang 
 
-18 Vi phạm quy chế thi
+19 Xử lí Page not founD
 
+20 Sử dụng youtube API xem video lý thuyết
 
+21 Vi phạm quy chế thi
 
 2.2===============Admin=======================
 
@@ -61,13 +63,17 @@ Giảng viên: Thầy Nguyễn Lê Minh. 
 
 3.Upload file câu hỏi bằng excell,word 
 
-4.Thêm ,sửa xóa câu hỏi,
+4.Upload file ảnh 
 
-5.Thêm ,sửa xóa bài học,
+5.Thêm ,sửa xóa câu hỏi,
 
-6 Quản lý người dùng 
+6.Thêm ,sửa xóa bài học,
 
-7 Nhận phản hồi từ người dùng 
+7 Quản lý người dùng 
+
+8 Nhận phản hồi từ người dùng 
+
+9 Upload website to host
 
 ## Phần 3: Các chức năng chưa hoàn thành:
 
