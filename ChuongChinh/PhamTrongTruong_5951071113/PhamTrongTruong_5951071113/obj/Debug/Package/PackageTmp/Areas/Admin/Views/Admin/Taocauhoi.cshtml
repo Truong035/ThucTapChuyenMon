@@ -8,10 +8,40 @@
 
 @section scripts{
     <script>
+
         var cout = 20000;
         var dem = 2000;
         var check = false;
         $(document).ready(function () {
+            $('#btnNhan').click(function () {
+                if ($('#txtFile').val().length > 0) {
+                    if (window.FormData !== undefined) {
+                        var fileupload = $('#txtFile').get(0);
+                        var file = fileupload.files;
+                        var formdata = new FormData();
+                        formdata.append('file', file[0]);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Admin/Admin/XuLyFile ',
+                            contentType: false, //Khong co hear
+                            processData: false,//Khong Xu Ly Du Lieu
+                            data: formdata,
+                            success: function (urlImage) {
+                                if (urlImage.status == true) {
+                                    window.location = "/Admin/Admin/Taocauhoi";
+                                }
+                                else {
+                                    alert("Sai Định Dạng Vui Lòng Kiểm Trả Lại");
+                                }
+
+                            }
+                        });
+                    }
+                } else {
+                    alert("Vui lòng chọn file");
+                }
+            });
 
               // $('.file-upload-content').hide();
             $('#btnthem').click(function () {
@@ -67,7 +97,6 @@
         function readURL(input) {
 
             if (input.files && input.files[0]) {
-
 
                     var img = $('.file-upload-content');
                     $.each(img, function (k, v) {
@@ -127,41 +156,14 @@
 
         }
 
-        $('#btnNhan').click(function () {
-            if ($('#txtFile').val().length > 0) {
-                if (window.FormData !== undefined) {
-                    var fileupload = $('#txtFile').get(0);
-                    var file = fileupload.files;
-                    var formdata = new FormData();
-                    formdata.append('file', file[0]);
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/Admin/Admin/XuLyFile ',
-                        contentType: false, //Khong co hear
-                        processData: false,//Khong Xu Ly Du Lieu
-                        data: formdata,
-                        success: function (urlImage) {
-                            if (urlImage.status == true) {
-                                window.location = "/Admin/Admin/Taocauhoi";
-                            }
-                            else {
-                                alert("Sai Định Dạng Vui Lòng Kiểm Trả Lại");
-                            }
-
-                        }
-                    });
-                }
-            } else {
-                alert("Vui lòng chọn file");
-            }
-        });
         var CH = [];
         $('#Them').click(function () {
             dem = -1;
             var classch = $('.txtCH');
+           
             $.each(classch, function (k, v) {
-                if ($(this).text().trim().length > 0) {
+
+                if ($(this).val().trim().length > 0) {
                     CH.push({
                         Ma_CH: 1,
                         NoiDung: $(this).val().trim(),
@@ -175,7 +177,6 @@
 
                     while (n < 4) {
                         var anhdapan = "";
-
                         dem++;
                         n++;
                         var img = $('.txtlinkHinh');
