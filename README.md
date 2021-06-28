@@ -90,6 +90,8 @@ link chạy demo : http://trongtruong809-001-site1.ctempurl.com/
 
 link dự phong : http://webMVC.somee.com
 
+https://webMVC.somee.com:8083
+
 Tk đăng nhập admin:Admin
 MK đăng nhập admin:1
 
