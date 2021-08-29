@@ -88,7 +88,7 @@ b3 đăng nhập bằng google hoăc facebook
 
 link chạy demo : http://trongtruong809-001-site1.ctempurl.com/ 
 
-link dự phong : http://webMVC.somee.com
+link dự phong : http://websitedanhgiakienthuc.somee.com/
 
 https://webMVC.somee.com:8083
 
